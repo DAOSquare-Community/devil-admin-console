@@ -46,6 +46,6 @@
     "not op_mini all"
   ],
   "engines": {
-    "node": "14.x"
+    "node": ">=14.x"
   }
 }
