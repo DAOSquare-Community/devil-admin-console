@@ -86,7 +86,7 @@ type Data = {
 }
 
 // daosquare
-const fetchDaoMemberData = async (daoName: string) => {
+const fetchDaoMemberData = async () => {
   return request({
     url: 'https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai',
     method: 'POST',
@@ -101,7 +101,7 @@ const fetchDaoMemberData = async (daoName: string) => {
 }
 
 // daosquare
-const fetchDaoProposalsData = async (daoName: string) => {
+const fetchDaoProposalsData = async () => {
   return request({
     url: 'https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai',
     method: 'POST',
@@ -120,11 +120,9 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const { id } = req.query
-  if (typeof id === 'string' && id == 'daosquare') {
-    const membersData = await fetchDaoMemberData(id)
-    const proposalsData = await fetchDaoProposalsData(id)
-
-    console.log(proposalsData)
+  if (typeof id === 'string' && id === 'daosquare') {
+    const membersData = await fetchDaoMemberData()
+    const proposalsData = await fetchDaoProposalsData()
 
     let unsponsoredCount = 0 // 无赞助的提案
     const votingCount = 0 // 投票期的提案
@@ -133,7 +131,7 @@ export default async function handler(
     let passedCount = 0 // 已通过的提案
     let executedCount = 0 // 已执行的提案
 
-    if (proposalsData != null && proposalsData != undefined) {
+    if (!!proposalsData) {
       //无赞助的提案
       unsponsoredCount = proposalsData.data.proposals.filter(
         (element) => element.sponsored == false
@@ -157,10 +155,7 @@ export default async function handler(
 
     const retData: Data = {
       id: 'daosquare',
-      members:
-        membersData != null && membersData != undefined
-          ? membersData.data.daoMembers.length
-          : 0,
+      members: !!membersData ? membersData.data.daoMembers.length : 0,
       process: processCount,
       excution: executedCount,
       passed: passedCount,

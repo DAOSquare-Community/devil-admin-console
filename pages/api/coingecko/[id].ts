@@ -3,7 +3,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios, { AxiosRequestConfig } from 'axios'
-import tunnel from 'tunnel'
+//import tunnel from 'tunnel'
 
 type Data = {
   id: string
@@ -12,22 +12,11 @@ type Data = {
   totalsupply: number
   market: number
 }
+const url_coingecko = 'https://api.coingecko.com/api/v3/coins/daosquare'
 
 // daosquare
-const fetchCoinGeckoData = async (daoName: string) => {
-  if (daoName == 'daosquare') {
-    const client = axios.create({
-      baseURL: '',
-      timeout: 10000,
-      httpsAgent: tunnel.httpsOverHttp({
-        proxy: { host: '127.0.0.1', port: 10809 },
-      }),
-    })
-
-    return client
-      .get('https://api.coingecko.com/api/v3/coins/daosquare')
-      .then((response) => response.data)
-  }
+const fetchCoinGeckoData = async () => {
+  return axios.get(url_coingecko).then((response) => response.data)
 }
 
 export default async function handler(
@@ -35,9 +24,9 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const { id } = req.query
-  if (typeof id === 'string' && id == 'daosquare') {
-    const fetchData = await fetchCoinGeckoData(id)
-    if (fetchData !== null && fetchData != undefined) {
+  if (typeof id === 'string' && id === 'daosquare') {
+    const fetchData = await fetchCoinGeckoData()
+    if (!!fetchData) {
       const retData: Data = {
         id: fetchData.id,
         symbol: fetchData.symbol,

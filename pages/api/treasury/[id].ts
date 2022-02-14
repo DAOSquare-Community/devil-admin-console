@@ -26,7 +26,7 @@ type Data = {
   tokenInfo: tokenData[]
 }
 
-const fetchTreasuryData = async (daoName: string) => {
+const fetchTreasuryData = async () => {
   return axios.get(gnosis_url).then((response) => response.data)
 }
 
@@ -35,9 +35,9 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const { id } = req.query
-  if (typeof id === 'string' && id == 'daosquare') {
-    const data = await fetchTreasuryData(id)
-    if (data != null && data != undefined) {
+  if (typeof id === 'string' && id === 'daosquare') {
+    const data = await fetchTreasuryData()
+    if (!!data) {
       const id = 'daosquare' // id
       const fiatTotal = data.fiatTotal // total_balance_usd
       const tokens = [] // tokenInfo
