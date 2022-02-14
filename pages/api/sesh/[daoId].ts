@@ -6,7 +6,7 @@ type Data = {
   end_time: string
 }[]
 // 941665725112782868
-const fetchCalendarEvents = async (orgId: string) => {
+const fetchCalendarEvents = async (orgId: string): Promise<{ props: Data }> => {
   return request({
     url: `https://sesh.fyi/api/get_event_listings`,
     method: 'post',
@@ -15,7 +15,7 @@ const fetchCalendarEvents = async (orgId: string) => {
       token_type: 'Bearer',
       guild_id: '678414857510453309',
     },
-  }) as Promise<{ props: Data }>
+  })
 }
 
 export default async function handler(

@@ -13,7 +13,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 const gnosis_url =
   'https://safe-client.gnosis.io/v1/chains/1/safes/0xf383975B49d2130e3BA0Df9e10dE5FF2Dd7A215a/balances/USD?exclude_spam=true&trusted=false'
 
-type tokenData = {
+type TokenData = {
   symbol: string
   balance: string
   fiatBalance: string
@@ -23,10 +23,20 @@ type tokenData = {
 type Data = {
   id: string
   total_balance_usd: string
-  tokenInfo: tokenData[]
+  tokenInfo: TokenData[]
 }
 
-const fetchTreasuryData = async () => {
+type TreasuryDataType = {
+  items: {
+    tokenInfo: { symbol: string }
+    balance: string
+    fiatBalance: string
+    fiatConversion: string
+  }[]
+  fiatTotal: string
+}
+
+const fetchTreasuryData = async (): Promise<TreasuryDataType> => {
   return axios.get(gnosis_url).then((response) => response.data)
 }
 
@@ -40,9 +50,9 @@ export default async function handler(
     if (!!data) {
       const id = 'daosquare' // id
       const fiatTotal = data.fiatTotal // total_balance_usd
-      const tokens = [] // tokenInfo
+      const tokens: TokenData[] = [] // tokenInfo
       data.items.forEach((element) => {
-        const token: tokenData = {
+        const token: TokenData = {
           symbol: element.tokenInfo.symbol,
           balance: element.balance,
           fiatBalance: element.fiatBalance,
