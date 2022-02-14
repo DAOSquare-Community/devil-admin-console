@@ -10,7 +10,8 @@ type Data = {
   }
 }
 // 5T2WcpGDJ3m6cOiG5ItJeL
-const fetchDeworkData = async (orgId: string) => {
+const fetchDeworkData = async (daoId: string) => {
+  const orgId = '5T2WcpGDJ3m6cOiG5ItJeL'
   return request({
     url: 'https://api.dework.xyz/graphql',
     method: 'POST',
@@ -36,9 +37,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { id } = req.query
-  if (typeof id === 'string') {
-    const data = await fetchDeworkData(id)
+  const { daoId } = req.query
+  if (typeof daoId === 'string') {
+    const data = await fetchDeworkData(daoId)
     res.status(200).json(data)
   }
   res.status(500)

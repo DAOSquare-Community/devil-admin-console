@@ -6,7 +6,8 @@ type Data = {
   }
 }
 // 941665725112782868
-const fetchDiscordData = async (channelId: string) => {
+const fetchDiscordData = async (daoId: string) => {
+  const channelId = '941665725112782868'
   return request({
     url: `https://discord.com/api/guilds/${channelId}?with_counts=true`,
     method: 'get',
@@ -21,9 +22,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { id } = req.query
-  if (typeof id === 'string') {
-    const data = await fetchDiscordData(id)
+  const { daoId } = req.query
+  if (typeof daoId === 'string') {
+    const data = await fetchDiscordData(daoId)
     res.status(200).json(data)
   }
 
