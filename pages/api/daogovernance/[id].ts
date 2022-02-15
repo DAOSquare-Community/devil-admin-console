@@ -2,8 +2,6 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import axios, { AxiosRequestConfig } from 'axios'
-import tunnel from 'tunnel'
 import { request } from 'lib/request/AxiosHelper'
 
 const DAOSQUARE_CONTRACT_ADDRESS = '0x1109136c32d6a2138dc0379b734d84ad0c2ffb1b'
@@ -100,8 +98,17 @@ const fetchDaoMemberData = async () => {
   })
 }
 
+type ProposalsDataType = {
+  data: {
+    proposals: {
+      sponsored?: boolean
+      processed?: boolean
+      executed: boolean
+    }[]
+  }
+}
 // daosquare
-const fetchDaoProposalsData = async () => {
+const fetchDaoProposalsData = async (): Promise<ProposalsDataType> => {
   return request({
     url: 'https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai',
     method: 'POST',
@@ -134,22 +141,22 @@ export default async function handler(
     if (!!proposalsData) {
       //无赞助的提案
       unsponsoredCount = proposalsData.data.proposals.filter(
-        (element) => element.sponsored == false
+        (element) => element.sponsored === false
       ).length
 
       //正在处理的提案
       processCount = proposalsData.data.proposals.filter(
-        (element) => element.processed == false
+        (element) => element.processed === false
       ).length
 
       // 已执行的提案
       executedCount = proposalsData.data.proposals.filter(
-        (element) => element.executed == true
+        (element) => element.executed === true
       ).length
 
       // 已通过的提案
       passedCount = proposalsData.data.proposals.filter(
-        (element) => element.processed == true
+        (element) => element.processed === true
       ).length
     }
 
