@@ -2,8 +2,8 @@
 import { AxiosRequestConfig } from 'axios'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useSWR, { Key, mutate as gMutate, SWRConfiguration } from 'swr'
-import { request } from './AxiosHelper'
-import { HTMPathUnionType, UniqueAliasKeyType } from './HTMPathUnion'
+import { request } from './axios-helper'
+import { PathUnionType, UniqueAliasKeyType } from './path-union'
 
 type MethodStringType = 'GET' | 'POST' | 'PUT' | 'DELETE'
 type LowercaseMethodType = 'get' | 'post' | 'put' | 'delete'
@@ -46,7 +46,7 @@ const iDataMap = <R>(res: { message?: string; data?: R }) => {
  *  @enhance: DefaultValue is true when method equal to GET,
  *            it will enhance some of the automatic trigger by payload;
  */
-const useHTMHttpService = <R = unknown, P = unknown>(
+const useHttpService = <R = unknown, P = unknown>(
   params: ServiceParamsType<P> | Key,
   options?: OptionType<R>
 ) => {
@@ -169,14 +169,14 @@ const useHTMHttpService = <R = unknown, P = unknown>(
   }
 }
 
-type SafeKey = HTMPathUnionType | (() => HTMPathUnionType)
+type SafeKey = PathUnionType | (() => PathUnionType)
 // URL type safe & Less define
-export const useHTMAPIService = <R = unknown, P = unknown>(
+export const useAPIService = <R = unknown, P = unknown>(
   params: (Omit<ServiceParamsType<P>, 'key'> & { key: SafeKey }) | SafeKey,
   options?: OptionType<R>
 ) => {
   const { fetchOtherConfig, ...other } = options || {}
-  return useHTMHttpService<R, P>(params, {
+  return useHttpService<R, P>(params, {
     fetchOtherConfig: {
       baseURL: process.env.REST_BASE_URL,
       ...fetchOtherConfig,
@@ -203,4 +203,4 @@ export const globalMutate = <Data = any>(
 
 // TODO :Pagination api
 
-export default useHTMHttpService
+export default useHttpService

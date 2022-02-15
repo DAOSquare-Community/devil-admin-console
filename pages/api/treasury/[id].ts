@@ -2,7 +2,7 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { request } from 'lib/request/AxiosHelper'
+import { request } from 'lib/request/axios-helper'
 import axios, { AxiosRequestConfig } from 'axios'
 
 // Daosquare的多签国库地址

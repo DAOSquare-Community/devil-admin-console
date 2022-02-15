@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { request } from 'lib/request/AxiosHelper'
+import { request } from 'lib/request/axios-helper'
 type Data = {
   rsvp_options: unknown
   start_time: string

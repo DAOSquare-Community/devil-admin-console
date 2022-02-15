@@ -10,6 +10,7 @@
     "prettier/prettier": "warn",
     "@typescript-eslint/no-explicit-any": "error",
     "prefer-template": 1,
-    "eqeqeq": ["error", "smart"]
+    "eqeqeq": ["error", "smart"],
+    "react/self-closing-comp": "warn"
   }
 }

@@ -2,7 +2,7 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { request } from 'lib/request/AxiosHelper'
+import { request } from 'lib/request/axios-helper'
 
 const DAOSQUARE_CONTRACT_ADDRESS = '0x1109136c32d6a2138dc0379b734d84ad0c2ffb1b'
 

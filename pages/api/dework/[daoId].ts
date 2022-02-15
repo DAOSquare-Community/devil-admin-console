@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { request } from 'lib/request/AxiosHelper'
+import { request } from 'lib/request/axios-helper'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import uuidBase62 from 'uuid-base62'
