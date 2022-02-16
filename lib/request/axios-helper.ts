@@ -2,10 +2,11 @@ import axios, { AxiosRequestConfig } from 'axios'
 
 const client = axios.create()
 
-const request = (
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const request = <R = any>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: AxiosRequestConfig & { payload?: Record<string, any> }
-) => {
+): Promise<R> => {
   const { method = 'GET', payload, ...other } = options
   const mPayload =
     method.toLocaleLowerCase() === 'get'
