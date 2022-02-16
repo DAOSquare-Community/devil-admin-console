@@ -108,8 +108,8 @@ type ProposalsDataType = {
   }
 }
 // daosquare
-const fetchDaoProposalsData = async (): Promise<ProposalsDataType> => {
-  return request({
+const fetchDaoProposalsData = async () => {
+  return request<ProposalsDataType>({
     url: 'https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai',
     method: 'POST',
     payload: {
