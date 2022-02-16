@@ -22,9 +22,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { id } = req.query
-  if (typeof id === 'string') {
-    const data = await fetchCalendarEvents(id)
+  const { daoId } = req.query
+  if (typeof daoId === 'string') {
+    const data = await fetchCalendarEvents(daoId)
     res.status(200).json(data.props)
   }
 
