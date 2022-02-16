@@ -2,11 +2,11 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 //import tunnel from 'tunnel'
 
 type Data = {
-  id: string
+  daoId: string
   symbol: string
   tokenprice: number
   totalsupply: number
@@ -23,12 +23,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { id } = req.query
-  if (typeof id === 'string' && id === 'daosquare') {
+  const { daoId } = req.query
+  if (typeof daoId === 'string') {
     const fetchData = await fetchCoinGeckoData()
     if (!!fetchData) {
       const retData: Data = {
-        id: fetchData.id,
+        daoId: fetchData.id,
         symbol: fetchData.symbol,
         tokenprice: fetchData.market_data.current_price.usd,
         totalsupply: fetchData.market_data.total_supply,
