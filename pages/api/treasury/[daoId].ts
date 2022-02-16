@@ -2,8 +2,7 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { request } from 'lib/request/axios-helper'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
 // Daosquare的多签国库地址
 //const DAOSQUARE_GNOSIS_ADDRESS = '0xf383975B49d2130e3BA0Df9e10dE5FF2Dd7A215a'
@@ -21,7 +20,7 @@ type TokenData = {
 }
 
 type Data = {
-  id: string
+  daoId: string
   total_balance_usd: string
   tokenInfo: TokenData[]
 }
@@ -44,11 +43,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { id } = req.query
-  if (typeof id === 'string' && id === 'daosquare') {
+  const { daoId } = req.query
+  if (typeof daoId === 'string') {
     const data = await fetchTreasuryData()
     if (!!data) {
-      const id = 'daosquare' // id
       const fiatTotal = data.fiatTotal // total_balance_usd
       const tokens: TokenData[] = [] // tokenInfo
       data.items.forEach((element) => {
@@ -62,7 +60,7 @@ export default async function handler(
       })
 
       const retData: Data = {
-        id: id,
+        daoId: daoId,
         total_balance_usd: fiatTotal,
         tokenInfo: tokens,
       }

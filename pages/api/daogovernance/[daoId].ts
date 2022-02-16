@@ -73,7 +73,7 @@ const QUERY_PROPOSALS = `query molochActivities($contractAddr: String!, $created
   }`
 
 type Data = {
-  id: string
+  daoId: string
   members: number // 会员数量
   process: number // 正在处理的提案
   excution: number // 已执行的提案
@@ -126,8 +126,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const { id } = req.query
-  if (typeof id === 'string' && id === 'daosquare') {
+  const { daoId } = req.query
+  if (typeof daoId === 'string') {
     const membersData = await fetchDaoMemberData()
     const proposalsData = await fetchDaoProposalsData()
 
@@ -161,7 +161,7 @@ export default async function handler(
     }
 
     const retData: Data = {
-      id: 'daosquare',
+      daoId: 'daosquare',
       members: !!membersData ? membersData.data.daoMembers.length : 0,
       process: processCount,
       excution: executedCount,
