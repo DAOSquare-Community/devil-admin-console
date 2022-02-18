@@ -9,6 +9,8 @@
     // I suggest you add those two rules:
     "prettier/prettier": "warn",
     "@typescript-eslint/no-explicit-any": "error",
-    "prefer-template": 1
+    "prefer-template": 1,
+    "eqeqeq": ["error", "smart"],
+    "react/self-closing-comp": "warn"
   }
 }

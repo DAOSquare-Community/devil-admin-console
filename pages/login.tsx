@@ -1,9 +1,15 @@
 // import { LockClosedIcon } from '@heroicons/react/solid'
-import { NextPage } from 'next'
+import Image from 'next/image'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { useRouter } from 'next/router'
+import { useLoginApi } from 'lib/request/use-api'
+import Link from 'next/link'
+import Header from 'components/header'
+import { NextPageWithLayout } from 'types/page'
+import { NoSlideMenuLayout } from 'components/layout'
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -17,10 +23,10 @@ type SubmitType = (data: FormData) => void
 const LoginContainer: FC = ({ children }) => {
   return (
     <>
-      <div className="items-center1 flex min-h-full justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <div className="flex items-center justify-center"></div>
+            <div className="flex items-center justify-center" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               Sign in to your account
             </h2>
@@ -32,7 +38,13 @@ const LoginContainer: FC = ({ children }) => {
   )
 }
 
-const LoginForm: FC<{ onSubmit: SubmitType }> = ({ onSubmit }) => {
+const LoginForm: FC = () => {
+  const { isValidating, trigger } = useLoginApi()
+  const router = useRouter()
+  const onSubmit: SubmitType = async (data) => {
+    await trigger(data)
+    router.push('/')
+  }
   const {
     register,
     handleSubmit,
@@ -95,19 +107,19 @@ const LoginForm: FC<{ onSubmit: SubmitType }> = ({ onSubmit }) => {
         </div>
 
         <div className="text-sm">
-          <a
-            href="#"
-            className="font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            Forgot your password?
-          </a>
+          <Link href="#">
+            <a className="font-medium text-indigo-600 hover:text-indigo-500">
+              Forgot your password?
+            </a>
+          </Link>
         </div>
       </div>
 
       <div>
         <button
           type="submit"
-          className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          disabled={isValidating}
+          className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-75"
         >
           {/* <span className="absolute left-0 inset-y-0 flex items-center pl-3">
         <LockClosedIcon
@@ -122,15 +134,14 @@ const LoginForm: FC<{ onSubmit: SubmitType }> = ({ onSubmit }) => {
   )
 }
 
-const Login: NextPage = () => {
-  const onSubmit: SubmitType = (data) => {
-    console.log('submit', data)
-  }
+const Login: NextPageWithLayout = () => {
   return (
     <LoginContainer>
-      <LoginForm onSubmit={onSubmit} />
+      <Header />
+      <LoginForm />
     </LoginContainer>
   )
 }
+Login.getLayout = (page) => <NoSlideMenuLayout>{page}</NoSlideMenuLayout>
 
 export default Login
