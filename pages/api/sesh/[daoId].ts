@@ -1,16 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
-import runMiddleware from 'lib/middleware/runMiddleware'
-import Cors from 'cors'
+
+import NextCors from 'nextjs-cors'
 type Data = {
   rsvp_options: unknown
   start_time: string
   end_time: string
 }[]
 
-const cors = Cors({
-  methods: ['GET', 'HEAD'],
-})
 // 941665725112782868
 const fetchCalendarEvents = async (orgId: string) => {
   return request<{ props: Data }>({
@@ -28,7 +25,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  await runMiddleware(req, res, cors)
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  })
   const { daoId } = req.query
   if (typeof daoId === 'string') {
     const data = await fetchCalendarEvents(daoId)
