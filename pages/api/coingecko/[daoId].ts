@@ -3,7 +3,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios'
-//import tunnel from 'tunnel'
+// import tunnel from 'tunnel'
+import Cors from 'cors'
+import runMiddleware from 'lib/middleware/runMiddleware'
 
 type Data = {
   daoId: string
@@ -13,6 +15,9 @@ type Data = {
   market: number
 }
 const url_coingecko = 'https://api.coingecko.com/api/v3/coins/daosquare'
+const cors = Cors({
+  methods: ['GET', 'HEAD'],
+})
 
 // daosquare
 const fetchCoinGeckoData = async () => {
@@ -23,6 +28,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  await runMiddleware(req, res, cors)
   const { daoId } = req.query
   if (typeof daoId === 'string') {
     const fetchData = await fetchCoinGeckoData()
