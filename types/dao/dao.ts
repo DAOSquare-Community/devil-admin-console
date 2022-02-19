@@ -20,7 +20,12 @@ export interface LogOp {
   dao_contract: DAOContract
   treasury: Treasury
   dao_token: DAOToken
-  open_api: unknown
+  open_api: {
+    dework?: { orgId: string }
+    discord?: { channelId: string }
+    sesh?: { access_token: string; guild_id: string }
+    [x: string]: unknown
+  }
   create_at: Date
   last_update_at: Date
 }
