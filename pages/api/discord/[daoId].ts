@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
-import { getDaoInfoFromId } from 'service/dao'
+import { getDaoInfo } from 'service/dao'
 type Data = {
   organization: {
     task: { id: string; status: 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'DONE' }[]
@@ -11,16 +11,18 @@ const authorization =
 
 // 941665725112782868
 const fetchDiscordData = async (daoId: string) => {
-  const dao = await getDaoInfoFromId(daoId)
-  const channelId = dao.open_api.discord?.channelId
-  if (!!channelId?.length) {
-    return request<Data>({
-      url: `https://discord.com/api/guilds/${channelId}?with_counts=true`,
-      method: 'get',
-      headers: {
-        Authorization: authorization,
-      },
-    })
+  const dao = await getDaoInfo(daoId)
+  if (!!dao && Array.isArray(dao) && dao.length > 0) {
+    const channelId = dao[0].open_api.discord?.channelId
+    if (!!channelId?.length) {
+      return request<Data>({
+        url: `https://discord.com/api/guilds/${channelId}?with_counts=true`,
+        method: 'get',
+        headers: {
+          Authorization: authorization,
+        },
+      })
+    }
   }
 }
 

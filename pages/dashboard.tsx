@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import { useTable } from 'react-table'
 import makeData from 'lib/make-data'
-import clientPromise from 'lib/mongodb'
+import clientPromise from 'lib/db/mongodb'
 // Define a default UI for filtering
 
 // Our table component

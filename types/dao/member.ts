@@ -2,7 +2,7 @@ import { SocialType } from 'types/socialtype'
 
 /** Member */
 export type Member = {
-  _id: string
+  _id?: string
   name: string
   gender: string
   /** Member Profile */

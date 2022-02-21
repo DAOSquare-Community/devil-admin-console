@@ -1,7 +1,7 @@
 /** all stats of all daos */
 /** stats of daos */
 export type DAOStats = {
-  _id: string
+  _id?: string
   /** dao number */
   daos: number
   /** member number of all dao */

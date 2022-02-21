@@ -1,8 +1,8 @@
 import { SocialType } from 'types/socialtype'
 
 /** DAO 实体 */
-export interface LogOp {
-  _id: string
+export type DAO = {
+  _id?: string
   daoId: string
   /** dao name */
   name: string
@@ -41,6 +41,8 @@ type Treasury = {
   chain_type: string
   /** the contract of dao's treasury */
   contract_address: string
+  /** get the json data of treasury url */
+  json_url: string
 }
 
 /** dao' token */

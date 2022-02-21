@@ -1,6 +1,6 @@
 /** ChianType */
 export type Config = {
-  _id: string
+  _id?: string
   name: string
   /** config value */
   value: unknown
