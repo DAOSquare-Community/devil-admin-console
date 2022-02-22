@@ -1,39 +1,61 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
-import runMiddleware from 'lib/middleware/runMiddleware'
-import Cors from 'cors'
+
+import NextCors from 'nextjs-cors'
+import { getDaoInfo } from 'service/dao'
 type Data = {
   rsvp_options: unknown
   start_time: string
   end_time: string
 }[]
 
-const cors = Cors({
-  methods: ['GET', 'HEAD'],
-})
 // 941665725112782868
-const fetchCalendarEvents = async (orgId: string) => {
-  return request<{ props: Data }>({
-    url: `https://sesh.fyi/api/get_event_listings`,
-    method: 'post',
-    payload: {
-      access_token: '9xbD4YkcTJ22SQZy55CJzMfncII0X6',
-      token_type: 'Bearer',
-      guild_id: '678414857510453309',
-    },
-  })
+const fetchCalendarEvents = async (daoId: string) => {
+  const dao = await getDaoInfo(daoId)
+  if (!!dao && Array.isArray(dao) && dao.length > 0) {
+    const sesh = dao[0].open_api.sesh
+    if (!!sesh) {
+      return request<{ props: Data }>({
+        url: `https://sesh.fyi/api/get_event_listings`,
+        method: 'post',
+        payload: {
+          access_token: sesh.access_token,
+          token_type: 'Bearer',
+          guild_id: sesh.guild_id,
+        },
+      })
+    }
+  }
 }
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
-  await runMiddleware(req, res, cors)
-  const { daoId } = req.query
-  if (typeof daoId === 'string') {
-    const data = await fetchCalendarEvents(daoId)
-    res.status(200).json(data.props)
+  await NextCors(req, res, { methods: ['GET'], origin: '*' })
+  if (req.method === 'GET') {
+    getHanler(req, res)
+  } else {
+    res.status(405).end('Method Not Allowed')
   }
+}
 
-  res.status(500)
+const getHanler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { daoId } = req.query
+  try {
+    if (typeof daoId === 'string') {
+      const data = await fetchCalendarEvents(daoId)
+      if (!!data) {
+        res.status(200).json(data.props)
+      } else {
+        throw new Error('Fetch error')
+      }
+    } else {
+      throw new Error('Require daoId')
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).end(error.message)
+    }
+  }
 }

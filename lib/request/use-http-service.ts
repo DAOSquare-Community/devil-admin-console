@@ -178,7 +178,7 @@ export const useAPIService = <R = unknown, P = unknown>(
   const { fetchOtherConfig, ...other } = options || {}
   return useHttpService<R, P>(params, {
     fetchOtherConfig: {
-      baseURL: process.env.REST_BASE_URL,
+      // baseURL: process.env.REST_BASE_URL,
       ...fetchOtherConfig,
     },
     ...other,
