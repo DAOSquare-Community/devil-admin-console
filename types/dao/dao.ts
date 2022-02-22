@@ -20,12 +20,7 @@ export type DAO = {
   dao_contract: DAOContract
   treasury: Treasury
   dao_token: DAOToken
-  open_api: {
-    dework?: { orgId: string }
-    discord?: { channelId: string }
-    sesh?: { access_token: string; guild_id: string }
-    [x: string]: unknown
-  }
+  open_api: OpenApi
   create_at: Date
   last_update_at: Date
 }
@@ -57,4 +52,12 @@ type TokenContract = {
   chain_type: string
   /** the contract of dao's token */
   contract_address: string
+}
+
+/** the open api of dao */
+type OpenApi = {
+  dework?: { orgId: string }
+  discord?: { channelId: string }
+  sesh?: { access_token: string; guild_id: string }
+  [x: string]: unknown
 }

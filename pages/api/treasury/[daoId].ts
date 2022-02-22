@@ -38,7 +38,7 @@ type TreasuryDataType = {
 
 const fetchTreasuryData = async (
   daoId: string
-): Promise<TreasuryDataType | boolean> => {
+): Promise<TreasuryDataType | null> => {
   const dao = await getDaoInfo(daoId)
   if (!!dao && Array.isArray(dao) && dao.length > 0) {
     const gnosis_url = dao[0].treasury.json_url
@@ -46,7 +46,7 @@ const fetchTreasuryData = async (
       return axios.get(gnosis_url).then((response) => response.data)
     }
   }
-  return false
+  return null
 }
 
 export default async function handler(

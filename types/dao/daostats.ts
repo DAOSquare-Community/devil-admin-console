@@ -8,7 +8,7 @@ export type DAOStats = {
   members: number
   /** treasury of all dao */
   treasury: number
-  /** dao on chain */
+  /** dao on chains count */
   chain_category: ChainCategory[]
   governanace: Governanace
   dework: Dework
@@ -45,6 +45,6 @@ type Dework = {
 type ChainCategory = {
   /** the block chain type */
   chain_type: string
-  /** nmber */
+  /** total counts */
   count: number
 }
