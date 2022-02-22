@@ -58,6 +58,7 @@ type TokenContract = {
 type OpenApi = {
   dework?: { orgId: string }
   discord?: { channelId: string }
+  twitter?: { twitterId: string }
   sesh?: { access_token: string; guild_id: string }
   [x: string]: unknown
 }

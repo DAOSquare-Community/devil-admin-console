@@ -1,27 +1,26 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
-
-import NextCors from 'nextjs-cors'
 import { getDaoInfo } from 'service/dao'
+import NextCors from 'nextjs-cors'
 type Data = {
-  rsvp_options: unknown
-  start_time: string
-  end_time: string
-}[]
+  organization: {
+    task: { id: string; status: 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'DONE' }[]
+  }
+}
+const authorization = 'Bearer obu_EDYE4LkzZU3qxeFZhts14POaFkeryDPt_Y2JKjBb'
 
 // 941665725112782868
-const fetchCalendarEvents = async (daoId: string) => {
+const fetchTwitterData = async (daoId: string) => {
   const dao = await getDaoInfo(daoId)
   if (!!dao && Array.isArray(dao) && dao.length > 0) {
-    const sesh = dao[0].open_api.sesh
-    if (!!sesh) {
-      return request<{ props: Data }>({
-        url: `https://sesh.fyi/api/get_event_listings`,
-        method: 'post',
-        payload: {
-          access_token: sesh.access_token,
-          token_type: 'Bearer',
-          guild_id: sesh.guild_id,
+    const twitterId = dao[0].open_api.twitter?.twitterId
+    const path = 'daosquare1'
+    if (!!twitterId?.length) {
+      return request<Data>({
+        url: `https://app.orbit.love/api/v1/${path}/members/${twitterId}`,
+        method: 'get',
+        headers: {
+          Authorization: authorization,
         },
       })
     }
@@ -33,7 +32,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    await NextCors(req, res, { methods: ['GET'], origin: '*' })
     getHanler(req, res)
   } else {
     res.status(405).end('Method Not Allowed')
@@ -44,9 +42,9 @@ const getHanler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { daoId } = req.query
   try {
     if (typeof daoId === 'string') {
-      const data = await fetchCalendarEvents(daoId)
+      const data = await fetchTwitterData(daoId)
       if (!!data) {
-        res.status(200).json(data.props)
+        res.status(200).json(data)
       } else {
         throw new Error('Fetch error')
       }
