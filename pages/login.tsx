@@ -1,4 +1,3 @@
-// import { LockClosedIcon } from '@heroicons/react/solid'
 import Image from 'next/image'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
@@ -7,9 +6,10 @@ import * as yup from 'yup'
 import { useRouter } from 'next/router'
 import { useLoginApi } from 'lib/request/use-api'
 import Link from 'next/link'
-import Header from 'components/header'
+import Header from 'components/base/header'
 import { NextPageWithLayout } from 'types/page'
-import { NoSlideMenuLayout } from 'components/layout'
+import { NoSlideMenuLayout } from 'components/base/layout'
+import { logoAddress } from 'lib/config'
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -23,10 +23,19 @@ type SubmitType = (data: FormData) => void
 const LoginContainer: FC = ({ children }) => {
   return (
     <>
-      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex min-h-full w-full items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
-            <div className="flex items-center justify-center" />
+            <div className="flex items-center justify-center">
+              <Image
+                width={100}
+                height={50}
+                priority
+                className="mx-auto h-12 w-auto"
+                src={logoAddress}
+                alt="logo"
+              />
+            </div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
               Sign in to your account
             </h2>
@@ -95,8 +104,8 @@ const LoginForm: FC = () => {
           <input
             id="remember-me"
             name="remember-me"
-            type="checkbox"
-            className="checkbox h-4 w-4 rounded"
+            type="box"
+            className="box h-4 w-4 rounded"
           />
           <label
             htmlFor="remember-me"

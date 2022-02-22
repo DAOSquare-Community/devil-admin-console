@@ -1,4 +1,4 @@
-import Layout from 'components/layout'
+import Layout from 'components/base/layout'
 import { NextPageWithLayout } from 'types/page'
 
 const Accounts: NextPageWithLayout = () => {

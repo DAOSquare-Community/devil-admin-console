@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+## Taiwind CSS:
+
+If you use Vscode Plugin: you can install  PostCSS Language Support |  Tailwind CSS IntelliSense
+
+## Getting Started
+
+
 ## Getting Started
 
 First, run the development server:
