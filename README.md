@@ -10,14 +10,6 @@ npm run dev
 yarn dev
 ```
 
-Create an `.env.local` file inside of the `root` folder with the following content:
-
-```
-MONGODB_URI=mongodb://106.52.53.173:27017/
-NODE_ENV=development
-```
-
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.

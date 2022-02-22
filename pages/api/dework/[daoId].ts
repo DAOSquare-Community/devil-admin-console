@@ -4,7 +4,7 @@ import { request } from 'lib/request/axios-helper'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import uuidBase62 from 'uuid-base62'
-import { getDaoInfoFromId } from 'service/dao'
+import { getDaoInfo } from 'service/dao'
 type Data = {
   organization: {
     task: { id: string; status: 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'DONE' }[]
@@ -12,14 +12,15 @@ type Data = {
 }
 // 5T2WcpGDJ3m6cOiG5ItJeL
 const fetchDeworkData = async (daoId: string) => {
-  const dao = await getDaoInfoFromId(daoId)
-  const orgId = dao.open_api.dework?.orgId
-  if (!!orgId?.length) {
-    return request<Data>({
-      url: 'https://api.dework.xyz/graphql',
-      method: 'POST',
-      payload: {
-        query: `
+  const dao = await getDaoInfo(daoId)
+  if (!!dao && Array.isArray(dao) && dao.length > 0) {
+    const orgId = dao[0].open_api.dework?.orgId
+    if (!!orgId?.length) {
+      return request<Data>({
+        url: 'https://api.dework.xyz/graphql',
+        method: 'POST',
+        payload: {
+          query: `
         query DAOSquareDashboardQuery($organizationId:UUID!) {
           organization:getOrganization(id:$organizationId) {
             tasks {
@@ -29,11 +30,12 @@ const fetchDeworkData = async (daoId: string) => {
           }
         }
     `,
-        variables: {
-          organizationId: uuidBase62.decode(orgId),
+          variables: {
+            organizationId: uuidBase62.decode(orgId),
+          },
         },
-      },
-    })
+      })
+    }
   }
 }
 

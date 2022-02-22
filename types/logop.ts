@@ -1,6 +1,6 @@
 /** logop */
 export type LogOp = {
-  _id: string
+  _id?: string
   wallet_address: string
   /** api path */
   path: string

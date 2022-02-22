@@ -1,6 +1,6 @@
 /** user */
 export type User = {
-  _id: string
+  _id?: string
   wallet_address: string
   last_loginTime: string
   session_token: string
