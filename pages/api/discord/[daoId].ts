@@ -7,7 +7,7 @@ type Data = {
   }
 }
 const authorization =
-  'Bot OTM5NTIxODE5MzEwOTYwNzMw.Yf6D4Q.lyvBMOiHrN5YV4GSqPIbaYJHbbk'
+  'Bot OTM5NTIxODE5MzEwOTYwNzMw.Yf6D4Q.B17hynyjg6sLfPDhCmMZt2ha0GQ'
 
 // 941665725112782868
 const fetchDiscordData = async (daoId: string) => {
