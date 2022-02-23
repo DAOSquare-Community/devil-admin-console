@@ -1,5 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+## Taiwind CSS:
+
+If you use Vscode Plugin: you can install  PostCSS Language Support |  Tailwind CSS IntelliSense
+
+## Getting Started
+
+
 ## Getting Started
 
 First, run the development server:
@@ -9,14 +17,6 @@ npm run dev
 # or
 yarn dev
 ```
-
-Create an `.env.local` file inside of the `root` folder with the following content:
-
-```
-MONGODB_URI=mongodb://106.52.53.173:27017/
-NODE_ENV=development
-```
-
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
