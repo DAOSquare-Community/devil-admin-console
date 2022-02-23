@@ -7,7 +7,7 @@ const DAOSquareInfo: DAO = {
     discord: { channelId: '941665725112782868' },
     twitter: { twitterId: 'DAOSquare' },
     sesh: {
-      access_token: '9xbD4YkcTJ22SQZy55CJzMfncII0X6',
+      access_token: 'ByVKQiG9sNSRgxiejvjcHcWSjghnIh',
       guild_id: '678414857510453309',
     },
   },
