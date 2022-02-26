@@ -1,95 +1,102 @@
-import { DAO } from 'types/dao/dao'
-import DB from 'lib/db/mongodb'
+import { Dao, DaoModel } from 'models/Dao'
 
-const DAOSquareInfo: DAO = {
-  open_api: {
-    dework: { orgId: '5T2WcpGDJ3m6cOiG5ItJeL' },
-    discord: { channelId: '941665725112782868' },
-    twitter: { twitterId: 'DAOSquare' },
-    sesh: {
-      access_token: '9xbD4YkcTJ22SQZy55CJzMfncII0X6',
-      guild_id: '678414857510453309',
-    },
-  },
-} as DAO
+export default class DaoService {
+  /**
+   * get dao information by daoId
+   *
+   * @param daoId
+   * @returns
+   */
+  getDaoInfo = async (daoId: string): Promise<Dao | null> => {
+    let retDaoInfo = null
+    try {
+      const daoinfo = await DaoModel.find({ daoId: daoId })
+      if (!!daoinfo && Array.isArray(daoinfo) && daoinfo.length > 0)
+        retDaoInfo = daoinfo[0] as Dao
+    } catch (err) {
+      console.log('getDaoInfo--------')
+      console.log(err)
+    }
+    return retDaoInfo
+  }
 
-const db: DB = DB.getInstance() as DB
-const COLLECTION_NAME = 'dao'
+  /**
+   * update dao information
+   *
+   * @param daoId
+   * @param updateData
+   * @returns
+   */
+  updateDaoInfo = async (daoId: string, updateData: object) => {
+    let retDaoInfo = null
+    try {
+      retDaoInfo = await DaoModel.updateMany(
+        { daoId: daoId },
+        { $set: updateData }
+      )
+    } catch (err) {
+      console.log('updateDaoInfo--------')
+      console.log(err)
+    }
+    return retDaoInfo
+    // const result = await db.update<DAO>(
+    //   COLLECTION_NAME,
+    //   {
+    //     daoId: `${daoId}`,
+    //   },
+    //   { $set: updateData }
+    // )
+    //return result
+  }
 
-/**
- * get dao information by daoId
- *
- * @param daoId
- * @returns
- */
-const getDaoInfo = async (daoId: string) => {
-  const daoinfo: DAO[] = (await db.find<DAO>(COLLECTION_NAME, {
-    daoId: `${daoId}`,
-  })) as DAO[]
-  return daoinfo
-}
+  /**
+   * delete dao info  by daoId
+   *
+   * @param daoId
+   * @returns
+   */
+  deleteDaoInfo = async (daoId: string) => {
+    let retDel = null
+    try {
+      retDel = await DaoModel.deleteMany({ daoId: daoId })
+    } catch (err) {
+      console.log('deleteDaoInfo--------')
+      console.log(err)
+    }
+    return retDel
+  }
 
-/**
- * update dao information
- *
- * @param daoId
- * @param updateData
- * @returns
- */
-const updateDaoInfo = async (daoId: string, updateData: DAO) => {
-  const result = await db.update<DAO>(
-    COLLECTION_NAME,
-    {
-      daoId: `${daoId}`,
-    },
-    { $set: updateData }
-  )
-  return result
-}
+  /**
+   * insert a dao info
+   *
+   * @param dao
+   * @returns
+   */
+  insertDaoInfo = async (dao: Dao) => {
+    let retInsert = null
+    try {
+      retInsert = await DaoModel.create(dao)
+    } catch (err) {
+      console.log('insertDaoInfo--------')
+      console.log(err)
+    }
+    return retInsert
+  }
 
-/**
- * delete dao info  by daoId
- *
- * @param daoId
- * @returns
- */
-const deleteDaoInfo = async (daoId: string) => {
-  const delRes = await db.delete<DAO>(COLLECTION_NAME, {
-    daoId: `${daoId}`,
-  })
-  return delRes
-}
-
-/**
- * insert a dao info
- *
- * @param dao
- * @returns
- */
-const insertDaoInfo = async (dao: DAO) => {
-  const insertRes = await db.insert<DAO>(COLLECTION_NAME, dao)
-  return insertRes
-}
-
-/**
- * insert mutilate a dao info
- *
- * @param daos
- * @returns
- */
-const insertMutilDaoInfo = async (daos: DAO[]) => {
-  const insertMutilRes = await db.insertMany<DAO>(COLLECTION_NAME, daos)
-  return insertMutilRes
-}
-
-// const getDaoInfoFromId = async (daoId: string) => {
-//   return DAOSquareInfo
-// }
-
-export {
-  getDaoInfo,
-  updateDaoInfo,
-  deleteDaoInfo,
-  insertDaoInfo,
-  insertMutilDaoInfo,
+  /**
+   * insert mutilate a dao info
+   *
+   * @param daos
+   * @returns
+   */
+  insertMutilDaoInfo = async (daos: Dao[]) => {
+    let retInsertMutl = null
+    try {
+      retInsertMutl = await DaoModel.insertMany(daos)
+    } catch (err) {
+      console.log('insertMutilDaoInfo--------')
+      console.log(err)
+    }
+    return retInsertMutl
+  }
 }

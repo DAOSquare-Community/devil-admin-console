@@ -2,7 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
 
 import NextCors from 'nextjs-cors'
-import { getDaoInfo } from 'service/dao'
+import DaoService from 'service/dao'
+import { OpenApi } from 'models/Dao'
+
 type Data = {
   rsvp_options: unknown
   start_time: string
@@ -11,9 +13,9 @@ type Data = {
 
 // 941665725112782868
 const fetchCalendarEvents = async (daoId: string) => {
-  const dao = await getDaoInfo(daoId)
-  if (!!dao && Array.isArray(dao) && dao.length > 0) {
-    const sesh = dao[0].open_api.sesh
+  const dao = await new DaoService().getDaoInfo(daoId)
+  if (!!dao) {
+    const sesh = (dao.open_api as OpenApi).sesh
     if (!!sesh) {
       return request<{ props: Data }>({
         url: `https://sesh.fyi/api/get_event_listings`,
