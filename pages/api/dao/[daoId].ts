@@ -2,27 +2,35 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { DAO } from 'types/dao/dao'
-import {
-  getDaoInfo,
-  updateDaoInfo,
-  deleteDaoInfo,
-  insertDaoInfo,
-  insertMutilDaoInfo,
-} from 'service/dao'
+import ConfigService from 'service/config'
+import DaoService from 'service/dao'
+import { Dao } from 'models/Dao'
+// import {
+//   getDaoInfo,
+//   updateDaoInfo,
+//   deleteDaoInfo,
+//   insertDaoInfo,
+//   insertMutilDaoInfo,
+// } from 'service/dao'
 
-// const DAOSquareInfo: DAO = {
-//   open_api: {
-//     dework: { orgId: '5T2WcpGDJ3m6cOiG5ItJeL' },
-//     discord: { channelId: '941665725112782868' },
-//     sesh: {
-//       access_token: '9xbD4YkcTJ22SQZy55CJzMfncII0X6',
-//       guild_id: '678414857510453309',
-//     },
-//   },
-// } as DAO
+const DAOSquareInfo: Dao = {
+  open_api: {
+    dework: { orgId: '5T2WcpGDJ3m6cOiG5ItJeL44444' },
+    discord: { channelId: '941665725112782868' },
+    sesh: {
+      access_token: 'ByVKQiG9sNSRgxiejvjcHcWSjghnIh',
+      guild_id: '678414857510453309',
+    },
+    yyy: {
+      aaa: 1243214,
+      bb: 'asdfads',
+    },
+  },
+} as Dao
 
-const dao1: DAO = {
+const daoservice = new DaoService()
+
+const dao1: Dao = {
   daoId: 'daohaus',
   name: 'DAOHaus', // DAO的名称
   logo: 'https://etherscan.io/token/images/daosquare_32.png', // DAO的logo
@@ -77,7 +85,7 @@ const dao1: DAO = {
   last_update_at: new Date('2019-02-11T07:10:32.936+0000'), //上次更新时间
 }
 
-const dao2: DAO = {
+const dao2: Dao = {
   daoId: 'daosquare',
   name: 'DAOSquare', // DAO的名称
   logo: 'https://etherscan.io/token/images/daosquare_32.png', // DAO的logo
@@ -142,32 +150,37 @@ const dao2: DAO = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<boolean>
+  res: NextApiResponse<unknown>
 ) {
   // 读取
-  //   const { daoId } = req.query
-  //   if (typeof daoId === 'string') {
-  //     const data = await getDaoInfo(daoId)
-  //     if (!!data) {
-  //       res.status(200).json(data)
-  //     }
+  // const { daoId } = req.query
+  // if (typeof daoId === 'string') {
+  //   const data = await new DaoService().getDaoInfo(daoId)
+  //   if (!!data) {
+  //     return res.status(200).json(data)
   //   }
-  //   res.status(500)
-
+  // }
+  // return res.status(500).json(null)
   const { daoId } = req.query
   if (typeof daoId === 'string') {
     // 插入
-    const insertResult = await insertDaoInfo(dao2)
-    res.status(200).json(insertResult)
+    // const ret = await daoservice.insertDaoInfo(dao2)
+
     // 批量插入
-    // const insertResult = await insertMutilDaoInfo([dao1, dao2] as DAO[])
-    // res.status(200).json(insertResult)
+    //const ret = await daoservice.insertMutilDaoInfo([dao1, dao2] as Dao[])
+
     // 更新
-    // const updateResult = await updateDaoInfo(daoId, DAOSquareInfo)
-    // res.status(200).json(updateResult)
+    const ret = await daoservice.updateDaoInfo(daoId, DAOSquareInfo)
+
     // 删除
-    // const delRes = await deleteDaoInfo(daoId)
-    // res.status(200).json(delRes)
+    //const ret = await daoservice.deleteDaoInfo(daoId)
+
+    // Config
+    // const ret = await new ConfigService().insertConfig()
+
+    if (!!ret) {
+      return res.status(200).json(ret)
+    }
   }
-  res.status(500)
+  return res.status(500).json(null)
 }
