@@ -5,7 +5,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import ConfigService from 'service/config'
 import DaoService from 'service/dao'
 import { Dao } from 'models/Dao'
-import { promiseErr } from 'lib/utils/promiseerr'
 import { ResultMsg } from 'types/resultmsg'
 import MsgCode from 'types/msgcode'
 // import {
@@ -146,78 +145,78 @@ const dao2: Dao = {
   last_update_at: new Date('2019-02-11T07:10:32.936+0000'), //上次更新时间
 }
 
-// type Data = {
-//   updated: boolean
-//   daoInfo: DAO
-// }
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResultMsg>
 ) {
   // 读取
-  const { daoId } = req.query
-  const rmsg: ResultMsg = {
-    message: '',
-    data: null,
-  }
-  if (typeof daoId === 'string') {
-    // const data = await new DaoService().getDaoInfo(daoId)
-    // if (!!data) {
-    //   return res.status(200).json(data)
-    // }
+  // const { daoId } = req.query
+  // const rmsg: ResultMsg = {
+  //   message: '',
+  //   data: null,
+  // }
+  // if (typeof daoId === 'string') {
+  //   const r = await daoservice.getDaoInfo(daoId)
+  //   if (r.message) {
+  //     rmsg.message = r.message
+  //     return res.status(500).json(rmsg)
+  //   } else {
+  //     rmsg.data = r.data
+  //     rmsg.message = MsgCode.SUCCESS
+  //     return res.status(200).json(rmsg)
+  //   }
+  // } else {
+  //   rmsg.message = 'daoId 不为字符串'
+  //   return res.status(500).json(rmsg)
+  // }
 
-    const [err, data] = await promiseErr(daoservice.getDaoInfo(daoId))
-    if (err) {
-      rmsg.message = (err as Error).message
+  const { daoId } = req.query
+  const rmsg: ResultMsg = {}
+  if (typeof daoId === 'string') {
+    // 插入
+    //const ret = await daoservice.insertDaoInfo(dao2)
+    // const r = await daoservice.insertDaoInfo(dao2)
+    // if (r.message) {
+    //   rmsg.message = r.message
+    //   return res.status(500).json(rmsg)
+    // } else {
+    //   rmsg.data = r.data
+    //   return res.status(200).json(rmsg)
+    // }
+    // 批量插入
+    // const r = await daoservice.insertMutilDaoInfo([dao1, dao2] as Dao[])
+    // if (r.message) {
+    //   rmsg.message = r.message
+    //   return res.status(500).json(rmsg)
+    // } else {
+    //   rmsg.data = r.data
+    //   return res.status(200).json(rmsg)
+    // }
+    // 更新
+    const r = await daoservice.updateDaoInfo(daoId, DAOSquareInfo)
+    if (r.message) {
+      rmsg.message = r.message
       return res.status(500).json(rmsg)
     } else {
-      rmsg.data = data
-      rmsg.message = MsgCode.SUCCESS
+      rmsg.data = r.data
       return res.status(200).json(rmsg)
     }
+    // 删除
+    // const r = await daoservice.deleteDaoInfo(daoId)
+    // if (r.message) {
+    //   rmsg.message = r.message
+    //   return res.status(500).json(rmsg)
+    // } else {
+    //   rmsg.data = r.data
+    //   return res.status(200).json(rmsg)
+    // }
+    // Config
+    // const ret = await new ConfigService().insertConfig()
+    // if (!!ret) {
+    //   return res.status(200).json(ret)
+    // }
   } else {
     rmsg.message = 'daoId 不为字符串'
     return res.status(500).json(rmsg)
   }
-
-  // const { daoId } = req.query
-  // if (typeof daoId === 'string') {
-  //   // 插入
-  //   ////const ret = await daoservice.insertDaoInfo(dao2)
-  //   // const [err, ret] = await promiseErr(daoservice.insertDaoInfo(dao2))
-  //   // if (err) {
-  //   //   return res.status(500).json((err as Error).message)
-  //   // } else {
-  //   //   return res.status(200).json(ret)
-  //   // }
-  //   // await daoservice
-  //   //   .insertDaoInfo(dao2)
-  //   //   .then((data) => {
-  //   //     if (data) {
-  //   //       return res.status(200).json(data)
-  //   //     }
-  //   //   })
-  //   //   .catch((err) => {
-  //   //     if (err instanceof Error) {
-  //   //       console.log('adfasdfadfasdfaf-----------------------')
-  //   //       console.log(err.message)
-  //   //       console.log('adfasdfadfasdfaf-----------------------')
-  //   //       return res.status(500).json(err.message)
-  //   //     }
-  //   //   })
-  //   // console.log('111111111111111111111-----------------------')
-  //   // 批量插入
-  //   //const ret = await daoservice.insertMutilDaoInfo([dao1, dao2] as Dao[])
-  //   // 更新
-  //   //const ret = await daoservice.updateDaoInfo(daoId, DAOSquareInfo)
-  //   // 删除
-  //   //const ret = await daoservice.deleteDaoInfo(daoId)
-  //   // Config
-  //   // const ret = await new ConfigService().insertConfig()
-  //   // if (!!ret) {
-  //   //   return res.status(200).json(ret)
-  //   // }
-  // }
-  //return res.status(500).json(null)
 }

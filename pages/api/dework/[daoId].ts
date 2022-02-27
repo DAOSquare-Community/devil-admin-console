@@ -15,8 +15,8 @@ type Data = {
 // 5T2WcpGDJ3m6cOiG5ItJeL
 const fetchDeworkData = async (daoId: string) => {
   const dao = await new DaoService().getDaoInfo(daoId)
-  if (!!dao) {
-    const orgId = (dao.open_api as OpenApi).dework?.orgId
+  if (!dao.message) {
+    const orgId = (dao.data?.open_api as OpenApi).dework?.orgId
     if (!!orgId?.length) {
       return request<Data>({
         url: 'https://api.dework.xyz/graphql',

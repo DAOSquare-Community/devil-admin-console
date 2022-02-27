@@ -40,8 +40,8 @@ const fetchTreasuryData = async (
   daoId: string
 ): Promise<TreasuryDataType | null> => {
   const dao = await new DaoService().getDaoInfo(daoId)
-  if (!!dao) {
-    const gnosis_url = dao.treasury.json_url
+  if (!dao.message) {
+    const gnosis_url = dao.data?.treasury.json_url
     if (!!gnosis_url) {
       return axios.get(gnosis_url).then((response) => response.data)
     }

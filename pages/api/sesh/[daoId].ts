@@ -14,8 +14,8 @@ type Data = {
 // 941665725112782868
 const fetchCalendarEvents = async (daoId: string) => {
   const dao = await new DaoService().getDaoInfo(daoId)
-  if (!!dao) {
-    const sesh = (dao.open_api as OpenApi).sesh
+  if (!dao.message) {
+    const sesh = (dao.data?.open_api as OpenApi).sesh
     if (!!sesh) {
       return request<{ props: Data }>({
         url: `https://sesh.fyi/api/get_event_listings`,
