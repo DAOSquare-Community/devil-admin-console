@@ -1,4 +1,6 @@
 import { Dao, DaoModel } from 'models/Dao'
+import { MongoError } from 'mongodb'
+import MsgCode from 'types/msgcode'
 
 export default class DaoService {
   /**
@@ -10,12 +12,12 @@ export default class DaoService {
   getDaoInfo = async (daoId: string): Promise<Dao | null> => {
     let retDaoInfo = null
     try {
-      const daoinfo = await DaoModel.find({ daoId: daoId })
-      if (!!daoinfo && Array.isArray(daoinfo) && daoinfo.length > 0)
-        retDaoInfo = daoinfo[0] as Dao
+      const daoinfo = await DaoModel.findOne<Dao>({ daoId: daoId })
+      if (!!daoinfo) retDaoInfo = daoinfo
     } catch (err) {
       console.log('getDaoInfo--------')
       console.log(err)
+      throw new Error(MsgCode.FAILURE)
     }
     return retDaoInfo
   }
@@ -27,26 +29,20 @@ export default class DaoService {
    * @param updateData
    * @returns
    */
-  updateDaoInfo = async (daoId: string, updateData: object) => {
-    let retDaoInfo = null
+  updateDaoInfo = async (
+    daoId: string,
+    updateData: object
+  ): Promise<boolean> => {
+    let retUpdate = false
     try {
-      retDaoInfo = await DaoModel.updateMany(
-        { daoId: daoId },
-        { $set: updateData }
-      )
+      await DaoModel.updateMany({ daoId: daoId }, { $set: updateData })
+      retUpdate = true
     } catch (err) {
       console.log('updateDaoInfo--------')
       console.log(err)
+      throw new Error(MsgCode.FAILURE)
     }
-    return retDaoInfo
-    // const result = await db.update<DAO>(
-    //   COLLECTION_NAME,
-    //   {
-    //     daoId: `${daoId}`,
-    //   },
-    //   { $set: updateData }
-    // )
-    //return result
+    return retUpdate
   }
 
   /**
@@ -55,16 +51,25 @@ export default class DaoService {
    * @param daoId
    * @returns
    */
-  deleteDaoInfo = async (daoId: string) => {
-    let retDel = null
+  deleteDaoInfo = async (daoId: string): Promise<boolean> => {
+    let retDel = false
     try {
-      retDel = await DaoModel.deleteMany({ daoId: daoId })
+      await DaoModel.deleteMany({ daoId: daoId })
+      retDel = true
     } catch (err) {
       console.log('deleteDaoInfo--------')
       console.log(err)
+      throw new Error(MsgCode.FAILURE)
     }
     return retDel
   }
+
+  //   function to<T>(promise:Promise<T>) {
+  //     return promise.then(data => {
+  //        return [null, data];
+  //     })
+  //     .catch(err => [err]); // es6的返回写法
+  //  }
 
   /**
    * insert a dao info
@@ -72,13 +77,21 @@ export default class DaoService {
    * @param dao
    * @returns
    */
-  insertDaoInfo = async (dao: Dao) => {
-    let retInsert = null
+  insertDaoInfo = async (dao: Dao): Promise<boolean> => {
+    let retInsert = false
     try {
-      retInsert = await DaoModel.create(dao)
+      await DaoModel.create(dao)
+      retInsert = true
     } catch (err) {
+      let errmsg = ''
+      if (err instanceof MongoError && err.code === 11000) {
+        errmsg = MsgCode.DUPLICATE_KEY
+      } else {
+        errmsg = MsgCode.FAILURE
+      }
       console.log('insertDaoInfo--------')
       console.log(err)
+      throw new Error(errmsg)
     }
     return retInsert
   }
@@ -89,13 +102,21 @@ export default class DaoService {
    * @param daos
    * @returns
    */
-  insertMutilDaoInfo = async (daos: Dao[]) => {
-    let retInsertMutl = null
+  insertMutilDaoInfo = async (daos: Dao[]): Promise<boolean> => {
+    let retInsertMutl = false
     try {
-      retInsertMutl = await DaoModel.insertMany(daos)
+      await DaoModel.insertMany(daos)
+      retInsertMutl = true
     } catch (err) {
+      let errmsg = ''
+      if (err instanceof MongoError && err.code === 11000) {
+        errmsg = MsgCode.DUPLICATE_KEY
+      } else {
+        errmsg = MsgCode.FAILURE
+      }
       console.log('insertMutilDaoInfo--------')
       console.log(err)
+      throw new Error(errmsg)
     }
     return retInsertMutl
   }

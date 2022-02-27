@@ -30,7 +30,7 @@ export class Config extends BaseModel {
   public name!: string
 
   @prop({ required: true, type: Schema.Types.Mixed })
-  public value!: object
+  public value!: unknown
 
   @prop({ required: true })
   public des!: string
