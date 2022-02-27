@@ -105,7 +105,7 @@ export class Dao extends BaseModel {
   public dao_token!: DAOToken
 
   @prop({ required: true, type: Schema.Types.Mixed, _id: false })
-  public open_api!: object
+  public open_api!: unknown
 }
 
 // use TgooseHelper class , not Typegoose
