@@ -4,6 +4,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios'
 import DaoService from 'service/dao'
+import NextCors from 'nextjs-cors'
 
 // Daosquare的多签国库地址
 //const DAOSQUARE_GNOSIS_ADDRESS = '0xf383975B49d2130e3BA0Df9e10dE5FF2Dd7A215a'
@@ -40,8 +41,8 @@ const fetchTreasuryData = async (
   daoId: string
 ): Promise<TreasuryDataType | null> => {
   const dao = await new DaoService().getDaoInfo(daoId)
-  if (!!dao) {
-    const gnosis_url = dao.treasury.json_url
+  if (!dao.message) {
+    const gnosis_url = dao.data?.treasury.json_url
     if (!!gnosis_url) {
       return axios.get(gnosis_url).then((response) => response.data)
     }
@@ -53,6 +54,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  })
   const { daoId } = req.query
   if (typeof daoId === 'string') {
     const dataRet = await fetchTreasuryData(daoId)

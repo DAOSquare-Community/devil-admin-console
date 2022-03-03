@@ -14,8 +14,8 @@ const authorization = 'Bearer obu_EDYE4LkzZU3qxeFZhts14POaFkeryDPt_Y2JKjBb'
 // 941665725112782868
 const fetchTwitterData = async (daoId: string) => {
   const dao = await new DaoService().getDaoInfo(daoId)
-  if (!!dao) {
-    const twitterId = (dao.open_api as OpenApi).twitter?.twitterId
+  if (!dao.message) {
+    const twitterId = (dao.data?.open_api as OpenApi).twitter?.twitterId
     const path = 'daosquare1'
     if (!!twitterId?.length) {
       return request<Data>({

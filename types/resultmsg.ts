@@ -1,9 +1,9 @@
 /**
  * the message structure of api
  */
-type ResultMsg = {
-  message: string
-  data: unknown
+type ResultMsg<T = unknown> = {
+  message?: string
+  data?: T
 }
 
 /** paginated data */

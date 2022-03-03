@@ -14,8 +14,8 @@ const authorization =
 // 941665725112782868
 const fetchDiscordData = async (daoId: string) => {
   const dao = await new DaoService().getDaoInfo(daoId)
-  if (!!dao) {
-    const channelId = (dao.open_api as OpenApi).discord?.channelId
+  if (!dao.message) {
+    const channelId = (dao.data?.open_api as OpenApi).discord?.channelId
     if (!!channelId?.length) {
       return request<Data>({
         url: `https://discord.com/api/guilds/${channelId}?with_counts=true`,
