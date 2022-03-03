@@ -41,7 +41,7 @@ const Pagination: FC<
           </span>
           <label>
             <select
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full rounded-md focus:border-primary"
               value={state.pageSize}
               onChange={(e) => {
                 setPageSize(Number(e.target.value))
@@ -72,7 +72,6 @@ const Pagination: FC<
               />
             </PageButton>
             <PageButton
-              className={''}
               onClick={() => previousPage()}
               disabled={!canPreviousPage}
             >
@@ -82,11 +81,7 @@ const Pagination: FC<
                 aria-hidden="true"
               />
             </PageButton>
-            <PageButton
-              className={''}
-              onClick={() => nextPage()}
-              disabled={!canNextPage}
-            >
+            <PageButton onClick={() => nextPage()} disabled={!canNextPage}>
               <span className="sr-only">Next</span>
               <ChevronRightIcon
                 className="h-5 w-5 text-gray-400"

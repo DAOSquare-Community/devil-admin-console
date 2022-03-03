@@ -17,8 +17,7 @@
     "incremental": true,
     "baseUrl": ".",
     "downlevelIteration":true,
-    "experimentalDecorators": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.nmtsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

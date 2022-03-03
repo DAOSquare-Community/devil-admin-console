@@ -4,7 +4,10 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'iph.href.lu'],
   },
-  env: {},
+  env: {
+    DEVIL_CONSOLE_BACKEND_URL: 'api',
+    GRAGHQL_BACKEND_URL: `api/graphql`,
+  },
   redirects: async () => {
     return [
       {

@@ -19,7 +19,7 @@ export const selectionHook = (hooks: Hooks<any>) => {
         getToggleAllRowsSelectedProps,
       }: HeaderProps<Record<string, unknown>>) => (
         <IndeterminateCheckbox
-          className="form-checkbox"
+          className="dmc-form-checkbox"
           {...getToggleAllRowsSelectedProps()}
         />
       ),
@@ -28,7 +28,7 @@ export const selectionHook = (hooks: Hooks<any>) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       Cell: ({ row }: CellProps<Record<string, unknown>>) => (
         <IndeterminateCheckbox
-          className="form-checkbox"
+          className="dmc-form-checkbox"
           {...row.getToggleRowSelectedProps()}
         />
       ),
