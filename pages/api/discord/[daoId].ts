@@ -6,8 +6,7 @@ type Data = {
     task: { id: string; status: 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'DONE' }[]
   }
 }
-const authorization =
-  'Bot OTM5NTIxODE5MzEwOTYwNzMw.Yf6D4Q.B17hynyjg6sLfPDhCmMZt2ha0GQ'
+const authorization = process.env.DISCORD_BOT_TOKEN ?? ''
 
 // 941665725112782868
 const fetchDiscordData = async (daoId: string) => {
