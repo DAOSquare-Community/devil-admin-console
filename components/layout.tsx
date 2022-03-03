@@ -17,14 +17,20 @@ const Layout: FC<LayoutProps & HeaderBarProps> = ({
   return (
     <>
       <Header />
-      <div className="drawer-mobile drawer h-screen w-full bg-gray-100">
+      <div className="drawer-mobile drawer h-screen w-full bg-base-100">
         <input id="drawer" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
+        <div
+          className="drawer-content "
+          style={{ scrollBehavior: 'smooth', scrollPaddingTop: '5rem' }}
+        >
           <NavBar />
           <HeaderBar title={title} showHeaderBar={showHeaderBar} />
           <main className="px-5">{children}</main>
         </div>
-        <div className="drawer-side">
+        <div
+          className="drawer-side"
+          style={{ scrollBehavior: 'smooth', scrollPaddingTop: '5rem' }}
+        >
           <label htmlFor="drawer" className="drawer-overlay" />
           <SlideMenu />
         </div>

@@ -1,3 +1,3 @@
-type Role = 'admin' | 'dev'
+type Role = 'super-admin' | 'admin' | 'member'
 
 export type { Role }

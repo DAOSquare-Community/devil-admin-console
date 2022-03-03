@@ -19,7 +19,7 @@ const IndeterminateCheckbox = React.forwardRef<
   return (
     <input
       ref={resolvedRef as typeof ref}
-      className="form-checkbox"
+      className="dmc-form-checkbox"
       type="checkbox"
       {...rest}
     />

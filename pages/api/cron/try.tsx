@@ -14,7 +14,7 @@ export default async function handler(
       }
     } catch (err) {
       if (err instanceof Error) {
-        res.status(500).json({ statusCode: 500, message: err.message })
+        res.status(500).json({ message: err.message })
       }
     }
   } else {

@@ -12,12 +12,12 @@ const HeaderBar: FC<HeaderBarProps> = ({
   const currentPath = router.pathname.split('/')[1]
   if (!showHeaderBar) return null
   return (
-    <div className=" py-5 px-3">
+    <header className=" py-5 px-5">
       <span className=" text-xl font-bold capitalize">
         {title ?? currentPath}
       </span>
       {children}
-    </div>
+    </header>
   )
 }
 
