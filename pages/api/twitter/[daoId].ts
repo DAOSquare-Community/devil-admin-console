@@ -9,14 +9,14 @@ type Data = {
     task: { id: string; status: 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'DONE' }[]
   }
 }
-const authorization = 'Bearer obu_EDYE4LkzZU3qxeFZhts14POaFkeryDPt_Y2JKjBb'
+const authorization = process.env.ORBIT_TOKEN ?? ''
+const path = process.env.ORBIT_PATH ?? ''
 
 // 941665725112782868
 const fetchTwitterData = async (daoId: string) => {
   const dao = await new DaoService().getDaoInfo(daoId)
   if (!dao.message) {
     const twitterId = (dao.data?.open_api as OpenApi).twitter?.twitterId
-    const path = 'daosquare1'
     if (!!twitterId?.length) {
       return request<Data>({
         url: `https://app.orbit.love/api/v1/${path}/members/${twitterId}`,
