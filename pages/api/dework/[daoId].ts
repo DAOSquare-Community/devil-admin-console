@@ -67,7 +67,7 @@ const getHanler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     }
   } catch (error) {
     if (error instanceof Error) {
-      res.status(500).end('failed to load data')
+      res.status(500).end(error.message)
     }
   }
 }
