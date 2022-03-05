@@ -125,7 +125,6 @@ export default async function handler(
       voting: 0,
       grace: 0,
     }
-    let a = 0
     const membersData = await fetchDaoMemberData()
     retData.members = !!membersData ? membersData.data.daoMembers.length : 0
 
@@ -134,7 +133,6 @@ export default async function handler(
     if (!!proposalsData) {
       const dateNow: Date = new Date()
       proposalsData.data.proposals.forEach((item) => {
-        a++
         if (!item.aborted && !item.cancelled) {
           // 无赞助的提案
           if (!item.sponsored) {

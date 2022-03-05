@@ -150,73 +150,73 @@ export default async function handler(
   res: NextApiResponse<ResultMsg>
 ) {
   // 读取
-  // const { daoId } = req.query
-  // const rmsg: ResultMsg = {
-  //   message: '',
-  //   data: null,
-  // }
-  // if (typeof daoId === 'string') {
-  //   const r = await daoservice.getDaoInfo(daoId)
-  //   if (r.message) {
-  //     rmsg.message = r.message
-  //     return res.status(500).json(rmsg)
-  //   } else {
-  //     rmsg.data = r.data
-  //     rmsg.message = MsgCode.SUCCESS
-  //     return res.status(200).json(rmsg)
-  //   }
-  // } else {
-  //   rmsg.message = 'daoId 不为字符串'
-  //   return res.status(500).json(rmsg)
-  // }
-
   const { daoId } = req.query
-  const rmsg: ResultMsg = {}
+  const rmsg: ResultMsg = {
+    message: '',
+    data: null,
+  }
   if (typeof daoId === 'string') {
-    // 插入
-    //const ret = await daoservice.insertDaoInfo(dao2)
-    // const r = await daoservice.insertDaoInfo(dao2)
-    // if (r.message) {
-    //   rmsg.message = r.message
-    //   return res.status(500).json(rmsg)
-    // } else {
-    //   rmsg.data = r.data
-    //   return res.status(200).json(rmsg)
-    // }
-    // 批量插入
-    // const r = await daoservice.insertMutilDaoInfo([dao1, dao2] as Dao[])
-    // if (r.message) {
-    //   rmsg.message = r.message
-    //   return res.status(500).json(rmsg)
-    // } else {
-    //   rmsg.data = r.data
-    //   return res.status(200).json(rmsg)
-    // }
-    // 更新
-    const r = await daoservice.updateDaoInfo(daoId, DAOSquareInfo)
+    const r = await daoservice.getDaoInfo(daoId)
     if (r.message) {
       rmsg.message = r.message
       return res.status(500).json(rmsg)
     } else {
       rmsg.data = r.data
+      rmsg.message = MsgCode.SUCCESS
       return res.status(200).json(rmsg)
     }
-    // 删除
-    // const r = await daoservice.deleteDaoInfo(daoId)
-    // if (r.message) {
-    //   rmsg.message = r.message
-    //   return res.status(500).json(rmsg)
-    // } else {
-    //   rmsg.data = r.data
-    //   return res.status(200).json(rmsg)
-    // }
-    // Config
-    // const ret = await new ConfigService().insertConfig()
-    // if (!!ret) {
-    //   return res.status(200).json(ret)
-    // }
   } else {
     rmsg.message = 'daoId 不为字符串'
     return res.status(500).json(rmsg)
   }
+
+  // const { daoId } = req.query
+  // const rmsg: ResultMsg = {}
+  // if (typeof daoId === 'string') {
+  //   // 插入
+  //   //const ret = await daoservice.insertDaoInfo(dao2)
+  //   // const r = await daoservice.insertDaoInfo(dao2)
+  //   // if (r.message) {
+  //   //   rmsg.message = r.message
+  //   //   return res.status(500).json(rmsg)
+  //   // } else {
+  //   //   rmsg.data = r.data
+  //   //   return res.status(200).json(rmsg)
+  //   // }
+  //   // 批量插入
+  //   // const r = await daoservice.insertMutilDaoInfo([dao1, dao2] as Dao[])
+  //   // if (r.message) {
+  //   //   rmsg.message = r.message
+  //   //   return res.status(500).json(rmsg)
+  //   // } else {
+  //   //   rmsg.data = r.data
+  //   //   return res.status(200).json(rmsg)
+  //   // }
+  //   // 更新
+  //   // const r = await daoservice.updateDaoInfo(daoId, DAOSquareInfo)
+  //   // if (r.message) {
+  //   //   rmsg.message = r.message
+  //   //   return res.status(500).json(rmsg)
+  //   // } else {
+  //   //   rmsg.data = r.data
+  //   //   return res.status(200).json(rmsg)
+  //   // }
+  //   // 删除
+  //   // const r = await daoservice.deleteDaoInfo(daoId)
+  //   // if (r.message) {
+  //   //   rmsg.message = r.message
+  //   //   return res.status(500).json(rmsg)
+  //   // } else {
+  //   //   rmsg.data = r.data
+  //   //   return res.status(200).json(rmsg)
+  //   // }
+  //   // Config
+  //   // const ret = await new ConfigService().insertConfig()
+  //   // if (!!ret) {
+  //   //   return res.status(200).json(ret)
+  //   // }
+  // } else {
+  //   rmsg.message = 'daoId 不为字符串'
+  //   return res.status(500).json(rmsg)
+  // }
 }
