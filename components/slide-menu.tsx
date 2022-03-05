@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { FC, useContext } from 'react'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import MeContext from 'lib/me-provider'
 import { permissionCheck } from 'lib/utils/permission'
@@ -15,7 +14,7 @@ const Menu: FC = () => {
   const router = useRouter()
   const currentPath = router.pathname.split('/')[1]
   const { state } = useContext(MeContext)
-  const { roles: iRoles = ['super-admin'] } = state
+  const { roles: iRoles } = state
   return (
     <ul className="menu menu-compact flex flex-col p-0 px-4">
       <nav>

@@ -6,8 +6,8 @@ export interface MeInterface {
   joinDate: string
   name: string
   roles: Role[]
-  slackId?: string
   title: string
+  id: number
 }
 
 export type UserType = MeInterface

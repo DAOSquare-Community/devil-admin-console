@@ -14,6 +14,7 @@ const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
     {},
     {
       onSuccess: (data) => dispatch({ type: 'update', payload: data }),
+      refetchOnMount: true,
     }
   )
   if (state && Object.keys(state).length > 0) {
@@ -24,8 +25,6 @@ const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
     )
   }
 
-  console.log('me state', state)
-
   return (
     <div className="flex h-screen items-center justify-center ">
       <div className="h-10 w-10 animate-spin rounded-full border-t-4 border-b-4 border-green-900" />
@@ -34,31 +33,32 @@ const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
 }
 
 const DontSignInLayout: FC = ({ children }) => {
-  const router = useRouter()
-  const { error } = useAxiosQuery(
-    '/auth/status',
-    {},
-    {
-      onError: (e: DMCError) => {
-        const { response } = error || {}
-        if (response) {
-          const { status } = response
-          if (status !== 401) errorHandler(e)
-        }
-      },
-      onSuccess: () => {
-        router.replace(HomeRoute)
-      },
-    }
-  )
-  if (error) {
-    return <>{children}</>
-  }
-  return (
-    <div className="flex h-screen items-center justify-center ">
-      <div className="h-10 w-10 animate-spin rounded-full border-t-4 border-b-4 border-green-900" />
-    </div>
-  )
+  // const router = useRouter()
+  // const { error } = useAxiosQuery(
+  //   '/auth/status',
+  //   {},
+  //   {
+  //     onError: (e: DMCError) => {
+  //       const { response } = error || {}
+  //       if (response) {
+  //         const { status } = response
+  //         if (status !== 401) errorHandler(e)
+  //       }
+  //     },
+  //     onSuccess: () => {
+  //       router.replace(HomeRoute)
+  //     },
+  //   }
+  // )
+  // if (error) {
+  //   return <>{children}</>
+  // }
+  return <>{children}</>
+  // return (
+  //   <div className="flex h-screen items-center justify-center ">
+  //     <div className="h-10 w-10 animate-spin rounded-full border-t-4 border-b-4 border-green-900" />
+  //   </div>
+  // )
 }
 
 const SignCheckLayout: FC<{

@@ -86,22 +86,24 @@ const Accounts: NextPageWithLayout = () => {
   const [warning, setWaring] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
 
-  const { data } = useGqlQuery<{ users: UserType[] }, UserType[]>(
-    usrsGql,
-    { userId: 1 },
-    {
-      select: (sData) => {
-        return sData.users.map((u) => {
-          u.avatar =
-            'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90[…]VufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-          // u.roles = ['admin', 'member']
-          return u
-        })
-      },
-    }
-  )
+  // const { data } = useGqlQuery<{ users: UserType[] }, UserType[]>(
+  //   usrsGql,
+  //   { userId: 1 },
+  //   {
+  //     select: (sData) => {
+  //       return sData.users.map((u) => {
+  //         u.avatar =
+  //           'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90[…]VufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+  //         // u.roles = ['admin', 'member']
+  //         return u
+  //       })
+  //     },
+  //   }
+  // )
 
-  const columns: Column<UserType>[] = React.useMemo(
+  const { data } = { data: [] }
+
+  const columns = React.useMemo<Column<UserType>[]>(
     () => [
       {
         Header: 'Name',
@@ -119,10 +121,6 @@ const Accounts: NextPageWithLayout = () => {
         Header: 'Role',
         accessor: 'roles',
         Cell: StatusPill,
-      },
-      {
-        Header: 'Join Date',
-        accessor: 'joinDate',
       },
     ],
     []
