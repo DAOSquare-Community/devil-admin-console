@@ -9,6 +9,6 @@ module.exports = {
   plugins: [require('daisyui'), require('@tailwindcss/forms')],
   daisyui: {
     themes: ['corporate', 'forest'],
-    darkTheme: 'forest',
+    darkTheme: 'corporate',
   },
 }
