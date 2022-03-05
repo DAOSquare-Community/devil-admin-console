@@ -9,6 +9,7 @@ const enum MsgCode {
   NOPERMISSION = 'no permission',
   DUPLICATE_KEY = 'duplicate key',
   FAILURE = 'unkown error,please contact the administrator',
+  CLASS_INIT_ERROR = 'class init error',
 }
 
 export default MsgCode
