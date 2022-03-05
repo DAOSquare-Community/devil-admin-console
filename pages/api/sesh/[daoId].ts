@@ -47,7 +47,7 @@ const getHanler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   try {
     if (typeof daoId === 'string') {
       const data = await fetchCalendarEvents(daoId)
-      if (!!data) {
+      if (!!data && data.props) {
         res.status(200).json(data.props)
       } else {
         throw new Error('Fetch error')
