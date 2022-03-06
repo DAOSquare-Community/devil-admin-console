@@ -14,6 +14,7 @@ export const HomeRoute = '/dashboard'
 export const MenuConfigMap: Map<MenuName, { name?: string; icon: string }> =
   new Map([
     ['dashboard', { icon: 'fa-gauge-high' }],
+    ['daos', { icon: 'fa-user' }],
     ['accounts', { icon: 'fa-user' }],
   ])
 
@@ -24,7 +25,8 @@ export const DefaultRoloPermissions: Set<Role> = new Set([
 ])
 
 export const RoutePermissions: Map<string, Set<Role>> = new Map([
-  ['/accounts', new Set(['super-admin', 'admin'])],
+  ['/accounts', new Set(['super-admin'])],
+  ['/daos', new Set(['super-admin', 'admin'])],
 ])
 
 export { logoAddress }

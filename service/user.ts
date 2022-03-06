@@ -23,6 +23,10 @@ export default class UserService {
     return retUser
   }
 
+  getUsers = () => {
+    return UserModel.find<User>()
+  }
+
   /**
    * update user entity
    *

@@ -1,27 +1,29 @@
 import Layout from 'components/layout'
-import React, { FC, useCallback, useRef, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import Table from '../components/table'
 import Image from 'next/image'
 import { Cell, CellProps, Column, TableInstance } from 'react-table'
-import { useGqlQuery } from 'lib/request/use-gql-fetch'
-import { gql } from 'graphql-request'
 import { UserType } from 'types/user'
 import { Role } from 'types/permission'
 import classNames from 'classnames'
 import { Alert } from 'components/alert'
 import { Modal } from 'components/modal'
 import AccountForm from 'components/form/account-update'
+import { Dao } from 'models/Dao'
+import { useAxiosQuery } from 'lib/request/use-fetch'
 
 const AvatarCell: FC<
-  CellProps<never> & { column: { imgAccessor: string; emailAccessor: string } }
+  CellProps<never> & {
+    column: { imgAccessor: string; categoryAccessor: string }
+  }
 > = ({ value, column, row }) => {
   // row.original
-
+  console.log('AvatarCell', row.original[column.imgAccessor])
   return (
     <div className="flex items-center">
       <div className="h-10 w-10 flex-shrink-0">
-        <Image
+        <img
           width={40}
           height={40}
           className="h-10 w-10 rounded-full"
@@ -32,7 +34,7 @@ const AvatarCell: FC<
       <div className="ml-4">
         <div className="text-sm font-medium text-gray-900">{value}</div>
         <div className="text-sm text-gray-500">
-          {row.original[column.emailAccessor]}
+          {row.original[column.categoryAccessor]}
         </div>
       </div>
     </div>
@@ -62,88 +64,55 @@ export function StatusPill({ value }: Cell<Record<string, unknown>, Role[]>) {
   return <div className={'flex  flex-col gap-2 xl:flex-row'}>{roles}</div>
 }
 
-const usrsGql = gql`
-  query users {
-    users {
-      id
-      roles {
-        id
-        name
-      }
-      name
-      email
-      password
-      joinDate
-      title
-      slackId
-    }
-  }
-`
-
-// const Tabel
-
 const Accounts: NextPageWithLayout = () => {
   const [warning, setWaring] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
 
-  const { data } = useGqlQuery<{ users: UserType[] }, UserType[]>(
-    usrsGql,
-    { userId: 1 },
-    {
-      select: (sData) => {
-        return sData.users.map((u) => {
-          u.avatar =
-            'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90[…]VufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-          // u.roles = ['admin', 'member']
-          return u
-        })
-      },
-    }
-  )
+  const { data } = useAxiosQuery<{ data: Dao[] }, Dao[]>('/dao', undefined, {
+    select: (sData) => {
+      return sData.data
+    },
+  })
 
-  const columns: Column<UserType>[] = React.useMemo(
+  const columns = React.useMemo<Column<Dao>[]>(
     () => [
       {
         Header: 'Name',
         accessor: 'name',
         Cell: AvatarCell,
-        imgAccessor: 'avatar',
-        emailAccessor: 'title',
+        imgAccessor: 'logo',
+        categoryAccessor: 'category',
       },
       {
-        Header: 'Email',
-        accessor: 'email',
+        Header: 'StartTime',
+        accessor: 'start_time',
         // Cell: StatusPill,
       },
-      {
-        Header: 'Role',
-        accessor: 'roles',
-        Cell: StatusPill,
-      },
-      {
-        Header: 'Join Date',
-        accessor: 'joinDate',
-      },
+      // {
+      //   Header: 'Role',
+      //   accessor: 'roles',
+      //   Cell: StatusPill,
+      // },
+      // {
+      //   Header: 'Join Date',
+      //   accessor: 'joinDate',
+      // },
     ],
     []
   )
 
   // const data = React.useMemo(() => getData(), [])
 
-  const onAdd = useCallback((e: TableInstance<UserType>) => {
+  const onAdd = useCallback((e: TableInstance<Dao>) => {
     setShowEdit(true)
     console.log(
       'e',
-      e.selectedFlatRows
-        .map((v) => `'${v.original.name} ${v.original.email}'`)
-        .join(', ')
+      e.selectedFlatRows.map((v) => `'${v.original.name}}'`).join(', ')
     )
   }, [])
 
-  const userRef = useRef<UserType>()
-  const onEdit = useCallback((e: TableInstance<UserType>) => {
+  const onEdit = useCallback((e: TableInstance<Dao>) => {
     const selected = e.selectedFlatRows.map((v) => v.original)[0]
-    userRef.current = selected
     setShowEdit(true)
   }, [])
 
@@ -154,7 +123,7 @@ const Accounts: NextPageWithLayout = () => {
   if (data) {
     return (
       <div className="mx-auto pt-4 text-gray-900 sm:px-6 lg:px-0">
-        <Table<UserType>
+        <Table<Dao>
           name={'Accounts'}
           columns={columns}
           data={data}
@@ -171,7 +140,7 @@ const Accounts: NextPageWithLayout = () => {
                   data will be permanently removed. This action cannot be
                   undone."
         />
-        <Modal
+        {/* <Modal
           isOpen={showEdit}
           title="Update User Profile"
           // onClose={() => setIsopen(false)}
@@ -185,7 +154,7 @@ const Accounts: NextPageWithLayout = () => {
               userRef.current = undefined
             }}
           />
-        </Modal>
+        </Modal> */}
       </div>
     )
   }
