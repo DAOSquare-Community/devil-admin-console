@@ -1,20 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
-import { getDaoInfo } from 'service/dao'
+import DaoService from 'service/dao'
+import { OpenApi } from 'models/Dao'
 import NextCors from 'nextjs-cors'
+
 type Data = {
   organization: {
     task: { id: string; status: 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'DONE' }[]
   }
 }
-const authorization = 'Bearer obu_EDYE4LkzZU3qxeFZhts14POaFkeryDPt_Y2JKjBb'
+const authorization = process.env.ORBIT_TOKEN ?? ''
+const path = process.env.ORBIT_PATH ?? ''
 
 // 941665725112782868
 const fetchTwitterData = async (daoId: string) => {
-  const dao = await getDaoInfo(daoId)
-  if (!!dao && Array.isArray(dao) && dao.length > 0) {
-    const twitterId = dao[0].open_api.twitter?.twitterId
-    const path = 'daosquare1'
+  const dao = await new DaoService().getDaoInfo(daoId)
+  if (!dao.message) {
+    const twitterId = (dao.data?.open_api as OpenApi).twitter?.twitterId
     if (!!twitterId?.length) {
       return request<Data>({
         url: `https://app.orbit.love/api/v1/${path}/members/${twitterId}`,

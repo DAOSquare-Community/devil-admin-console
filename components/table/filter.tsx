@@ -18,7 +18,7 @@ export function GlobalFilter<
       <span className="text-gray-700">Search: </span>
       <input
         type="text"
-        className="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        className="dmc-form-input"
         value={value || ''}
         onChange={(e) => {
           setValue(e.target.value)
@@ -54,7 +54,7 @@ export function SelectColumnFilter<
     <label className="flex items-baseline gap-x-2">
       <span className="text-gray-700">{render('Header')}: </span>
       <select
-        className="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        className="rounded-md "
         name={id}
         id={id}
         value={filterValue}

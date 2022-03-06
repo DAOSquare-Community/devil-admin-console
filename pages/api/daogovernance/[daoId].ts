@@ -3,12 +3,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
+import NextCors from 'nextjs-cors'
 
 const DAOSQUARE_CONTRACT_ADDRESS = '0x1109136c32d6a2138dc0379b734d84ad0c2ffb1b'
 
 const QUERY_MEMBER_IDS = `query membersList($contractAddr: String!, $skip: Int){
     daoMembers: members(
       where: {molochAddress:$contractAddr}
+      first: 1000
       skip: $skip
     ) {
       id
@@ -18,53 +20,25 @@ const QUERY_MEMBER_IDS = `query membersList($contractAddr: String!, $skip: Int){
 const QUERY_PROPOSALS = `query molochActivities($contractAddr: String!, $createdAt: String!){
     proposals(
       where: {molochAddress: $contractAddr, createdAt_gt: $createdAt}
+      first: 1000
     ) {
       id
       aborted
-      applicant
-      cancelled
-      cancelledAt
       createdAt
-      createdBy
-      details
-      didPass
+      cancelled
+   
       executed
       gracePeriodEnds
-      guildkick
-      isMinion
-      lootRequested
-      memberAddress
-      newMember
-      noShares
-      noVotes
-      paymentRequested
-      paymentTokenDecimals
-      paymentTokenSymbol
+  
       processed
-      processor
-      processedAt
-      proposer
-      proposalId
-      proposalIndex
-      sharesRequested
+  
       sponsored
-      sponsor
-      sponsoredAt
+     
       startingPeriod
-      trade
-      tributeOffered
-      tributeTokenDecimals
-      tributeTokenSymbol
-      tributeToken
+      
       votingPeriodStarts
       votingPeriodEnds
-      whitelist
-      yesShares
-      yesVotes
-      molochAddress
-      molochVersion
-      minionAddress
-      uberHausMinionExecuted
+      
       votes {
         id
       }
@@ -103,7 +77,12 @@ type ProposalsDataType = {
     proposals: {
       sponsored?: boolean
       processed?: boolean
-      executed: boolean
+      executed?: boolean
+      cancelled?: boolean
+      gracePeriodEnds?: string
+      votingPeriodStarts?: string
+      votingPeriodEnds?: string
+      aborted?: boolean
     }[]
   }
 }
@@ -113,6 +92,7 @@ const fetchDaoProposalsData = async () => {
     url: 'https://api.thegraph.com/subgraphs/name/odyssy-automaton/daohaus-xdai',
     method: 'POST',
     payload: {
+      operationName: 'molochActivities',
       query: QUERY_PROPOSALS,
       variables: {
         contractAddr: DAOSQUARE_CONTRACT_ADDRESS,
@@ -126,49 +106,74 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  })
+
   const { daoId } = req.query
   if (typeof daoId === 'string') {
-    const membersData = await fetchDaoMemberData()
-    const proposalsData = await fetchDaoProposalsData()
-
-    let unsponsoredCount = 0 // 无赞助的提案
-    const votingCount = 0 // 投票期的提案
-    const graceCount = 0 // 宽限期的提案
-    let processCount = 0 // 正在处理的提案
-    let passedCount = 0 // 已通过的提案
-    let executedCount = 0 // 已执行的提案
-
-    if (!!proposalsData) {
-      //无赞助的提案
-      unsponsoredCount = proposalsData.data.proposals.filter(
-        (element) => element.sponsored === false
-      ).length
-
-      //正在处理的提案
-      processCount = proposalsData.data.proposals.filter(
-        (element) => element.processed === false
-      ).length
-
-      // 已执行的提案
-      executedCount = proposalsData.data.proposals.filter(
-        (element) => element.executed === true
-      ).length
-
-      // 已通过的提案
-      passedCount = proposalsData.data.proposals.filter(
-        (element) => element.processed === true
-      ).length
-    }
-
     const retData: Data = {
       daoId: 'daosquare',
-      members: !!membersData ? membersData.data.daoMembers.length : 0,
-      process: processCount,
-      excution: executedCount,
-      passed: passedCount,
-      unsponsored: unsponsoredCount,
-      voting: votingCount,
-      grace: graceCount,
+      members: 0,
+      process: 0,
+      excution: 0,
+      passed: 0,
+      unsponsored: 0,
+      voting: 0,
+      grace: 0,
+    }
+    const membersData = await fetchDaoMemberData()
+    retData.members = !!membersData ? membersData.data.daoMembers.length : 0
+
+    const proposalsData = await fetchDaoProposalsData()
+
+    if (!!proposalsData) {
+      const dateNow: Date = new Date()
+      proposalsData.data.proposals.forEach((item) => {
+        if (!item.aborted && !item.cancelled) {
+          // 无赞助的提案
+          if (!item.sponsored) {
+            retData.unsponsored++
+          }
+
+          // 正在处理的提案
+          if (!item.processed) {
+            retData.process++
+          }
+
+          // 已执行的提案
+          if (item.processed && item.executed) {
+            retData.excution++
+          }
+
+          // 已通过的提案
+          if (item.processed) {
+            retData.passed++
+          }
+
+          // 正在投票的提案
+          const votingStartDate = new Date(
+            (Number(item.votingPeriodStarts) || 0) * 1000
+          )
+          const votingEndDate = new Date(
+            (Number(item.votingPeriodEnds) || 0) * 1000
+          )
+          if (dateNow > votingStartDate && dateNow < votingEndDate) {
+            retData.voting++
+          }
+
+          // 在宽限期的提案
+          const graceEndDate = new Date(
+            (Number(item.gracePeriodEnds) || 0) * 1000
+          )
+          if (dateNow > votingEndDate && dateNow < graceEndDate) {
+            retData.grace++
+          }
+        }
+      })
     }
     res.status(200).json(retData)
   }

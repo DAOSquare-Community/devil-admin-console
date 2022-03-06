@@ -28,7 +28,8 @@ export interface TableProperties<T extends Record<string, unknown>>
   showSelection?: boolean
 }
 
-function ComboTable<T extends Record<string, unknown>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ComboTable<T extends Record<string, any>>(
   props: PropsWithChildren<TableProperties<T>>
 ) {
   // Use the state and functions returned from useTable to build your UI

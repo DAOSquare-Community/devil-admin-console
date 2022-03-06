@@ -4,6 +4,9 @@
  */
 // Tips: If path like this: [path]/:id ,we can use @Type:AxiosRequestConfig.paramsSerializer
 
-export type PathUnionType = '/api/sign' | `/login/${'event' | 'events'}`
-
-export type UniqueAliasKeyType = 'GOT_CALENDAR_MEETING_EVENTS'
+export type PathUnionType =
+  | '/auth/sign-in'
+  | '/auth/status'
+  | '/auth/sign-out'
+  | '/auth/me'
+  | `/api/error`

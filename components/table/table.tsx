@@ -14,17 +14,18 @@ export const TableContainer: FC<{
   ) => TableProps
 }> = ({ children, getTableProps, ...ohter }) => {
   const { role, ...othertable } = getTableProps()
-
   return (
-    <div className="flex min-w-full flex-col overflow-x-auto py-2 pt-4 align-middle">
-      <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg" />
-      <table
-        {...ohter}
-        {...othertable}
-        className="min-w-full divide-y divide-gray-200"
-      >
-        {children}
-      </table>
+    <div className="mt-4 flex flex-col overflow-x-auto">
+      <div className="inline-block min-w-full py-2 align-middle">
+        <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg" />
+        <table
+          {...ohter}
+          {...othertable}
+          className="min-w-full divide-y divide-gray-200"
+        >
+          {children}
+        </table>
+      </div>
     </div>
   )
 }

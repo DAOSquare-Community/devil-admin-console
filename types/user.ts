@@ -1,10 +1,13 @@
-/** user */
-export type User = {
-  _id?: string
-  wallet_address: string
-  last_loginTime: string
-  session_token: string
-  session_expired: string
-  role: string[]
-  create_at: Date
+import { Role } from './permission'
+
+export interface MeInterface {
+  avatar: string
+  email: string
+  joinDate: string
+  name: string
+  roles: Role[]
+  title: string
+  id: number
 }
+
+export type UserType = MeInterface

@@ -19,8 +19,31 @@ a {
   box-sizing: border-box;
 }
 
+.modal--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(38, 40, 40, .4);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  overflow-y: auto;
+}
+
 @layer components {
-  .form-checkbox {
-    @apply rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50
+  .dmc-form-checkbox {
+    @apply rounded border-gray-300 text-primary shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50
+  }
+  .dmc-form-input {
+    @apply  block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:bg-white 
+    focus:outline-none focus:border-primary focus:ring-primary disabled:bg-gray-400
+  }
+
+  .dmc-form-select {
+    @apply  focus:border-primary rounded-md 
   }
 }

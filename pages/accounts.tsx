@@ -1,85 +1,18 @@
-import Layout from 'components/base/layout'
-import React, { FC } from 'react'
+import Layout from 'components/layout'
+import React, { FC, useCallback, useRef, useState } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import Table from '../components/table'
-import { SelectColumnFilter } from '../components/table/filter'
 import Image from 'next/image'
-import { classNames } from 'lib/utils'
 import { Cell, CellProps, Column, TableInstance } from 'react-table'
+import { useGqlQuery } from 'lib/request/use-gql-fetch'
+import { gql } from 'graphql-request'
+import { UserType } from 'types/user'
+import { Role } from 'types/permission'
+import classNames from 'classnames'
+import { Alert } from 'components/alert'
+import { Modal } from 'components/modal'
+import AccountForm from 'components/form/account-update'
 
-const getData = () => {
-  const data = [
-    {
-      name: 'Jane Cooper',
-      email: 'jane.cooper@example.com',
-      title: 'Regional Paradigm Technician',
-      department: 'Optimization',
-      status: 'Active',
-      role: 'Admin',
-      age: 27,
-      imgUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Cody Fisher',
-      email: 'cody.fisher@example.com',
-      title: 'Product Directives Officer',
-      department: 'Intranet',
-      status: 'Inactive',
-      role: 'Owner',
-      age: 43,
-      imgUrl:
-        'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Esther Howard',
-      email: 'esther.howard@example.com',
-      title: 'Forward Response Developer',
-      department: 'Directives',
-      status: 'Active',
-      role: 'Member',
-      age: 32,
-      imgUrl:
-        'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Jenny Wilson',
-      email: 'jenny.wilson@example.com',
-      title: 'Central Security Manager',
-      department: 'Program',
-      status: 'Offline',
-      role: 'Member',
-      age: 29,
-      imgUrl:
-        'https://images.unsplash.com/photo-1498551172505-8ee7ad69f235?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Kristin Watson',
-      email: 'kristin.watson@example.com',
-      title: 'Lean Implementation Liaison',
-      department: 'Mobility',
-      status: 'Inactive',
-      role: 'Admin',
-      age: 36,
-      imgUrl:
-        'https://images.unsplash.com/photo-1532417344469-368f9ae6d187?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-    {
-      name: 'Cameron Williamson',
-      email: 'cameron.williamson@example.com',
-      title: 'Internal Applications Engineer',
-      department: 'Security',
-      status: 'Active',
-      role: 'Member',
-      age: 24,
-      imgUrl:
-        'https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-    },
-  ]
-  return [...data, ...data, ...data]
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AvatarCell: FC<
   CellProps<never> & { column: { imgAccessor: string; emailAccessor: string } }
 > = ({ value, column, row }) => {
@@ -106,91 +39,156 @@ const AvatarCell: FC<
   )
 }
 
-export function StatusPill({ value }: Cell<Record<string, unknown>, string>) {
-  const status = value ? value.toLowerCase() : 'unknown'
+export function StatusPill({ value }: Cell<Record<string, unknown>, Role[]>) {
+  const roles = value.map((v) => {
+    const role = v ? v.toLowerCase() : 'unknown'
+    return (
+      <span
+        key={role}
+        className={classNames(
+          'leading-wide max-w-16 rounded-full px-3 py-1 text-xs font-bold uppercase  shadow-sm',
+          role.startsWith('admin') ? 'bg-green-100 text-green-800' : null,
+          role.startsWith('member') ? 'bg-yellow-100 text-yellow-800' : null,
+          role.startsWith('super-admin') ? 'bg-red-100 text-red-800' : null
+        )}
+      >
+        {role}
+      </span>
+    )
+  })
 
-  return (
-    <span
-      className={classNames(
-        'leading-wide rounded-full px-3 py-1 text-xs font-bold uppercase shadow-sm',
-        status.startsWith('active') ? 'bg-green-100 text-green-800' : null,
-        status.startsWith('inactive') ? 'bg-yellow-100 text-yellow-800' : null,
-        status.startsWith('offline') ? 'bg-red-100 text-red-800' : null
-      )}
-    >
-      {status}
-    </span>
-  )
+  // console.log(roles)
+
+  return <div className={'flex  flex-col gap-2 xl:flex-row'}>{roles}</div>
 }
 
-type Data = {
-  name: string
-  email: string
-  title: string
-  department: string
-  status: string
-  role: string
-  age: number
-  imgUrl: string
-}
+const usrsGql = gql`
+  query users {
+    users {
+      id
+      roles {
+        id
+        name
+      }
+      name
+      email
+      password
+      joinDate
+      title
+      slackId
+    }
+  }
+`
+
+// const Tabel
 
 const Accounts: NextPageWithLayout = () => {
-  const columns: Column<Data>[] = React.useMemo(
+  const [warning, setWaring] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
+
+  // const { data } = useGqlQuery<{ users: UserType[] }, UserType[]>(
+  //   usrsGql,
+  //   { userId: 1 },
+  //   {
+  //     select: (sData) => {
+  //       return sData.users.map((u) => {
+  //         u.avatar =
+  //           'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90[…]VufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+  //         // u.roles = ['admin', 'member']
+  //         return u
+  //       })
+  //     },
+  //   }
+  // )
+
+  const { data } = { data: [] }
+
+  const columns = React.useMemo<Column<UserType>[]>(
     () => [
       {
         Header: 'Name',
         accessor: 'name',
         Cell: AvatarCell,
-        imgAccessor: 'imgUrl',
-        emailAccessor: 'email',
+        imgAccessor: 'avatar',
+        emailAccessor: 'title',
       },
       {
-        Header: 'Title',
-        accessor: 'title',
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-        Filter: SelectColumnFilter, // new
-        Cell: StatusPill,
-      },
-      {
-        Header: 'Age',
-        accessor: 'age',
+        Header: 'Email',
+        accessor: 'email',
+        // Cell: StatusPill,
       },
       {
         Header: 'Role',
-        accessor: 'role',
-        Filter: SelectColumnFilter, // new
-        filter: 'includes',
+        accessor: 'roles',
+        Cell: StatusPill,
       },
     ],
     []
   )
 
-  const data = React.useMemo(() => getData(), [])
+  // const data = React.useMemo(() => getData(), [])
 
-  const onClick = (e: TableInstance<Data>) => {
+  const onAdd = useCallback((e: TableInstance<UserType>) => {
+    setShowEdit(true)
     console.log(
       'e',
       e.selectedFlatRows
         .map((v) => `'${v.original.name} ${v.original.email}'`)
         .join(', ')
     )
+  }, [])
+
+  const userRef = useRef<UserType>()
+  const onEdit = useCallback((e: TableInstance<UserType>) => {
+    const selected = e.selectedFlatRows.map((v) => v.original)[0]
+    userRef.current = selected
+    setShowEdit(true)
+  }, [])
+
+  const onDelete = useCallback(() => {
+    setWaring(true)
+  }, [])
+
+  if (data) {
+    return (
+      <div className="mx-auto pt-4 text-gray-900 sm:px-6 lg:px-0">
+        <Table<UserType>
+          name={'Accounts'}
+          columns={columns}
+          data={data}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onAdd={onAdd}
+          showSelection
+        />
+        <Alert
+          isOpen={warning}
+          onClose={() => setWaring(false)}
+          onClick={() => setWaring(false)}
+          message="Are you sure you want to delete there accounts? All of there
+                  data will be permanently removed. This action cannot be
+                  undone."
+        />
+        <Modal
+          isOpen={showEdit}
+          title="Update User Profile"
+          // onClose={() => setIsopen(false)}
+          // onSumbimit={() => setIsopen(false)}
+        >
+          <AccountForm
+            isEdit={!userRef.current}
+            user={userRef.current}
+            onClose={() => {
+              setShowEdit(false)
+              userRef.current = undefined
+            }}
+          />
+        </Modal>
+      </div>
+    )
   }
 
-  return (
-    <div className="mx-auto pt-4 text-gray-900 sm:px-6 lg:px-0">
-      <Table<Data>
-        name={'Accounts'}
-        columns={columns}
-        data={data}
-        onEdit={onClick}
-        onDelete={onClick}
-        onAdd={onClick}
-      />
-    </div>
-  )
+  return null
 }
 
 Accounts.getLayout = (page) => <Layout>{page}</Layout>

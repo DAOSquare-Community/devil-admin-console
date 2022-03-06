@@ -1,95 +1,123 @@
-import { DAO } from 'types/dao/dao'
-import DB from 'lib/db/mongodb'
+import { Dao, DaoModel } from 'models/Dao'
+import { MongoError } from 'mongodb'
+import MsgCode from 'types/msgcode'
+import { ResultMsg } from 'types/resultmsg'
 
-const DAOSquareInfo: DAO = {
-  open_api: {
-    dework: { orgId: '5T2WcpGDJ3m6cOiG5ItJeL' },
-    discord: { channelId: '941665725112782868' },
-    twitter: { twitterId: 'DAOSquare' },
-    sesh: {
-      access_token: '9xbD4YkcTJ22SQZy55CJzMfncII0X6',
-      guild_id: '678414857510453309',
-    },
-  },
-} as DAO
+export default class DaoService {
+  /**
+   * get dao information by daoId
+   *
+   * @param daoId
+   * @returns
+   */
+  getDaoInfo = async (daoId: string): Promise<ResultMsg<Dao | null>> => {
+    const retDaoInfo: ResultMsg<Dao | null> = {}
+    try {
+      const daoinfo = await DaoModel.findOne<Dao>({ daoId: daoId })
+      if (!!daoinfo) retDaoInfo.data = daoinfo
+    } catch (err) {
+      retDaoInfo.message = MsgCode.FAILURE
+    }
+    return retDaoInfo
+  }
 
-const db: DB = DB.getInstance() as DB
-const COLLECTION_NAME = 'dao'
+  /**
+   * update dao information
+   *
+   * @param daoId
+   * @param updateData
+   * @returns
+   */
+  updateDaoInfo = async (
+    daoId: string,
+    updateData: object
+  ): Promise<ResultMsg<boolean>> => {
+    const retUpdate: ResultMsg<boolean> = {
+      data: false,
+    }
+    try {
+      await DaoModel.updateMany({ daoId: daoId }, { $set: updateData })
+      retUpdate.data = true
+    } catch (err) {
+      console.log('updateDaoInfo--------')
+      console.log(err)
+      retUpdate.message = MsgCode.FAILURE
+    }
+    return retUpdate
+  }
 
-/**
- * get dao information by daoId
- *
- * @param daoId
- * @returns
- */
-const getDaoInfo = async (daoId: string) => {
-  const daoinfo: DAO[] = (await db.find<DAO>(COLLECTION_NAME, {
-    daoId: `${daoId}`,
-  })) as DAO[]
-  return daoinfo
-}
+  /**
+   * delete dao info  by daoId
+   *
+   * @param daoId
+   * @returns
+   */
+  deleteDaoInfo = async (daoId: string): Promise<ResultMsg<boolean>> => {
+    const retDel: ResultMsg<boolean> = {
+      data: false,
+    }
+    try {
+      await DaoModel.deleteMany({ daoId: daoId })
+      retDel.data = true
+    } catch (err) {
+      console.log('deleteDaoInfo--------')
+      console.log(err)
+      retDel.message = MsgCode.FAILURE
+    }
+    return retDel
+  }
 
-/**
- * update dao information
- *
- * @param daoId
- * @param updateData
- * @returns
- */
-const updateDaoInfo = async (daoId: string, updateData: DAO) => {
-  const result = await db.update<DAO>(
-    COLLECTION_NAME,
-    {
-      daoId: `${daoId}`,
-    },
-    { $set: updateData }
-  )
-  return result
-}
+  /**
+   * insert a dao info
+   *
+   * @param dao
+   * @returns
+   */
+  insertDaoInfo = async (dao: Dao): Promise<ResultMsg<boolean>> => {
+    const retInsert: ResultMsg<boolean> = {
+      data: false,
+    }
+    try {
+      await DaoModel.create(dao)
+      retInsert.data = true
+    } catch (err) {
+      let errmsg = ''
+      if (err instanceof MongoError && err.code === 11000) {
+        errmsg = MsgCode.DUPLICATE_KEY
+      } else {
+        errmsg = MsgCode.FAILURE
+      }
+      console.log('insertDaoInfo--------')
+      console.log(err)
+      retInsert.message = errmsg
+    }
+    return retInsert
+  }
 
-/**
- * delete dao info  by daoId
- *
- * @param daoId
- * @returns
- */
-const deleteDaoInfo = async (daoId: string) => {
-  const delRes = await db.delete<DAO>(COLLECTION_NAME, {
-    daoId: `${daoId}`,
-  })
-  return delRes
-}
-
-/**
- * insert a dao info
- *
- * @param dao
- * @returns
- */
-const insertDaoInfo = async (dao: DAO) => {
-  const insertRes = await db.insert<DAO>(COLLECTION_NAME, dao)
-  return insertRes
-}
-
-/**
- * insert mutilate a dao info
- *
- * @param daos
- * @returns
- */
-const insertMutilDaoInfo = async (daos: DAO[]) => {
-  const insertMutilRes = await db.insertMany<DAO>(COLLECTION_NAME, daos)
-  return insertMutilRes
-}
-
-// const getDaoInfoFromId = async (daoId: string) => {
-//   return DAOSquareInfo
-// }
-
-export {
-  getDaoInfo,
-  updateDaoInfo,
-  deleteDaoInfo,
-  insertDaoInfo,
-  insertMutilDaoInfo,
+  /**
+   * insert mutilate a dao info
+   *
+   * @param daos
+   * @returns
+   */
+  insertMutilDaoInfo = async (daos: Dao[]): Promise<ResultMsg<boolean>> => {
+    const retInsertMutl: ResultMsg<boolean> = {
+      data: false,
+    }
+    try {
+      await DaoModel.insertMany(daos)
+      retInsertMutl.data = true
+    } catch (err) {
+      let errmsg = ''
+      if (err instanceof MongoError && err.code === 11000) {
+        errmsg = MsgCode.DUPLICATE_KEY
+      } else {
+        errmsg = MsgCode.FAILURE
+      }
+      console.log('insertMutilDaoInfo--------')
+      console.log(err)
+      retInsertMutl.message = errmsg
+    }
+    return retInsertMutl
+  }
 }
