@@ -20,8 +20,8 @@ type Variables = {
 
 export const useAxiosQuery = <
   TQueryFnData = unknown,
-  TError = unknown,
-  TData = TQueryFnData
+  TData = TQueryFnData,
+  TError = unknown
 >(
   path: PathUnionType,
   payload?: Variables,

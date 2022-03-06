@@ -21,6 +21,10 @@ export default class DaoService {
     return retDaoInfo
   }
 
+  getDaos = () => {
+    return DaoModel.find<Dao>()
+  }
+
   /**
    * update dao information
    *

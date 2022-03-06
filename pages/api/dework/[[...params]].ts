@@ -2,7 +2,6 @@
 // import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
 import {
-  Catch,
   createHandler,
   Get,
   NotFoundException,
@@ -15,7 +14,6 @@ import uuidBase62 from 'uuid-base62'
 import DaoService from 'service/dao'
 import { OpenApi } from 'models/Dao'
 import CrosGuard from 'lib/middleawares/cors'
-import { exceptionHandler } from '../error-hands'
 
 type Data = {
   organization: {
@@ -49,12 +47,10 @@ const fetchDeworkData = async (daoId: string) => {
     }
   }
 }
-
-@Catch(exceptionHandler)
+@CrosGuard()
 class Handler {
-  @CrosGuard()
   @Get('/:daoId')
-  public async getHandle(@Param('daoId') daoId: string) {
+  public async fetchDework(@Param('daoId') daoId: string) {
     const data = await fetchDeworkData(daoId)
     if (!data) {
       throw new NotFoundException('Data not found.')
