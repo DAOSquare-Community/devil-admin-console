@@ -32,8 +32,8 @@ export class Config extends BaseModel {
   @prop({ required: true, type: Schema.Types.Mixed })
   public value!: unknown
 
-  @prop({ required: true })
-  public des!: string
+  @prop()
+  public des!: string | null
 }
 
 //export const ConfigModel = getModelForClass(Config)

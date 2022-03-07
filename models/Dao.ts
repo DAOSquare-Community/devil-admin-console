@@ -77,34 +77,34 @@ export class Dao extends BaseModel {
   @prop({ required: true })
   public name!: string
 
-  @prop({ required: true })
-  public logo!: string
+  @prop()
+  public logo!: string | null
 
-  @prop({ required: true })
-  public profile!: string
+  @prop()
+  public profile!: string | null
 
   @prop({ required: true })
   public category!: string
 
-  @prop({ required: true, type: () => [String] })
+  @prop({ type: () => [String] })
   public founder!: string[]
 
-  @prop({ required: true, type: Date })
-  public start_time!: Date
+  @prop()
+  public start_time!: Date | null
 
-  @prop({ required: true, type: () => [OfficalLinks], _id: false })
+  @prop({ type: () => [OfficalLinks], _id: false })
   public offical_links!: OfficalLinks[]
 
-  @prop({ required: true, type: DAOContract, _id: false })
+  @prop({ type: DAOContract, _id: false })
   public dao_contract!: DAOContract
 
-  @prop({ required: true, type: Treasury, _id: false })
+  @prop({ type: Treasury, _id: false })
   public treasury!: Treasury
 
-  @prop({ required: true, type: DAOToken, _id: false })
+  @prop({ type: DAOToken, _id: false })
   public dao_token!: DAOToken
 
-  @prop({ required: true, type: Schema.Types.Mixed, _id: false })
+  @prop({ type: Schema.Types.Mixed, _id: false })
   public open_api!: unknown
 }
 

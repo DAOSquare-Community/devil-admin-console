@@ -17,15 +17,15 @@ export class SocialLinks {
 
 /** Member */
 export class Member extends BaseModel {
-  @prop({ required: true })
-  public name!: string
+  @prop()
+  public name!: string | null
 
-  @prop({ required: true })
-  public gender!: string
+  @prop()
+  public gender!: string | null
 
   /** Member Profile */
-  @prop({ required: true })
-  public profile!: string
+  @prop()
+  public profile!: string | null
 
   @prop({ required: true })
   public is_famous!: boolean
@@ -37,10 +37,10 @@ export class Member extends BaseModel {
   public wallet_address!: string
 
   /** belong to daos */
-  @prop({ required: true })
+  @prop()
   public daos!: string[]
 
-  @prop({ required: true, type: () => [SocialLinks], _id: false })
+  @prop({ type: () => [SocialLinks], _id: false })
   public social_links!: SocialLinks[]
 }
 
