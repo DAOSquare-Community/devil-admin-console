@@ -4,6 +4,7 @@ import { FC } from 'react'
 import Header from './header'
 import HeaderBar, { HeaderBarProps } from './header-bar'
 import NavBar from './navbar'
+import Breadcrumbs from './breadcrumbs'
 
 type LayoutProps = {
   headerTitle?: string
@@ -17,15 +18,23 @@ const Layout: FC<LayoutProps & HeaderBarProps> = ({
   return (
     <>
       <Header />
-      <div className="drawer-mobile drawer h-screen w-full bg-base-100">
+      <div className="drawer-mobile drawer h-screen  bg-base-100">
         <input id="drawer" type="checkbox" className="drawer-toggle" />
         <div
           className="drawer-content "
           style={{ scrollBehavior: 'smooth', scrollPaddingTop: '5rem' }}
         >
           <NavBar />
-          <HeaderBar title={title} showHeaderBar={showHeaderBar} />
-          <main className="px-5">{children}</main>
+
+          <div className="p-6 pb-16">
+            <div className="flex flex-col-reverse justify-between gap-6 xl:flex-row">
+              <div className="prose w-full  flex-grow">
+                <Breadcrumbs useDefaultStyle />
+                <HeaderBar title={title} showHeaderBar={showHeaderBar} />
+                {children}
+              </div>
+            </div>
+          </div>
         </div>
         <div
           className="drawer-side"

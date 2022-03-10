@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 import { SessionStorageKeys } from 'lib/config'
 import { toast } from 'react-toastify'
 
-const signInPath = '/sign-in'
+const signInPath = '/login'
 
 export type DMCError = AxiosError & {
   response: { error?: ''; errors?: { message: string }[] }

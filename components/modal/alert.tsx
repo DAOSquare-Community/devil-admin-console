@@ -1,12 +1,19 @@
 import { FC } from 'react'
 import ReactModal from 'react-modal'
 
-export const Alert: FC<{
-  isOpen: boolean
+export type AlertType = {
+  isOpen?: boolean
   onClose: () => void
   onClick: () => void
   message: string
-}> = ({ isOpen, onClose, message, onClick }) => {
+}
+
+export const AlertModal: FC<AlertType> = ({
+  isOpen = false,
+  onClose,
+  message,
+  onClick,
+}) => {
   return (
     <ReactModal
       ariaHideApp={false}

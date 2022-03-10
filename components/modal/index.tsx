@@ -9,11 +9,13 @@ type ComstomModalProps = Props & {
   title: string
 }
 
-export const Modal: FC<ComstomModalProps> = ({
+export const Modal: FC<ComstomModalProps & ModalFooterType> = ({
   isOpen,
   children,
   size = 'large',
   title,
+  onClose,
+  form,
   ...props
 }) => {
   return (
@@ -30,7 +32,10 @@ export const Modal: FC<ComstomModalProps> = ({
       )}
       {...props}
     >
-      <ModalContainer title={title}>{children}</ModalContainer>
+      <ModalContainer title={title}>
+        <ModalMain>{children}</ModalMain>
+        <ModalFooter onClose={onClose} form={form} />
+      </ModalContainer>
       {/* {children} */}
     </ReactModal>
   )
@@ -45,6 +50,8 @@ export type ModalFooterType = {
   onSumbimit?: () => void
   doneTitle?: string
   loading?: boolean
+  form?: string
+  type?: 'submit' | 'reset' | 'button' | undefined
 }
 
 export const ModalFooter: FC<ModalFooterType> = ({
@@ -52,6 +59,8 @@ export const ModalFooter: FC<ModalFooterType> = ({
   onSumbimit,
   doneTitle,
   loading = false,
+  form,
+  type,
 }) => {
   return (
     <div className="border-blueGray-200 flex items-center justify-end rounded-b border-t border-solid p-6">
@@ -64,8 +73,9 @@ export const ModalFooter: FC<ModalFooterType> = ({
       </button>
       <button
         className={classnames('btn btn-primary', { loading })}
-        type="button"
+        type={type ?? 'submit'}
         onClick={onSumbimit}
+        form={form}
       >
         {doneTitle ?? 'Submit'}
       </button>

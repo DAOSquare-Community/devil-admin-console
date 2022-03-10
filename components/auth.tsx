@@ -5,7 +5,7 @@ import { useAxiosQuery } from 'lib/request/use-fetch'
 import { useRouter } from 'next/router'
 import { FC, useReducer } from 'react'
 import { MeInterface } from 'types/user'
-import PermissionLayout from './permission-layout'
+import PermissionLayout from './nav/permission-layout'
 
 const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
   const [state, dispatch] = useReducer(meReducer, {} as MeInterface)

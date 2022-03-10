@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import CInput from 'components/c-input'
-import { ModalFooter, ModalFooterType, ModalMain } from 'components/modal'
 import { gql } from 'graphql-request'
 import { useGqlMutation } from 'lib/request/use-gql-fetch'
 import { FC } from 'react'
@@ -23,20 +22,20 @@ const usrsMutateGql = gql`
   }
 `
 
-const SettingsForm: FC<ModalFooterType> = ({ onClose }) => {
+const SettingsForm: FC<{
+  id: string
+  onSuccess: () => void
+}> = ({ id, onSuccess }) => {
   const { handleSubmit, control, setError } = useForm<FormData>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   })
 
-  const { mutate } = useGqlMutation<undefined, { password: string }>(
-    usrsMutateGql,
-    {
-      onSuccess: () => {
-        onClose && onClose()
-      },
-    }
-  )
+  const { mutate } = useGqlMutation<{ password: string }>(usrsMutateGql, {
+    onSuccess: () => {
+      onSuccess()
+    },
+  })
 
   const submit: SubmitType = (data) => {
     if (data.newPassword === data.password) {
@@ -51,10 +50,8 @@ const SettingsForm: FC<ModalFooterType> = ({ onClose }) => {
   }
 
   return (
-    <>
-      <ModalMain>
-        <form className="w-full max-w-lg">
-          {/* <div className="mb-6 ">
+    <form id={id} className="w-full max-w-lg" onSubmit={handleSubmit(submit)}>
+      {/* <div className="mb-6 ">
             <CInput
               name="oldPassword"
               label="old password"
@@ -62,27 +59,24 @@ const SettingsForm: FC<ModalFooterType> = ({ onClose }) => {
               type="password"
             />
           </div> */}
-          <div className="mb-6">
-            <CInput
-              name="newPassword"
-              label="new password"
-              control={control}
-              type="password"
-            />
-          </div>
+      <div className="mb-6">
+        <CInput
+          name="newPassword"
+          label="new password"
+          control={control}
+          type="password"
+        />
+      </div>
 
-          <div className="mb-6">
-            <CInput
-              name="password"
-              label="Confirm password"
-              control={control}
-              type="password"
-            />
-          </div>
-        </form>
-      </ModalMain>
-      <ModalFooter onClose={onClose} onSumbimit={handleSubmit(submit)} />
-    </>
+      <div className="mb-6">
+        <CInput
+          name="password"
+          label="Confirm password"
+          control={control}
+          type="password"
+        />
+      </div>
+    </form>
   )
 }
 

@@ -3,20 +3,21 @@ import Image from 'next/image'
 import { useAxiosMutation } from 'lib/request/use-fetch'
 import { useRouter } from 'next/router'
 import MeContext from 'lib/me-provider'
-import { Modal } from './modal'
-import ProfileForm from './form/profile'
-import SettingsForm from './form/settings'
+import { Modal } from '../modal'
+import ProfileForm from '../form/profile'
+import SettingsForm from '../form/settings'
+import Link from 'next/link'
 
 export type NavBarProps = { title?: string }
 
 const AvatarDropdown: FC = () => {
   const router = useRouter()
-  const { state: data } = useContext(MeContext)
+  const { state: data, dispatch } = useContext(MeContext)
   const { mutate } = useAxiosMutation(
     '/auth/sign-out',
     {
       onSuccess: () => {
-        router.replace('/sign-in')
+        router.replace('/login')
       },
     },
     'GET'
@@ -67,26 +68,46 @@ const AvatarDropdown: FC = () => {
           </button>
         </li>
         <li>
-          <a
+          <button
             onClick={() => {
               mutate({})
             }}
           >
             Logout
-          </a>
+          </button>
         </li>
       </ul>
       <Modal
         isOpen={isopen}
+        onClose={() => setIsopen(false)}
         title="Update User Profile"
+        form="profile_form"
         // onClose={() => setIsopen(false)}
         // onSumbimit={() => setIsopen(false)}
       >
-        <ProfileForm onClose={() => setIsopen(false)} />
+        <ProfileForm
+          id={'profile_form'}
+          state={data}
+          onSuccess={(va) => {
+            dispatch({
+              type: 'update',
+              payload: va,
+            })
+            setIsopen(false)
+          }}
+        />
       </Modal>
 
-      <Modal size="large" isOpen={isSettingsopen} title="Update Password">
-        <SettingsForm onClose={() => setIsSettingsopen(false)} />
+      <Modal
+        form="setting_form"
+        isOpen={isSettingsopen}
+        onClose={() => setIsSettingsopen(false)}
+        title="Update Password"
+      >
+        <SettingsForm
+          id={'setting_form'}
+          onSuccess={() => setIsSettingsopen(false)}
+        />
       </Modal>
     </div>
   )
@@ -121,19 +142,20 @@ const NavBar: FC<NavBarProps> = ({}) => {
             </svg>
           </label>
           <div className="flex items-center gap-2 lg:hidden">
-            <a
-              href="/"
-              aria-current="page"
-              aria-label="Homepage"
-              className="flex-0 btn btn-ghost px-2 "
-            >
-              <div className="inline-flex  transition-all duration-200">
-                <span className=" text-xl font-light lowercase	 ">Devil</span>
-                <span className="text-xl  uppercase italic text-yellow-400 ">
-                  admin
-                </span>
-              </div>
-            </a>
+            <Link href="/">
+              <a
+                aria-current="page"
+                aria-label="Homepage"
+                className="flex-0 btn btn-ghost px-2 "
+              >
+                <div className="inline-flex  transition-all duration-200">
+                  <span className=" text-xl font-light lowercase	 ">hire</span>
+                  <span className="text-xl  uppercase italic text-yellow-400 ">
+                    EZ
+                  </span>
+                </div>
+              </a>
+            </Link>
           </div>
         </div>
         <div className="mr-1 flex-none items-center gap-2">

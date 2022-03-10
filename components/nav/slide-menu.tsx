@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { FC, useContext } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import MeContext from 'lib/me-provider'
 import { permissionCheck } from 'lib/utils/permission'
@@ -27,7 +28,7 @@ const Menu: FC = () => {
           )
           .map(([key, { name, icon }]) => (
             <li key={key}>
-              <Link href={`/${key}`}>
+              <Link href={`/${key === 'dashboard' ? '' : key}`}>
                 <a
                   id={key === currentPath ? 'active-menu' : ''}
                   className={`sveltekit:prefetch flex gap-4  ${
@@ -61,9 +62,9 @@ const SlideMenu = () => {
             className="flex-0 btn btn-ghost px-2"
           >
             <div className="inline-flex  transition-all duration-200">
-              <span className=" text-2xl font-light lowercase	 ">Devil</span>
+              <span className=" text-2xl font-light lowercase	 ">hire</span>
               <span className="text-2xl  uppercase italic text-yellow-400 ">
-                admin
+                EZ
               </span>
             </div>
           </a>

@@ -34,8 +34,8 @@ export const useGqlQuery = <
 }
 
 export const useGqlMutation = <
-  TData = unknown,
   TVariables = Variables,
+  TData = unknown,
   TContext = unknown,
   TError = AxiosError
 >(

@@ -1,4 +1,4 @@
-import Layout from 'components/layout'
+import Layout from 'components/nav/layout'
 import React, { FC, useCallback, useState } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import Table from '../components/table'
@@ -7,9 +7,7 @@ import { Cell, CellProps, Column, TableInstance } from 'react-table'
 import { UserType } from 'types/user'
 import { Role } from 'types/permission'
 import classNames from 'classnames'
-import { Alert } from 'components/alert'
-import { Modal } from 'components/modal'
-import AccountForm from 'components/form/account-update'
+import { Alert } from 'components/modal/cmd-alert'
 import { Dao } from 'models/Dao'
 import { useAxiosQuery } from 'lib/request/use-fetch'
 
@@ -116,8 +114,17 @@ const Accounts: NextPageWithLayout = () => {
     setShowEdit(true)
   }, [])
 
-  const onDelete = useCallback(() => {
-    setWaring(true)
+  const onDelete = useCallback((e: TableInstance<Dao>) => {
+    // setWarning(true)
+    Alert.show(
+      `Are you sure you want to delete there accounts? All of there
+    data will be permanently removed. This action cannot be
+    undone.`,
+      () => {
+        // const selecteds = e.selectedFlatRows.map((v) => v.original.id)
+        // remove({ userIds: selecteds })
+      }
+    )
   }, [])
 
   if (data) {
@@ -132,14 +139,14 @@ const Accounts: NextPageWithLayout = () => {
           onAdd={onAdd}
           showSelection
         />
-        <Alert
+        {/* <Alert
           isOpen={warning}
           onClose={() => setWaring(false)}
           onClick={() => setWaring(false)}
           message="Are you sure you want to delete there accounts? All of there
                   data will be permanently removed. This action cannot be
                   undone."
-        />
+        /> */}
         {/* <Modal
           isOpen={showEdit}
           title="Update User Profile"
