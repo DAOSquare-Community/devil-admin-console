@@ -2,8 +2,13 @@ import { MongoError } from 'mongodb'
 import MsgCode from 'types/msgcode'
 import { ResultMsg } from 'types/resultmsg'
 import { User, UserModel } from './../models/User'
+import BaseService from './base'
 
-export default class UserService {
+export default class UserService extends BaseService<User, typeof User> {
+  constructor() {
+    super(UserModel)
+  }
+
   /**
    * get user entity by walletAddr
    *

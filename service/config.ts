@@ -1,6 +1,11 @@
-import { ConfigModel } from 'models/Config'
+import { Config, ConfigModel } from 'models/Config'
+import BaseService from './base'
 
-export default class ConfigService {
+export default class ConfigService extends BaseService<Config, typeof Config> {
+  constructor() {
+    super(ConfigModel)
+  }
+
   insertConfig = async () => {
     const cfg = new ConfigModel()
     cfg.name = 'ChainType'

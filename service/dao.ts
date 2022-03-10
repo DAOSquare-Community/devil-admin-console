@@ -2,8 +2,13 @@ import { Dao, DaoModel } from 'models/Dao'
 import { MongoError } from 'mongodb'
 import MsgCode from 'types/msgcode'
 import { ResultMsg } from 'types/resultmsg'
+import BaseService from './base'
 
-export default class DaoService {
+export default class DaoService extends BaseService<Dao, typeof Dao> {
+  constructor() {
+    super(DaoModel)
+  }
+
   /**
    * get dao information by daoId
    *
@@ -19,6 +24,10 @@ export default class DaoService {
       retDaoInfo.message = MsgCode.FAILURE
     }
     return retDaoInfo
+  }
+
+  getDaos = () => {
+    return DaoModel.find<Dao>()
   }
 
   /**

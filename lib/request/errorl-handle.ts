@@ -20,9 +20,9 @@ export const errorHandler = (error: DMCError) => {
       errorMessage || response.error || data?.message || statusText
     console.log('errorText', errorText)
 
-    if (status === 404 && window.location.pathname !== '/404') {
-      window.location.href = '/404'
-    }
+    // if (status === 404 && window.location.pathname !== '/404') {
+    //   // window.location.href = '/404'
+    // }
 
     if (status === 401 && window.location.pathname !== signInPath) {
       if (window.location.pathname !== '/404') {

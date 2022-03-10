@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com', 'iph.href.lu'],
+    domains: ['images.unsplash.com', 'iph.href.lu', 'etherscan.io'],
   },
   env: {
     DEVIL_CONSOLE_BACKEND_URL: 'api',

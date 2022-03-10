@@ -10,3 +10,4 @@ export type PathUnionType =
   | '/auth/sign-out'
   | '/auth/me'
   | `/api/error`
+  | '/dao'
