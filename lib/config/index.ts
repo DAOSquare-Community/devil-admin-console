@@ -54,8 +54,13 @@ export const UserNonceCache: CacheClass<string, string> =
 export const RoleApis: RoleApiPermission[] = [
   {
     apiRouter: '/api/v2/user',
-    role: ['super-admin', 'admin', 'member'],
+    role: ['super-admin', 'admin'],
     method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  {
+    apiRouter: '/api/v2/user',
+    role: ['member'],
+    method: ['GET'],
   },
   {
     apiRouter: '/api/v2/sign-in',
