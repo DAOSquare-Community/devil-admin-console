@@ -72,7 +72,7 @@ const useAccountForm = ({ user, isEdit, onSuccess }: AccountFormType) => {
     },
   })
 
-  const { mutate } = useGqlMutation<FormData & { userId?: number }>(
+  const { mutate } = useGqlMutation<FormData & { userId?: string }>(
     isEdit ? usrsUpdateGql : usrsCreatGql,
     {
       onSuccess: () => {

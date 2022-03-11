@@ -7,7 +7,7 @@ export interface MeInterface {
   name: string
   roles: Role[]
   title: string
-  id: number
+  id: string
 }
 
 export type UserType = MeInterface
