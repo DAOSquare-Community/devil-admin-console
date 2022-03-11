@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors'
 import { ResultMsg } from 'types/resultmsg'
 
-import MsgCode from 'types/msgcode'
+import { MsgCode } from 'types/const-enum'
 import CoinInfo, { CoinInfoData, CoinMarketInfoData } from 'service/coininfo'
 
 export default async function handler(

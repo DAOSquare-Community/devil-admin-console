@@ -1,6 +1,6 @@
 import { request } from 'lib/request/axios-helper'
 import { Dao } from 'models/Dao'
-import ChainEnum from 'types/chainenum'
+import { ChainEnum } from 'types/const-enum'
 
 /**
  * the data of dao governance

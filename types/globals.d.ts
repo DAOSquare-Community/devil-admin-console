@@ -1,6 +1,5 @@
+import { UserType } from 'types/user'
 /* eslint-disable no-var */
-
-import type { Role } from './permission'
 import type { MongoClient } from 'mongodb'
 
 declare global {
@@ -9,6 +8,12 @@ declare global {
 
 declare module 'next' {
   interface NextApiRequest {
-    user?: { name: string; role: Role; walletAddr: string }
+    user?: UserType
   }
 }
+
+// declare module 'next-auth/jwt' {
+//   interface JWT extends Record<string, unknown>, DefaultJWT {
+//     user?: UserType
+//   }
+// }

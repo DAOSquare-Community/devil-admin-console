@@ -6,7 +6,7 @@ import Governance, { GovernanceData } from 'service/governance'
 import { ResultMsg } from 'types/resultmsg'
 
 import { Dao } from 'models/Dao'
-import MsgCode from 'types/msgcode'
+import { MsgCode } from 'types/const-enum'
 import DaoService from 'service/dao'
 
 export default async function handler(

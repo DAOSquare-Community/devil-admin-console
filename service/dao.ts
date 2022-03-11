@@ -1,6 +1,6 @@
 import { Dao, DaoModel } from 'models/Dao'
 import { MongoError } from 'mongodb'
-import MsgCode from 'types/msgcode'
+import { MsgCode } from 'types/const-enum'
 import { ResultMsg } from 'types/resultmsg'
 import BaseService from './base'
 
