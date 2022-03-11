@@ -7,6 +7,71 @@ import { useRouter } from 'next/router'
 import Header from 'components/header'
 import { NextPageWithLayout } from 'types/page'
 import { NoSlideMenuLayout } from 'components/layout'
+import React, { useEffect, useRef, useState } from 'react'
+
+// import enums
+import { WalletEnum } from 'types/const-enum'
+// import web3
+import Web3 from 'web3'
+import {
+  useWeb3React,
+  UnsupportedChainIdError,
+  getWeb3ReactContext,
+} from '@web3-react/core'
+import { InjectedConnector } from '@web3-react/injected-connector'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+
+// next-auth
+import { signIn, signOut, useSession } from 'next-auth/react'
+
+//----------------connectors-----------------------
+// import enum
+import { ChainIdEnum } from 'types/const-enum'
+import { request } from 'lib/request/axios-helper'
+import { ResultMsg } from 'types/resultmsg'
+
+const injected = new InjectedConnector({
+  supportedChainIds: [ChainIdEnum.RINKEBY, ChainIdEnum.xDai],
+})
+
+const walletconnect = new WalletConnectConnector({
+  rpc: {
+    [ChainIdEnum.RINKEBY]:
+      'https://rinkeby.infura.io/v3/6e11ac17a8df4ee0b292028cf4e17325',
+    [ChainIdEnum.xDai]: 'https://rpc.gnosischain.com',
+  },
+  qrcode: true,
+  //pollingInterval: 12000,
+})
+
+const connectors = {
+  [WalletEnum.METAMASK]: injected,
+  [WalletEnum.TRUSTWALLET]: walletconnect,
+  [WalletEnum.WALLETCONNECT]: walletconnect,
+}
+//----------------connectors  end-----------------------
+
+//------------------API_USERS-----------------------------
+async function getNonce(publicAddress: string): Promise<ResultMsg<string>> {
+  return await request({
+    url: '/api/auth/nonce',
+    method: 'get',
+    payload: {
+      publicAddress: publicAddress,
+    },
+  })
+}
+//------------------API_USERS  end-----------------------------
+
+//------------------Web3Library-----------------------------
+class Web3Library {
+  // default : xdai web3
+  static getLib(library: Web3) {
+    if (library) return library
+    else return new Web3('https://rpc.gnosischain.com')
+  }
+}
+//------------------Web3Library  end-----------------------------
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -41,7 +106,8 @@ const LoginContainer: FC = ({ children }) => {
   )
 }
 
-const LoginForm: FC = () => {
+//------------------LoginForm-----------------------------
+const LoginForm: FC = (props: unknown) => {
   // const { isValidating, trigger } = useLoginApi()
   const router = useRouter()
   const onSubmit: SubmitType = async (data) => {
@@ -55,8 +121,59 @@ const LoginForm: FC = () => {
     mode: 'onBlur',
     resolver: yupResolver(schema),
   })
+  //console.log('errors', errors)
 
-  console.log('errors', errors)
+  // Web3Connect------
+  const [walletType, setWalletType] = useState<WalletEnum>()
+  const { activate, account, library } = useWeb3React()
+  //console.log('activate------------------')
+  //console.log(activate)
+  //console.log('walletType----------------')
+  //console.log(walletType)
+  // call the connect wallet function
+  const connectWallet = async (type: WalletEnum) => {
+    await activate(connectors[type])
+    //console.log('activate------------end')
+  }
+
+  // Web3Login-----
+  const { data: session, status } = useSession()
+
+  //const [retrivedInfos, setRetrivedInfos] = useState('NONE')
+  // const { account, library } = useWeb3React()
+  //console.log('account, library------------')
+  //console.log(account, library)
+  //console.log('session, status--------------')
+  //console.log(session, status)
+
+  const login = async () => {
+    //const addr = await web3.eth.getCoinbase()
+    //console.log(`account----${account}`)
+    if (!account) return
+
+    const res = await getNonce(account)
+    //console.log(res)
+    if (res.message) return //console.log('Cannot retrive nonce')
+    const nonce = res.data
+
+    const textToSign = `Welcome to Devil, nonce:${nonce}`
+    //console.log(`textToSign:${textToSign}`)
+
+    const web3 = Web3Library.getLib(library)
+    // MetaMask will ignore the password argument here
+    const sign = await web3.eth.personal.sign(textToSign, account, '')
+    //console.log(`sign:${sign}`)
+    const authResult = await signIn('credentials', {
+      redirect: false,
+      signature: sign,
+      address: account,
+    })
+    //console.log(`-----------${JSON.stringify(authResult)}------------`)
+    //console.log('-----------end------------')
+  }
+  const logout = async () => {
+    signOut()
+  }
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -79,9 +196,39 @@ const LoginForm: FC = () => {
             d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
           />
         </svg>
-        Connect wallet
+        CONNECT WALLET
       </a>
-
+      <div style={{ margin: '50px' }}>
+        <h3>Connected Infos</h3>
+        {account
+          ? `Connected Wallet: ${account}`
+          : 'Connected Wallet: None'}{' '}
+      </div>
+      <div>
+        <h3>Auth Panel</h3>
+        {session && status === 'authenticated' ? (
+          <React.Fragment>
+            <p>
+              <i>Logged in</i>
+            </p>
+            <p>
+              <i>User name: {session.user?.name}</i>
+            </p>{' '}
+            <br />
+            <button onClick={logout}> Logout </button>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {!account && (
+              <p>Remind to connect a wallet before you can log in.</p>
+            )}
+            <button name="loginBtn" onClick={login}>
+              {' '}
+              Login{' '}
+            </button>
+          </React.Fragment>
+        )}
+      </div>
       <div className="modal" id="wallet-moda">
         <div className="modal-box">
           <div className="flex items-center justify-between rounded-t border-b py-4 px-6 dark:border-gray-600">
@@ -113,6 +260,12 @@ const LoginForm: FC = () => {
                 <a
                   href="#"
                   className="group flex items-center rounded-lg bg-gray-50 p-3 text-base font-bold text-gray-900 hover:bg-gray-100 hover:shadow dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+                  onClick={() => {
+                    setWalletType(WalletEnum.METAMASK)
+                    connectWallet(WalletEnum.METAMASK).then(() => {
+                      document.getElementsByName('loginBtn')[0].click()
+                    })
+                  }}
                 >
                   <svg
                     className="h-4"
@@ -274,6 +427,10 @@ const LoginForm: FC = () => {
                 <a
                   href="#"
                   className="group flex items-center rounded-lg bg-gray-50 p-3 text-base font-bold text-gray-900 hover:bg-gray-100 hover:shadow dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+                  onClick={() => {
+                    setWalletType(WalletEnum.WALLETCONNECT)
+                    connectWallet(WalletEnum.WALLETCONNECT)
+                  }}
                 >
                   <svg
                     className="h-5"

@@ -2,7 +2,7 @@ import { ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor, BeAnObject } from '@typegoose/typegoose/lib/types'
 import { MongoError } from 'mongodb'
 import mongoose from 'mongoose'
-import MsgCode from 'types/msgcode'
+import { MsgCode } from 'types/const-enum'
 import { PageData, ResultMsg } from 'types/resultmsg'
 
 export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
@@ -72,12 +72,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       const entity = await this.model.count(filter)
       if (!!entity) ret.data = entity
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof Error) {
-        errmsg = err.message
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
       console.log('getCount--------')
       console.log(err)
       ret.message = errmsg
@@ -99,12 +94,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       )
       if (!!entity) ret.data = entity
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof Error) {
-        errmsg = err.message
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
       console.log('getEntityById--------')
       console.log(err)
       ret.message = errmsg
@@ -124,12 +114,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       const entity = await this.model.find<T>(filter)
       if (!!entity) ret.data = entity
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof Error) {
-        errmsg = err.message
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
       console.log('getEntities--------')
       console.log(err)
       ret.message = errmsg
@@ -155,12 +140,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       await this.model.updateMany(filter, { $set: updateData })
       retUpdate.data = true
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof Error) {
-        errmsg = err.message
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
       console.log('updateEntity--------')
       console.log(err)
       retUpdate.message = errmsg
@@ -182,12 +162,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       await this.model.deleteMany(filter)
       retDel.data = true
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof Error) {
-        errmsg = err.message
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
       console.log('deleteEntity--------')
       console.log(err)
       retDel.message = errmsg
@@ -209,15 +184,10 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       const ids = Ids.map((value) => {
         return new mongoose.Types.ObjectId(value)
       })
-      await this.model.deleteMany({ _id: { $in: Ids } })
+      await this.model.deleteMany({ _id: { $in: ids } })
       retDel.data = true
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof Error) {
-        errmsg = err.message
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
       console.log('deleteEntityByIds--------')
       console.log(err)
       retDel.message = errmsg
@@ -239,12 +209,10 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       await this.model.create(entity)
       retInsert.data = true
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof MongoError && err.code === 11000) {
-        errmsg = MsgCode.DUPLICATE_KEY
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg =
+        err instanceof MongoError && err.code === 11000
+          ? MsgCode.DUPLICATE_KEY
+          : MsgCode.FAILURE
       console.log('insertEntity--------')
       console.log(err)
       retInsert.message = errmsg
@@ -266,12 +234,10 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       await this.model.insertMany(entity)
       retInsertMutl.data = true
     } catch (err) {
-      let errmsg = ''
-      if (err instanceof MongoError && err.code === 11000) {
-        errmsg = MsgCode.DUPLICATE_KEY
-      } else {
-        errmsg = MsgCode.FAILURE
-      }
+      const errmsg =
+        err instanceof MongoError && err.code === 11000
+          ? MsgCode.DUPLICATE_KEY
+          : MsgCode.FAILURE
       console.log('insertEntities--------')
       console.log(err)
       retInsertMutl.message = errmsg

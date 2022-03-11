@@ -7,8 +7,8 @@ declare global {
   var _mongoClientPromise: Promise<MongoClient>
 }
 
-declare module 'next' {
-  interface NextApiRequest {
-    user?: { name: string; role: Role; walletAddr: string }
-  }
-}
+// declare module 'next' {
+//   interface NextApiRequest {
+//     user?: { name: string; role: Role; walletAddr: string }
+//   }
+// }

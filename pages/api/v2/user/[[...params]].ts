@@ -1,3 +1,4 @@
+import { MsgCode } from 'types/const-enum'
 import {
   Get,
   Query,
@@ -12,11 +13,11 @@ import {
   Post,
   Put,
 } from '@storyofams/next-api-decorators'
-import { get } from 'http'
 import NextAuthGuard from 'lib/middleawares/auth'
 import { User } from 'models/User'
 import { NextApiRequest } from 'next'
 import UserService from 'service/user'
+import { PageData, ResultMsg } from 'types/resultmsg'
 
 interface User1 {
   id: number
@@ -69,7 +70,7 @@ class UserController {
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
     @Query('queryParams') queryParams?: object,
     @Query('sortParams') sortParams?: object
-  ) {
+  ): Promise<ResultMsg<PageData<User>>> {
     const ret = await this._service.getList(
       page,
       pageSize,
@@ -88,7 +89,9 @@ class UserController {
    * @returns
    */
   @Get('/:id')
-  public async getUserById(@Param('id') id: string) {
+  public async getUserById(
+    @Param('id') id: string
+  ): Promise<ResultMsg<User | null>> {
     const user = await this._service.getEntityById(id)
     console.log(user)
     if (user.message) {
@@ -103,7 +106,9 @@ class UserController {
    * @returns
    */
   @Delete()
-  public async deleteUsersByIds(@Param('Ids') Ids: string[]) {
+  public async deleteUsersByIds(
+    @Param('Ids') Ids: string[]
+  ): Promise<ResultMsg<boolean>> {
     const delUsers = await this._service.deleteEntityByIds(Ids)
     if (delUsers.message) {
       throw new InternalServerErrorException(delUsers.message)
@@ -117,7 +122,9 @@ class UserController {
    * @returns
    */
   @Post()
-  public async insertUser(@Param('user') user: User) {
+  public async insertUser(
+    @Param('user') user: User
+  ): Promise<ResultMsg<boolean>> {
     const ret = await this._service.insertEntity(user)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
@@ -135,7 +142,7 @@ class UserController {
   public async updateUser(
     @Param('filter') filter: object,
     @Param('update') update: object
-  ) {
+  ): Promise<ResultMsg<boolean>> {
     const ret = await this._service.updateEntity(filter, update)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)

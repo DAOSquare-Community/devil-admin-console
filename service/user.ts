@@ -1,5 +1,5 @@
 import { MongoError } from 'mongodb'
-import MsgCode from 'types/msgcode'
+import { MsgCode } from 'types/const-enum'
 import { ResultMsg } from 'types/resultmsg'
 import { User, UserModel } from './../models/User'
 import BaseService from './base'
