@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core'
 // import Layout from 'components/nav/layout'
 import { HomeRoute } from 'lib/config'
 import { useSession } from 'next-auth/react'

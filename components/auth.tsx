@@ -14,7 +14,7 @@ const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
   //   {
   //     onSuccess: (data) => dispatch({ type: 'update', payload: data }),
   //     refetchOnMount: true,
-  //   }pa
+  //   }
   // )
 
   useEffect(() => {
