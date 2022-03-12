@@ -17,3 +17,10 @@ declare module 'next-auth/jwt' {
     user?: UserType
   }
 }
+
+declare module 'next-auth' {
+  interface Session extends Record<string, unknown>, DefaultSession {
+    user?: UserType
+    // expires: ISODateString
+  }
+}

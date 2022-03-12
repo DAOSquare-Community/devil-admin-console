@@ -17,8 +17,8 @@ const NextAuthGuard = createMiddlewareDecorator(
     }
 
     const user: UserType = token.user as UserType
-    let roles: Role[] = []
-    if (!user.roles || user.roles.length <= 0) roles = ['member']
+    const roles =
+      !user.roles || user.roles.length <= 0 ? ['member'] : user.roles
 
     const roleApiRouters = RoleApis.filter((value) => {
       return (

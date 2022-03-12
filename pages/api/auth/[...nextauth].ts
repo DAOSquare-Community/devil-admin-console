@@ -97,20 +97,11 @@ export default NextAuth({
   },
   callbacks: {
     async session({ session, token }) {
-      //session.user = token.user
-      session.user = {
-        name: (token.user as UserType).id,
-        email: (token.user as UserType).email,
-      }
-      //console.log(`session:${JSON.stringify(session)}`)
-      //console.log(`token:${JSON.stringify(token)}`)
+      session.user = token.user
       return session
     },
     async jwt({ token, user }) {
-      //token.userRole = 'admin'
       if (user) token.user = user as unknown as UserType
-      //console.log(`jwt user:${JSON.stringify(token.user)}`)
-      //console.log(`jwt token:${JSON.stringify(token)}`)
       return token
     },
   },

@@ -23,7 +23,7 @@ class AuthController {
     const res: ResultMsg<string> = {
       message: '',
     }
-    console.log(`walletAddress:${walletAddress}`)
+    //console.log(`walletAddress:${walletAddress}`)
     if (!Web3.utils.isAddress(walletAddress))
       throw new BadRequestException('invalid address')
 
@@ -33,8 +33,8 @@ class AuthController {
       UserNonceCache.put(walletAddress, nonce)
     }
     res.data = nonce
-    console.log(`UserNonceCache:${JSON.stringify(UserNonceCache)}`)
-    console.log(`UserNonceCache.get:${UserNonceCache.get(walletAddress)}`)
+    //console.log(`UserNonceCache:${JSON.stringify(UserNonceCache)}`)
+    //console.log(`UserNonceCache.get:${UserNonceCache.get(walletAddress)}`)
     return res
   }
 }
