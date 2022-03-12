@@ -33,17 +33,18 @@ a {
   z-index: 999;
   overflow-y: auto;
 }
-
+  
 @layer components {
   .dmc-form-checkbox {
-    @apply rounded border-gray-300 text-primary shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50
+    @apply rounded border-gray-300 text-primary shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100
   }
   .dmc-form-input {
-    @apply  block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 focus:bg-white 
-    focus:outline-none focus:border-primary focus:ring-primary disabled:bg-gray-400
+    @apply  block w-full appearance-none rounded border border-gray-100 bg-gray-100 py-3 px-4 leading-tight text-gray-700 focus:bg-white 
+    focus:outline-none focus:border-primary focus:ring-primary disabled:bg-gray-500
   }
 
   .dmc-form-select {
-    @apply  focus:border-primary rounded-md 
+    @apply  block w-full appearance-none rounded border border-gray-100 bg-gray-100 py-3 px-4 leading-tight text-gray-700 focus:bg-white 
+    focus:outline-none focus:border-primary focus:ring-primary disabled:bg-gray-500
   }
 }

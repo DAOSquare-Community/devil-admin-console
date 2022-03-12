@@ -3,7 +3,10 @@ import React from 'react'
 // eslint-disable-next-line react/display-name
 const IndeterminateCheckbox = React.forwardRef<
   HTMLInputElement,
-  { indeterminate?: boolean }
+  { indeterminate?: boolean } & React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >
 >(({ indeterminate, ...rest }, ref) => {
   const defaultRef = React.useRef<
     HTMLInputElement & { indeterminate?: boolean }

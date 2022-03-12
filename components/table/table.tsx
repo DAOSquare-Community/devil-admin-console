@@ -16,16 +16,9 @@ export const TableContainer: FC<{
   const { role, ...othertable } = getTableProps()
   return (
     <div className="mt-4 flex flex-col overflow-x-auto">
-      <div className="inline-block min-w-full py-2 align-middle">
-        <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg" />
-        <table
-          {...ohter}
-          {...othertable}
-          className="min-w-full divide-y divide-gray-200"
-        >
-          {children}
-        </table>
-      </div>
+      <table {...ohter} {...othertable} className="table   ">
+        {children}
+      </table>
     </div>
   )
 }
@@ -35,7 +28,7 @@ export const TableHeader: FC<{
   headerGroups: HeaderGroup<any>[]
 }> = ({ headerGroups }) => {
   return (
-    <thead className="bg-gray-50">
+    <thead>
       {headerGroups.map((headerGroup, i) => (
         <tr {...headerGroup.getHeaderGroupProps()} key={i}>
           {headerGroup.headers.map((column) => (
@@ -43,7 +36,7 @@ export const TableHeader: FC<{
             // we can add them into the header props
             <th
               scope="col"
-              className="group px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+              className=" px-6 py-3  "
               {...column.getHeaderProps(column.getSortByToggleProps())}
               key={column.id}
             >
@@ -74,10 +67,7 @@ export function TBody<
   D extends Record<string, unknown> = Record<string, unknown>
 >({ getTableBodyProps, page, prepareRow }: TableInstance<D>) {
   return (
-    <tbody
-      {...getTableBodyProps()}
-      className="divide-y divide-gray-200 bg-white"
-    >
+    <tbody {...getTableBodyProps()}>
       {page.map((row) => {
         prepareRow(row)
         return (

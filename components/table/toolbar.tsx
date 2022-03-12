@@ -33,20 +33,6 @@ export function ToolBar<T extends Record<string, unknown>>({
           </button>
         )}
 
-      {onAdd &&
-        (!state.selectedRowIds ||
-          Object.keys(state.selectedRowIds).length === 0) && (
-          <button
-            className="btn btn-ghost btn-sm btn-circle"
-            onClick={() => onAdd(instance)}
-            disabled={
-              state.selectedRowIds &&
-              Object.keys(state.selectedRowIds).length !== 0
-            }
-          >
-            <PlusIcon className="h-5 w-5 text-gray-400" />
-          </button>
-        )}
       {onDelete &&
         (!state.selectedRowIds ||
           Object.keys(state.selectedRowIds).length !== 0) && (
@@ -61,6 +47,14 @@ export function ToolBar<T extends Record<string, unknown>>({
             <MinusIcon className="h-5 w-5 text-gray-400" />
           </button>
         )}
+      {onAdd && (
+        <button
+          className="btn btn-ghost btn-sm btn-circle"
+          onClick={() => onAdd(instance)}
+        >
+          <PlusIcon className="h-5 w-5 text-gray-400" />
+        </button>
+      )}
     </div>
   )
 }

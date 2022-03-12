@@ -13,12 +13,12 @@ const PermissionLayout: FC<{
 
   const router = useRouter()
   useCustomLayoutEffect(() => {
-    if (!allowed && pathname !== HomeRoute) {
-      router.replace(HomeRoute)
+    if (!allowed && pathname !== '/401') {
+      router.replace('/401')
     }
   }, [allowed, router])
 
-  if (allowed) {
+  if (allowed || pathname === '/401') {
     return <>{children}</>
   }
   return null

@@ -1,15 +1,14 @@
-import Layout from 'components/layout'
+import Layout from 'components/nav/layout'
 import React, { FC, useCallback, useRef, useState } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import Table from '../components/table'
 import Image from 'next/image'
 import { Cell, CellProps, Column, TableInstance } from 'react-table'
-import { useGqlQuery } from 'lib/request/use-gql-fetch'
 import { gql } from 'graphql-request'
 import { UserType } from 'types/user'
 import { Role } from 'types/permission'
 import classNames from 'classnames'
-import { Alert } from 'components/alert'
+import { Alert } from 'components/modal/cmd-alert'
 import { Modal } from 'components/modal'
 import AccountForm from 'components/form/account-update'
 
@@ -83,7 +82,7 @@ const usrsGql = gql`
 // const Tabel
 
 const Accounts: NextPageWithLayout = () => {
-  const [warning, setWaring] = useState(false)
+  // const [warning, setWaring] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
 
   // const { data } = useGqlQuery<{ users: UserType[] }, UserType[]>(
@@ -145,8 +144,17 @@ const Accounts: NextPageWithLayout = () => {
     setShowEdit(true)
   }, [])
 
-  const onDelete = useCallback(() => {
-    setWaring(true)
+  const onDelete = useCallback((e: TableInstance<UserType>) => {
+    // setWarning(true)
+    Alert.show(
+      `Are you sure you want to delete there accounts? All of there
+    data will be permanently removed. This action cannot be
+    undone.`,
+      () => {
+        const selecteds = e.selectedFlatRows.map((v) => v.original.id)
+        // remove({ userIds: selecteds })
+      }
+    )
   }, [])
 
   if (data) {
@@ -161,27 +169,25 @@ const Accounts: NextPageWithLayout = () => {
           onAdd={onAdd}
           showSelection
         />
-        <Alert
+        {/* <Alert
           isOpen={warning}
           onClose={() => setWaring(false)}
           onClick={() => setWaring(false)}
           message="Are you sure you want to delete there accounts? All of there
                   data will be permanently removed. This action cannot be
                   undone."
-        />
+        /> */}
         <Modal
           isOpen={showEdit}
+          form="account-form"
           title="Update User Profile"
           // onClose={() => setIsopen(false)}
           // onSumbimit={() => setIsopen(false)}
         >
           <AccountForm
+            id={'account-form'}
             isEdit={!userRef.current}
             user={userRef.current}
-            onClose={() => {
-              setShowEdit(false)
-              userRef.current = undefined
-            }}
           />
         </Modal>
       </div>

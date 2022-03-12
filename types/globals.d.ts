@@ -12,8 +12,8 @@ declare module 'next' {
   }
 }
 
-// declare module 'next-auth/jwt' {
-//   interface JWT extends Record<string, unknown>, DefaultJWT {
-//     user?: UserType
-//   }
-// }
+declare module 'next-auth/jwt' {
+  interface JWT extends Record<string, unknown>, DefaultJWT {
+    user?: UserType
+  }
+}

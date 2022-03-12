@@ -1,4 +1,4 @@
-import Layout from 'components/layout'
+import Layout from 'components/nav/layout'
 import { NextPageWithLayout } from 'types/page'
 // Define a default UI for filtering
 

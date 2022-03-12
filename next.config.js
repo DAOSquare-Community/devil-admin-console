@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  swcMinify: true,
   reactStrictMode: true,
   images: {
     domains: ['images.unsplash.com', 'iph.href.lu', 'etherscan.io'],
@@ -11,8 +12,8 @@ const nextConfig = {
   redirects: async () => {
     return [
       {
-        source: '/',
-        destination: '/dashboard',
+        source: '/dashboard',
+        destination: '/',
         permanent: true,
       },
     ]
