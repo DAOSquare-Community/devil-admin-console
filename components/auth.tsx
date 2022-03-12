@@ -1,23 +1,33 @@
-import { HomeRoute } from 'lib/config'
 import MeContext, { meReducer } from 'lib/me-provider'
-import errorHandler, { DMCError } from 'lib/request/errorl-handle'
-import { useAxiosQuery } from 'lib/request/use-fetch'
-import { useRouter } from 'next/router'
-import { FC, useReducer } from 'react'
-import { MeInterface } from 'types/user'
+import { useSession } from 'next-auth/react'
+import Router from 'next/router'
+import { FC, useEffect, useReducer } from 'react'
+import { MeInterface, UserType } from 'types/user'
 import PermissionLayout from './nav/permission-layout'
 
 const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
   const [state, dispatch] = useReducer(meReducer, {} as MeInterface)
-  useAxiosQuery<MeInterface>(
-    '/auth/me',
-    {},
-    {
-      onSuccess: (data) => dispatch({ type: 'update', payload: data }),
-      refetchOnMount: true,
+  const { data: session, status } = useSession()
+  // useAxiosQuery<MeInterface>(
+  //   '/auth/me',
+  //   {},
+  //   {
+  //     onSuccess: (data) => dispatch({ type: 'update', payload: data }),
+  //     refetchOnMount: true,
+  //   }pa
+  // )
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      const user = session?.user as UserType
+      user.roles = ['super-admin']
+      dispatch({ type: 'update', payload: user })
+    } else if (status === 'unauthenticated') {
+      Router.replace('/login')
     }
-  )
-  if (state && Object.keys(state).length > 0) {
+  }, [session?.user, status])
+
+  if (status === 'authenticated' && state.roles) {
     return (
       <MeContext.Provider value={{ state, dispatch }}>
         <PermissionLayout pathname={pathname}>{children}</PermissionLayout>
