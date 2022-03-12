@@ -20,8 +20,13 @@ const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
   useEffect(() => {
     if (status === 'authenticated') {
       const user = session?.user as UserType
-      user.roles = ['super-admin']
-      dispatch({ type: 'update', payload: user })
+      // user.roles = ['super-admin']
+      // if()
+      if (user.roles && user.roles.length) {
+        dispatch({ type: 'update', payload: user })
+      } else {
+        Router.replace('/401')
+      }
     } else if (status === 'unauthenticated') {
       Router.replace('/login')
     }

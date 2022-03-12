@@ -14,7 +14,6 @@ type CSelectType<T extends FieldValues> = DetailedHTMLProps<
   showLabel?: boolean
   showErrow?: boolean
   control: Control<T>
-  options: { label: string; value: string }[]
 }
 
 const CSelect = <T extends FieldValues = FieldValues>({
@@ -24,7 +23,7 @@ const CSelect = <T extends FieldValues = FieldValues>({
   showLabel = true,
   showErrow = true,
   className,
-  options,
+  children,
   ...props
 }: PropsWithChildren<CSelectType<T>>) => {
   return (
@@ -52,11 +51,7 @@ const CSelect = <T extends FieldValues = FieldValues>({
                 {...field}
                 {...props}
               >
-                {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                {children}
               </select>
               {showErrow && !!error?.message && (
                 <p className="mt-2 text-xs italic text-red-500">

@@ -23,7 +23,7 @@ export const useAxiosQuery = <
   TData = TQueryFnData,
   TError = unknown
 >(
-  path: PathUnionType,
+  path: string,
   payload?: Variables,
   options?: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, KeysType>,
@@ -41,8 +41,8 @@ export const useAxiosQuery = <
 }
 
 export const useAxiosMutation = <
-  TData = unknown,
   TVariables = Variables,
+  TData = unknown,
   TError = unknown,
   TContext = unknown
 >(

@@ -7,3 +7,8 @@ export type LoginPostReuqest = {
 export type LoginPostResponse = {
   test: string
 }
+
+export type DaoPostRequest = {
+  name: string
+  profile: string
+}

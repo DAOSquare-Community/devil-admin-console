@@ -15,6 +15,7 @@ import { Web3ReactProvider } from '@web3-react/core'
 
 import { SessionProvider } from 'next-auth/react'
 import { provider } from 'web3-core'
+import AlertComponent from 'components/modal/cmd-alert'
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
@@ -43,6 +44,7 @@ function MyApp({
           </SignCheckLayout>
           <ReactQueryDevtools initialIsOpen={false} />
           <ToastContainer />
+          <AlertComponent />
         </QueryClientProvider>
       </SessionProvider>
     </Web3ReactProvider>
