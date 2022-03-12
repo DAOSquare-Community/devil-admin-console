@@ -108,7 +108,7 @@ export default NextAuth({
     },
     async jwt({ token, user }) {
       //token.userRole = 'admin'
-      if (user) token.user = user
+      if (user) token.user = user as unknown as UserType
       //console.log(`jwt user:${JSON.stringify(token.user)}`)
       //console.log(`jwt token:${JSON.stringify(token)}`)
       return token

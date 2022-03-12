@@ -7,21 +7,22 @@ import { Modal } from '../modal'
 import ProfileForm from '../form/profile'
 import SettingsForm from '../form/settings'
 import Link from 'next/link'
+import { signOut } from 'next-auth/react'
 
 export type NavBarProps = { title?: string }
 
 const AvatarDropdown: FC = () => {
   const router = useRouter()
   const { state: data, dispatch } = useContext(MeContext)
-  const { mutate } = useAxiosMutation(
-    '/auth/sign-out',
-    {
-      onSuccess: () => {
-        router.replace('/login')
-      },
-    },
-    'GET'
-  )
+  // const { mutate } = useAxiosMutation(
+  //   '/auth/sign-out',
+  //   {
+  //     onSuccess: () => {
+  //       router.replace('/login')
+  //     },
+  //   },
+  //   'GET'
+  // )
   const [isopen, setIsopen] = useState(false)
   const [isSettingsopen, setIsSettingsopen] = useState(false)
   return (
@@ -57,7 +58,7 @@ const AvatarDropdown: FC = () => {
             <span className="badge">New</span>
           </button>
         </li>
-        <li>
+        {/* <li>
           <button
             className="justify-between"
             onClick={() => {
@@ -66,11 +67,14 @@ const AvatarDropdown: FC = () => {
           >
             Settings
           </button>
-        </li>
+        </li> */}
         <li>
           <button
             onClick={() => {
-              mutate({})
+              // mutate({})
+              signOut().then(() => {
+                router.replace('/login')
+              })
             }}
           >
             Logout
