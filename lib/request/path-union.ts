@@ -11,3 +11,4 @@ export type PathUnionType =
   | '/auth/me'
   | `/api/error`
   | '/dao'
+  | '/v2/user'

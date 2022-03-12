@@ -50,6 +50,7 @@ const CInput = <T extends FieldValues = FieldValues>({
                 type={type}
                 {...field}
                 {...props}
+                value={field.value ?? ''}
               />
               {showErrow && !!error?.message && (
                 <p className="mt-2 text-xs italic text-red-500">

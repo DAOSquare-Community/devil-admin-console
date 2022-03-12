@@ -9,7 +9,7 @@ export enum SessionStorageKeys {
   DEEP_URL_KEY = 'DEEP_URL_KEY',
 }
 
-export const DontSignPathList = ['/login']
+export const DontSignPathList = ['/login', '/404', '/401']
 
 export const HomeRoute = '/dashboard'
 

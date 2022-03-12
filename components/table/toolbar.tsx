@@ -38,7 +38,12 @@ export function ToolBar<T extends Record<string, unknown>>({
           Object.keys(state.selectedRowIds).length !== 0) && (
           <button
             className="btn btn-ghost btn-sm btn-circle"
-            onClick={() => onDelete(instance)}
+            onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              state.selectedRowIds = {}
+              onDelete(instance)
+            }}
             disabled={
               state.selectedRowIds &&
               Object.keys(state.selectedRowIds).length === 0

@@ -7,6 +7,7 @@ export const permissionCheck = (roles: Set<Role>, current: Set<Role>) =>
 
 export const usePermissionCheck = (current: Set<Role>) => {
   const { state } = useContext(MeContext)
-  const { roles = ['super-admin'] } = state
+  const { roles } = state
+
   return permissionCheck(new Set(roles), current)
 }
