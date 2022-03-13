@@ -21,7 +21,8 @@ const NextAuthGuard = createMiddlewareDecorator(
 
     const roleApiRouters = RoleApis.filter((value) => {
       return (
-        value.apiRouter === req.url &&
+        value.apiRouter ===
+          new URL(req.url ?? '', `http://${req.headers.host}`).pathname &&
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         value.method.includes(req.method?.toUpperCase() ?? '') &&

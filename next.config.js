@@ -6,8 +6,8 @@ const nextConfig = {
     domains: ['images.unsplash.com', 'iph.href.lu', 'etherscan.io'],
   },
   env: {
-    DEVIL_CONSOLE_BACKEND_URL: 'api',
-    GRAGHQL_BACKEND_URL: `api/graphql`,
+    DEVIL_CONSOLE_BACKEND_URL: process.env.DEVIL_CONSOLE_BACKEND_URL,
+    // GRAGHQL_BACKEND_URL: `api/graphql`,
   },
   redirects: async () => {
     return [

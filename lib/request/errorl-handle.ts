@@ -33,7 +33,7 @@ export const errorHandler = (error: DMCError) => {
         sessionStorage.setItem(SessionStorageKeys.DEEP_URL_KEY, LAST_PATH_NAME)
       }
 
-      return (window.location.href = signInPath)
+      // return (window.location.href = signInPath)
     }
     toast.error(errorText)
     // return Promise.reject(errorText)
