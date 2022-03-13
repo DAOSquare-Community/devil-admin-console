@@ -6,13 +6,13 @@ import {
   InternalServerErrorException,
   Param,
 } from '@storyofams/next-api-decorators'
-import NextAuth, { Awaitable, IncomingRequest } from 'next-auth'
+import NextAuth from 'next-auth'
 import { UserNonceCache } from 'lib/config'
 import Web3Auth from 'lib/web3Auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { Role } from 'types/permission'
 import { User } from 'models/User'
-import { UserType } from 'types/user'
+import { MeInterface } from 'types/user'
 
 // TODO: https://github.dev/Linch1/Web3NextjsAuth
 // : Awaitable<(Omit<UserToken, 'id'> | { id?: string }) | null>
@@ -28,7 +28,7 @@ export default NextAuth({
       },
       authorize: async (
         credentials: Record<string, string> | undefined
-      ): Promise<UserType> => {
+      ): Promise<MeInterface> => {
         const address = credentials?.address
         const signature = credentials?.signature
 
@@ -75,7 +75,7 @@ export default NextAuth({
           user = retMsg.data as User
         }
         //console.log(`user:${JSON.stringify(user)}`)
-        const ut: UserType = {
+        const ut: MeInterface = {
           avatar: '',
           email: '',
           joinDate: '',
@@ -101,7 +101,7 @@ export default NextAuth({
       return session
     },
     async jwt({ token, user }) {
-      if (user) token.user = user as unknown as UserType
+      if (user) token.user = user as unknown as MeInterface
       return token
     },
   },

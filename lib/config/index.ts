@@ -67,7 +67,27 @@ export const RoleApis: RoleApiPermission[] = [
     method: ['GET', 'POST', 'DELETE', 'PUT'],
   },
   {
+    apiRouter: '/accounts/add',
+    role: ['super-admin'],
+    method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  {
+    apiRouter: '/accounts/[id]',
+    role: ['super-admin'],
+    method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  {
+    apiRouter: '/daos/[id]',
+    role: ['super-admin'],
+    method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  {
     apiRouter: '/daos',
+    role: ['super-admin', 'admin'],
+    method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  {
+    apiRouter: '/daos/add',
     role: ['super-admin', 'admin'],
     method: ['GET', 'POST', 'DELETE', 'PUT'],
   },

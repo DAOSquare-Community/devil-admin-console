@@ -4,13 +4,13 @@ import { NextPageWithLayout } from 'types/page'
 import Table from '../../components/table'
 import Image from 'next/image'
 import { Cell, CellProps, Column, TableInstance } from 'react-table'
-import { UserType } from 'types/user'
 import { Role } from 'types/permission'
 import classNames from 'classnames'
 import { Alert } from 'components/modal/cmd-alert'
 import { ScreenIndicator } from 'components/Indicator'
 import { useRouter } from 'next/router'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
+import { User } from 'models/User'
 
 const AvatarCell: FC<
   CellProps<never> & { column: { imgAccessor: string; emailAccessor: string } }
@@ -19,15 +19,13 @@ const AvatarCell: FC<
 
   return (
     <div className="flex items-center">
-      <div className="h-10 w-10 flex-shrink-0">
-        <Image
+      {/* <Image
           width={40}
           height={40}
           className="h-10 w-10 rounded-full"
           src={row.original[column.imgAccessor]}
           alt=""
-        />
-      </div>
+        /> */}
       <div className="ml-4">
         <div className="text-sm font-medium text-gray-900">{value}</div>
         <div className="text-sm text-gray-500">
@@ -66,12 +64,12 @@ export function StatusPill({ value }: Cell<Record<string, unknown>, Role[]>) {
 const Accounts: NextPageWithLayout = () => {
   const router = useRouter()
 
-  const { data, refetch } = useAxiosQuery<{ data: UserType[] }, UserType[]>(
+  const { data, refetch } = useAxiosQuery<{ data: { items: User[] } }, User[]>(
     '/v2/user',
     undefined,
     {
       select: (sData) => {
-        return sData.data
+        return sData.data.items
       },
     }
   )
@@ -86,23 +84,21 @@ const Accounts: NextPageWithLayout = () => {
     'delete'
   )
 
-  const columns = React.useMemo<Column<UserType>[]>(
+  const columns = React.useMemo<Column<User>[]>(
     () => [
+      // {
+      //   Header: 'Name',
+      //   accessor: 'name',
+      //   Cell: AvatarCell,
+      // },
       {
-        Header: 'Name',
-        accessor: 'name',
-        Cell: AvatarCell,
-        imgAccessor: 'avatar',
-        emailAccessor: 'title',
-      },
-      {
-        Header: 'Email',
-        accessor: 'email',
+        Header: 'Wallet',
+        accessor: 'wallet_address',
         // Cell: StatusPill,
       },
       {
         Header: 'Role',
-        accessor: 'roles',
+        accessor: 'role',
         Cell: StatusPill,
       },
     ],
@@ -116,21 +112,21 @@ const Accounts: NextPageWithLayout = () => {
   }, [router])
 
   const onEdit = useCallback(
-    (e: TableInstance<UserType>) => {
-      router.push(`/daos/${e.selectedFlatRows[0].original.id}`)
+    (e: TableInstance<User>) => {
+      router.push(`/accounts/${e.selectedFlatRows[0].original._id}`)
     },
     [router]
   )
 
   const onDelete = useCallback(
-    (e: TableInstance<UserType>) => {
+    (e: TableInstance<User>) => {
       // setWarning(true)
       Alert.show(
         `Are you sure you want to delete there accounts? All of there
     data will be permanently removed. This action cannot be
     undone.`,
         () => {
-          const selecteds = e.selectedFlatRows.map((v) => v.original.id)
+          const selecteds = e.selectedFlatRows.map((v) => v.original._id)
           remove({ userIds: selecteds })
         }
       )
@@ -141,15 +137,15 @@ const Accounts: NextPageWithLayout = () => {
   if (!data) {
     return <ScreenIndicator />
   }
+
   return (
     <div className="mx-auto pt-4 text-gray-900 sm:px-6 lg:px-0">
-      <Table<UserType>
+      <Table<User>
         name={'Accounts'}
         columns={columns}
         data={data}
         onEdit={onEdit}
         onDelete={onDelete}
-        onAdd={onAdd}
         showSelection
       />
     </div>

@@ -10,20 +10,21 @@ const Menu: FC = () => {
   const currentPath = router.pathname.split('/')[1]
   const { state } = useContext(MeContext)
   const { roles: iRoles } = state
+
   return (
     <ul className="menu menu-compact flex flex-col p-0 px-4">
       <nav>
         {[...MenuConfigMap.entries()]
-          .filter(([key, { router }]) =>
-            permissionCheck(
+          .filter(([key, { router }]) => {
+            return permissionCheck(
               new Set(
                 RoleApis.find(
-                  (res) => res.apiRouter === router ?? `/${key}`
+                  (res) => res.apiRouter === (router ?? `/${key}`)
                 )?.role
               ),
               new Set(iRoles)
             )
-          )
+          })
           .map(([key, { name, Icon, router }]) => (
             <li key={key}>
               <Link href={router ?? `/${key}`}>

@@ -6,7 +6,9 @@ import { Role } from 'types/permission'
 export const permissionCheck = (
   roles = DefaultRoloPermissions,
   current?: Set<Role>
-) => !!new Set([...roles].filter((x) => current?.has(x))).size
+) => {
+  return !!new Set([...roles].filter((x) => current?.has(x))).size
+}
 
 export const usePermissionCheck = (current?: Role[]) => {
   const { state } = useContext(MeContext)

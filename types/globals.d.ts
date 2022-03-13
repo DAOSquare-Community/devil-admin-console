@@ -1,4 +1,4 @@
-import { UserType } from 'types/user'
+import { MeInterface } from 'types/user'
 /* eslint-disable no-var */
 import type { MongoClient } from 'mongodb'
 
@@ -8,19 +8,19 @@ declare global {
 
 declare module 'next' {
   interface NextApiRequest {
-    user?: UserType
+    user?: MeInterface
   }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT extends Record<string, unknown>, DefaultJWT {
-    user?: UserType
+    user?: MeInterface
   }
 }
 
 declare module 'next-auth' {
   interface Session extends Record<string, unknown>, DefaultSession {
-    user?: UserType
+    user?: MeInterface
     // expires: ISODateString
   }
 }
