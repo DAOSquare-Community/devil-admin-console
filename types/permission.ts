@@ -1,4 +1,4 @@
-import { HttpMethod } from './const-enum'
+// import { HttpMethod } from './const-enum'
 
 type Role = 'super-admin' | 'admin' | 'member'
 
@@ -14,8 +14,8 @@ type Role = 'super-admin' | 'admin' | 'member'
  */
 type RoleApiPermission = {
   apiRouter: string
-  role: string[]
-  method: string[]
+  role: Role[]
+  method: ('GET' | 'POST' | 'PUT' | 'DELETE')[]
 }
 
 export type { Role, RoleApiPermission }

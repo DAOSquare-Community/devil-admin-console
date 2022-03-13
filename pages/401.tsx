@@ -3,11 +3,10 @@ import { HomeRoute } from 'lib/config'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { NextPageWithLayout } from 'types/page'
-import { MeInterface } from 'types/user'
 
 const ErrorPage: NextPageWithLayout = () => {
   const { data: session } = useSession()
-  console.log('account', session?.user)
+  console.log('session', session)
 
   return (
     <div
@@ -31,8 +30,11 @@ const ErrorPage: NextPageWithLayout = () => {
           </p>
 
           <p className="mb-8 text-center text-gray-500 md:text-lg">
-            {session?.user?.name} your wallet acount id is{' '}
-            {(session?.user as MeInterface)?.id}
+            your wallet acount address is {session?.user?.name}
+          </p>
+          <p className="mb-8 text-center text-gray-500 md:text-lg">
+            your roles is {session?.user?.roles.join('/') || 'vacancies'}
+            ，please contact the administrator
           </p>
 
           <Link href={HomeRoute}>
