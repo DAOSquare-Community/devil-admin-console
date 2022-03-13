@@ -66,7 +66,7 @@ const Accounts: NextPageWithLayout = () => {
 
   const { data, refetch } = useAxiosQuery<{ data: { items: User[] } }, User[]>(
     '/v2/user',
-    undefined,
+    { pageSize: 10000 },
     {
       select: (sData) => {
         return sData.data.items
@@ -104,12 +104,6 @@ const Accounts: NextPageWithLayout = () => {
     ],
     []
   )
-
-  // const data = React.useMemo(() => getData(), [])
-
-  const onAdd = useCallback(() => {
-    router.push('/accounts/add')
-  }, [router])
 
   const onEdit = useCallback(
     (e: TableInstance<User>) => {
