@@ -7,7 +7,6 @@ import {
 } from '@storyofams/next-api-decorators'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getToken } from 'next-auth/jwt'
-import { UserType } from 'types/user'
 
 const NextAuthGuard = createMiddlewareDecorator(
   async (req: NextApiRequest, _res: NextApiResponse, next: NextFunction) => {
@@ -16,16 +15,18 @@ const NextAuthGuard = createMiddlewareDecorator(
       throw new UnauthorizedException()
     }
 
-    const user: UserType = token.user as UserType
+    const { user } = token
     const roles =
-      !user.roles || user.roles.length <= 0 ? ['member'] : user.roles
+      !user.roles || user.roles.length === 0 ? ['member'] : user.roles
 
     const roleApiRouters = RoleApis.filter((value) => {
       return (
         value.apiRouter === req.url &&
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         value.method.includes(req.method?.toUpperCase() ?? '') &&
         value.role.findIndex((r) => {
-          return roles.includes(r as Role)
+          return roles.includes(r)
         }) >= 0
       )
     })

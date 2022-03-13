@@ -1,15 +1,9 @@
 import Link from 'next/link'
 import { FC, useContext } from 'react'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import MeContext from 'lib/me-provider'
 import { permissionCheck } from 'lib/utils/permission'
-import {
-  DefaultRoloPermissions,
-  HomeRoute,
-  MenuConfigMap,
-  RoutePermissions,
-} from 'lib/config'
+import { HomeRoute, MenuConfigMap, RoleApis } from 'lib/config'
 
 const Menu: FC = () => {
   const router = useRouter()
@@ -20,27 +14,26 @@ const Menu: FC = () => {
     <ul className="menu menu-compact flex flex-col p-0 px-4">
       <nav>
         {[...MenuConfigMap.entries()]
-          .filter(([key]) =>
+          .filter(([key, { router }]) =>
             permissionCheck(
-              RoutePermissions.get(`/${key}`) ?? DefaultRoloPermissions,
+              new Set(
+                RoleApis.find(
+                  (res) => res.apiRouter === router ?? `/${key}`
+                )?.role
+              ),
               new Set(iRoles)
             )
           )
-          .map(([key, { name, icon }]) => (
+          .map(([key, { name, Icon, router }]) => (
             <li key={key}>
-              <Link href={`/${key === 'dashboard' ? '' : key}`}>
+              <Link href={router ?? `/${key}`}>
                 <a
                   id={key === currentPath ? 'active-menu' : ''}
                   className={`sveltekit:prefetch flex gap-4  ${
                     key === currentPath ? `active` : ''
                   }`}
                 >
-                  <span className="h-6 w-6 flex-none">
-                    <i
-                      className={`fa-light ${icon}`}
-                      style={{ height: 20, width: 20 }}
-                    />
-                  </span>
+                  <Icon size={18} />
                   <span className="flex-1 capitalize">{key ?? name}</span>
                 </a>
               </Link>

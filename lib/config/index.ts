@@ -1,9 +1,10 @@
+import { HiHome, HiUserGroup, HiUsers } from 'react-icons/hi'
 const logoAddress = 'https://iph.href.lu/80x15?text=logo&fg=000000&bg=ffffff'
 
 import memoryCache, { CacheClass } from 'memory-cache'
-import { User } from 'models/User'
 import { MenuName } from 'types/page'
 import { Role, RoleApiPermission } from 'types/permission'
+import { IconType } from 'react-icons'
 
 export enum SessionStorageKeys {
   DEEP_URL_KEY = 'DEEP_URL_KEY',
@@ -11,14 +12,16 @@ export enum SessionStorageKeys {
 
 export const DontSignPathList = ['/login', '/404', '/401']
 
-export const HomeRoute = '/dashboard'
+export const HomeRoute = '/'
 
-export const MenuConfigMap: Map<MenuName, { name?: string; icon: string }> =
-  new Map([
-    ['dashboard', { icon: 'fa-gauge-high' }],
-    ['daos', { icon: 'fa-user' }],
-    ['accounts', { icon: 'fa-user' }],
-  ])
+export const MenuConfigMap: Map<
+  MenuName,
+  { name?: string; Icon: IconType; router?: string }
+> = new Map([
+  ['dashboard', { Icon: HiHome, router: '/' }],
+  ['daos', { Icon: HiUserGroup }],
+  ['accounts', { Icon: HiUsers }],
+])
 
 export const DefaultRoloPermissions: Set<Role> = new Set([
   'admin',
@@ -26,10 +29,10 @@ export const DefaultRoloPermissions: Set<Role> = new Set([
   'super-admin',
 ])
 
-export const RoutePermissions: Map<string, Set<Role>> = new Map([
-  ['/accounts', new Set(['super-admin'])],
-  ['/daos', new Set(['super-admin', 'admin'])],
-])
+// export const RoutePermissions: Map<string, Set<Role>> = new Map([
+//   ['/accounts', new Set(['super-admin'])],
+//   ['/daos', new Set(['super-admin', 'admin'])],
+// ])
 
 /**
  * the User Cache
@@ -52,6 +55,23 @@ export const UserNonceCache: CacheClass<string, string> =
  * the role's api permission
  */
 export const RoleApis: RoleApiPermission[] = [
+  // frontend api
+  {
+    apiRouter: '/',
+    role: ['super-admin', 'admin', 'member'],
+    method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  {
+    apiRouter: '/accounts',
+    role: ['super-admin'],
+    method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  {
+    apiRouter: '/daos',
+    role: ['super-admin', 'admin'],
+    method: ['GET', 'POST', 'DELETE', 'PUT'],
+  },
+  //backend api:
   {
     apiRouter: '/api/v2/user',
     role: ['super-admin', 'admin'],

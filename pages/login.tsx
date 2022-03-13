@@ -114,7 +114,7 @@ const LoginMain: FC = () => {
     await activate(connectors[type])
   }
   // Web3Login-----
-  const { data: session, status } = useSession()
+  // const { data: session, status } = useSession()
 
   const login = useCallback(
     async (address: string) => {

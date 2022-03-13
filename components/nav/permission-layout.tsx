@@ -1,4 +1,4 @@
-import { DefaultRoloPermissions, HomeRoute, RoutePermissions } from 'lib/config'
+import { RoleApis } from 'lib/config'
 import { useCustomLayoutEffect } from 'lib/utils/hooks'
 import { usePermissionCheck } from 'lib/utils/permission'
 import { useRouter } from 'next/router'
@@ -7,8 +7,9 @@ import { FC } from 'react'
 const PermissionLayout: FC<{
   pathname: string
 }> = ({ children, pathname }) => {
-  const routePermission =
-    RoutePermissions.get(pathname) ?? DefaultRoloPermissions
+  const routePermission = RoleApis.find(
+    (res) => res.apiRouter === pathname
+  )?.role
   const allowed = usePermissionCheck(routePermission)
 
   const router = useRouter()
