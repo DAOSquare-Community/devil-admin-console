@@ -2,7 +2,7 @@ import MeContext, { meReducer } from 'lib/me-provider'
 import { useSession } from 'next-auth/react'
 import Router from 'next/router'
 import { FC, useEffect, useReducer } from 'react'
-import { MeInterface, UserType } from 'types/user'
+import { MeInterface } from 'types/user'
 import PermissionLayout from './nav/permission-layout'
 
 const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
