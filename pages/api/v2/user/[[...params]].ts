@@ -1,4 +1,3 @@
-import { MsgCode } from 'types/const-enum'
 import {
   Get,
   Query,
@@ -12,6 +11,7 @@ import {
   Delete,
   Post,
   Put,
+  Body,
 } from '@storyofams/next-api-decorators'
 import NextAuthGuard from 'lib/middleawares/auth'
 import { User } from 'models/User'
@@ -37,6 +37,10 @@ const sampleUserData: User1[] = [
   { id: 109, name: 'Evangelina', email: 'evangelina@example.com' },
 ]
 
+type UserIds = {
+  userIds: string[]
+}
+
 @NextAuthGuard()
 class UserController {
   private _service = new UserService()
@@ -49,10 +53,6 @@ class UserController {
     @Query('skip', DefaultValuePipe(0), ParseNumberPipe) skip: number,
     @Query('limit', ParseNumberPipe({ nullable: true })) limit?: number
   ) {
-    // const userService = new UserService()
-    // req.user?.walletAddr
-    // console.log(' req.user?.walletAddr', req.user?.walletAddr)
-
     return sampleUserData.slice(skip, limit)
   }
 
@@ -64,7 +64,7 @@ class UserController {
    * @param sortParams
    * @returns
    */
-  @Get()
+  @Get('/list')
   public async getUserList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
@@ -88,12 +88,12 @@ class UserController {
    * @param id
    * @returns
    */
-  @Get('/:id')
+  @Get()
   public async getUserById(
     @Param('id') id: string
   ): Promise<ResultMsg<User | null>> {
     const user = await this._service.getEntityById(id)
-    console.log(user)
+    //console.log(user)
     if (user.message) {
       throw new InternalServerErrorException(user.message)
     }
@@ -107,9 +107,9 @@ class UserController {
    */
   @Delete()
   public async deleteUsersByIds(
-    @Param('Ids') Ids: string[]
+    @Body() body: UserIds
   ): Promise<ResultMsg<boolean>> {
-    const delUsers = await this._service.deleteEntityByIds(Ids)
+    const delUsers = await this._service.deleteEntityByIds(body.userIds)
     if (delUsers.message) {
       throw new InternalServerErrorException(delUsers.message)
     }

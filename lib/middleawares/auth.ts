@@ -1,3 +1,4 @@
+import { HttpMethod } from 'types/const-enum'
 import { RoleApis } from './../config/index'
 import { Role } from 'types/permission'
 import {
@@ -19,22 +20,23 @@ const NextAuthGuard = createMiddlewareDecorator(
     const roles =
       !user.roles || user.roles.length === 0 ? ['member'] : user.roles
 
-    const roleApiRouters = RoleApis.filter((value) => {
-      return (
+    let hasRolePermission = false
+
+    for (const value of RoleApis) {
+      hasRolePermission =
         value.apiRouter ===
           new URL(req.url ?? '', `http://${req.headers.host}`).pathname &&
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        value.method.includes(req.method?.toUpperCase() ?? '') &&
+        //@varts-ignore
+        value.method.includes(<HttpMethod>req.method?.toUpperCase() ?? '') &&
         value.role.findIndex((r) => {
           return roles.includes(r)
         }) >= 0
-      )
-    })
-
-    if (!roleApiRouters || roleApiRouters.length <= 0) {
-      throw new UnauthorizedException()
+      if (hasRolePermission) break
     }
+
+    // no permission
+    if (!hasRolePermission) throw new UnauthorizedException()
 
     //Todo: update
     // req.user = {

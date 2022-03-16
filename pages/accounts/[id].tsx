@@ -12,7 +12,7 @@ import { Role } from 'types/permission'
 const DaoEdit: NextPageWithLayout = () => {
   const router = useRouter()
   const { id } = router.query
-  const { data, isFetching } = useAxiosQuery<User>(`/v2/user/${id}`)
+  const { data, isFetching } = useAxiosQuery<User>('/v2/user', { id: id })
   const { mutate } = useAxiosMutation<Partial<User>>(
     '/dao',
     {

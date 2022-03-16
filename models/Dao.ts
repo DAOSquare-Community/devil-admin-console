@@ -64,9 +64,19 @@ export class DAOToken {
 /** the open api of dao */
 export class OpenApi {
   dework?: { orgId: string }
-  discord?: { channelId: string }
-  twitter?: { twitterId: string }
-  sesh?: { access_token: string; guild_id: string };
+  discord?: {
+    channelId: string
+    bot_token: string
+  }
+  twitter?: {
+    twitterId: string
+    orbit_path?: string
+    orbit_token?: string
+  }
+  sesh?: {
+    access_token: string
+    guild_id: string
+  };
   [x: string]: unknown
 }
 
