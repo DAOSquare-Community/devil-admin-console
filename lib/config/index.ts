@@ -5,6 +5,7 @@ import memoryCache, { CacheClass } from 'memory-cache'
 import { MenuName } from 'types/page'
 import { Role, RoleApiPermission } from 'types/permission'
 import { IconType } from 'react-icons'
+import { HttpMethod } from 'types/const-enum'
 
 export enum SessionStorageKeys {
   DEEP_URL_KEY = 'DEEP_URL_KEY',
@@ -51,6 +52,13 @@ export const DefaultRoloPermissions: Set<Role> = new Set([
 export const UserNonceCache: CacheClass<string, string> =
   new memoryCache.Cache()
 
+const AllHttpMethod: HttpMethod[] = [
+  HttpMethod.GET,
+  HttpMethod.POST,
+  HttpMethod.DELETE,
+  HttpMethod.PUT,
+]
+
 /**
  * the role's api permission
  */
@@ -59,53 +67,58 @@ export const RoleApis: RoleApiPermission[] = [
   {
     apiRouter: '/',
     role: ['super-admin', 'admin', 'member'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/accounts',
     role: ['super-admin'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/accounts/add',
     role: ['super-admin'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/accounts/[id]',
     role: ['super-admin'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/daos/[id]',
     role: ['super-admin'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/daos',
     role: ['super-admin', 'admin'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/daos/add',
     role: ['super-admin', 'admin'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   //backend api:
   {
     apiRouter: '/api/v2/user',
     role: ['super-admin', 'admin'],
-    method: ['GET', 'POST', 'DELETE', 'PUT'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/api/v2/user',
     role: ['member'],
-    method: ['GET'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/user/list',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/api/v2/sign-in',
     role: ['super-admin', 'admin', 'member'],
-    method: ['POST'],
+    method: [HttpMethod.POST],
   },
 ]
 

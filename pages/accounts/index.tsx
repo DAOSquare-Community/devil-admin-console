@@ -65,7 +65,7 @@ const Accounts: NextPageWithLayout = () => {
   const router = useRouter()
 
   const { data, refetch } = useAxiosQuery<{ data: { items: User[] } }, User[]>(
-    '/v2/user',
+    '/v2/user/list',
     { pageSize: 10000 },
     {
       select: (sData) => {
