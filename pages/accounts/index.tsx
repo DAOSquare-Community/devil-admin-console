@@ -2,12 +2,10 @@ import Layout from 'components/nav/layout'
 import React, { FC, useCallback } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import Table from '../../components/table'
-import Image from 'next/image'
 import { Cell, CellProps, Column, TableInstance } from 'react-table'
 import { Role } from 'types/permission'
 import classNames from 'classnames'
 import { Alert } from 'components/modal/cmd-alert'
-import { ScreenIndicator } from 'components/Indicator'
 import { useRouter } from 'next/router'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
 import { User } from 'models/User'
@@ -64,7 +62,10 @@ export function StatusPill({ value }: Cell<Record<string, unknown>, Role[]>) {
 const Accounts: NextPageWithLayout = () => {
   const router = useRouter()
 
-  const { data, refetch } = useAxiosQuery<{ data: { items: User[] } }, User[]>(
+  const { data, refetch, isLoading } = useAxiosQuery<
+    { data: { items: User[] } },
+    User[]
+  >(
     '/v2/user/list',
     { pageSize: 10000 },
     {
@@ -101,14 +102,23 @@ const Accounts: NextPageWithLayout = () => {
         accessor: 'role',
         Cell: StatusPill,
       },
+      {
+        id: '_action_check',
+        Header: '',
+        Cell: ({ row }: CellProps<User>) => {
+          return (
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                router.push(`/accounts/${row.original._id}`)
+              }}
+            >
+              Edit
+            </button>
+          )
+        },
+      },
     ],
-    []
-  )
-
-  const onEdit = useCallback(
-    (e: TableInstance<User>) => {
-      router.push(`/accounts/${e.selectedFlatRows[0].original._id}`)
-    },
     [router]
   )
 
@@ -128,19 +138,15 @@ const Accounts: NextPageWithLayout = () => {
     [remove]
   )
 
-  if (!data) {
-    return <ScreenIndicator />
-  }
-
   return (
     <div className="mx-auto pt-4 text-gray-900 sm:px-6 lg:px-0">
       <Table<User>
         name={'Accounts'}
         columns={columns}
-        data={data}
-        onEdit={onEdit}
+        data={data ?? []}
         onDelete={onDelete}
         showSelection
+        isLoading={isLoading}
       />
     </div>
   )

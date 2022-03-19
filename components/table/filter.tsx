@@ -1,7 +1,14 @@
 /* eslint-disable react/jsx-key */
-import React from 'react'
+import React, { useCallback } from 'react'
 import 'regenerator-runtime/runtime'
-import { ColumnInstance, TableInstance, useAsyncDebounce } from 'react-table'
+import {
+  ColumnInstance,
+  IdType,
+  Row,
+  TableInstance,
+  useAsyncDebounce,
+} from 'react-table'
+import { matchSorter } from 'match-sorter'
 
 // Define a default UI for filtering
 export function GlobalFilter<
@@ -91,4 +98,19 @@ export function FilterBar<
       )}
     </div>
   )
+}
+
+export const useGlobalMatchSorter = <T extends object>() => {
+  return useCallback((rows: Row<T>[], ids: IdType<T>[], query: string) => {
+    const keys = rows?.[0]?.cells
+      ?.filter((res) => !res.column.disableGlobalFilter)
+      .map(({ column }) =>
+        Array.isArray(column.globalFiltersKey)
+          ? column.globalFiltersKey
+          : `values.${column.globalFiltersKey ?? column.id}`
+      )
+    return matchSorter(rows, query, {
+      keys,
+    })
+  }, [])
 }

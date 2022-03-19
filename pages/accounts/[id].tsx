@@ -1,20 +1,23 @@
-import UserForm, { UserFormData } from 'components/form/account'
-import { ScreenIndicator } from 'components/Indicator'
+import UserForm, { UserFormData, UserOptions } from 'components/form/account'
 import Layout from 'components/nav/layout'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
 import { User } from 'models/User'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { NextPageWithLayout } from 'types/page'
-import { Role } from 'types/permission'
 // Define a default UI for filtering
 
 const DaoEdit: NextPageWithLayout = () => {
   const router = useRouter()
-  const { id } = router.query
-  const { data, isFetching } = useAxiosQuery<User>('/v2/user', { id: id })
-  const { mutate } = useAxiosMutation<Partial<User>>(
-    '/dao',
+  const { id = '' } = router.query
+  const { data, isFetching } = useAxiosQuery<{ data: User }>('/v2/user', {
+    id: id,
+  })
+  const { mutate } = useAxiosMutation<{
+    filter: { _id: string }
+    update: Partial<User>
+  }>(
+    '/v2/user',
     {
       onSuccess: () => {
         router.back()
@@ -24,22 +27,28 @@ const DaoEdit: NextPageWithLayout = () => {
   )
   const onSubmit = useCallback(
     (data: UserFormData) => {
-      mutate({
-        // name: data.name,
-        role: [data.role as Role],
-      })
+      if (typeof id === 'string') {
+        mutate({
+          // name: data.name,
+          filter: { _id: id },
+          update: { role: data.role?.map((res) => res.value) },
+        })
+      }
     },
-    [mutate]
+    [id, mutate]
   )
 
   if (isFetching) {
-    return <ScreenIndicator />
+    return <div className="spinner abs-center" />
   }
+
   return (
     <>
       <UserForm
         onSubmit={onSubmit}
-        defaultValues={{ role: data?.role?.[0] ?? '' }}
+        defaultValues={{
+          role: UserOptions.filter((r) => data?.data?.role.includes(r.value)),
+        }}
       />
       <button className="btn btn-primary" form={UserForm.displayName}>
         Submit
