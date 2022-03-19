@@ -16,6 +16,8 @@ export const selectionHook = <D extends Record<string, unknown>>(
         id: SELECTION_ID,
         disableResizing: true,
         disableGroupBy: true,
+        disableSortBy: true,
+        disableGlobalFilter: true,
         minWidth: 45,
         width: 45,
         maxWidth: 45,
@@ -76,9 +78,47 @@ export const selectionHook = <D extends Record<string, unknown>>(
       ...columns.filter((i) => i.id !== SELECTION_ID),
     ]
   })
-  hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
+  hooks.useInstanceBeforeDimensions.push(({ headerGroups, state }) => {
     // fix the parent group of the selection button to not be resizable
     const selectionGroupHeader = headerGroups[0].headers[0]
     selectionGroupHeader.canResize = false
   })
 }
+
+// export type EditType = { _edit_disable: boolean }
+// export const editHook = <D extends Record<string, unknown>>(
+//   hooks: Hooks<D>
+// ) => {
+//   hooks.allColumns.push((columns) => {
+//     return [
+//       // Let's make a column for selection
+//       {
+//         id: SELECTION_ID,
+//         disableResizing: true,
+//         disableGroupBy: true,
+//         disableSortBy: true,
+//         disableGlobalFilter: true,
+//         minWidth: 45,
+//         width: 45,
+//         maxWidth: 45,
+//         Aggregated: undefined,
+//         // The header can use the table's getToggleAllRowsSelectedProps method
+//         // to render a checkbox
+//         // The cell can use the individual row's getToggleRowSelectedProps method
+//         // to the render a checkbox
+//         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//         Cell: ({ row }: CellProps<SelectionType>) => (
+//           <button className="btn btn-primary" {...row.getToggleRowClickProps()}>
+//             Edit
+//           </button>
+//         ),
+//       },
+//       ...columns.filter((i) => i.id !== SELECTION_ID),
+//     ]
+//   })
+//   hooks.useInstanceBeforeDimensions.push(({ headerGroups, state }) => {
+//     // fix the parent group of the selection button to not be resizable
+//     const selectionGroupHeader = headerGroups[0].headers[0]
+//     selectionGroupHeader.canResize = false
+//   })
+// }

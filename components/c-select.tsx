@@ -1,14 +1,11 @@
-import {
-  DetailedHTMLProps,
-  PropsWithChildren,
-  SelectHTMLAttributes,
-} from 'react'
+import { PropsWithChildren } from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import classNames from 'classnames'
-type CSelectType<T extends FieldValues> = DetailedHTMLProps<
-  SelectHTMLAttributes<HTMLSelectElement>,
-  HTMLSelectElement
-> & {
+import Select, { Props } from 'react-select'
+type CSelectType<T extends FieldValues> = Props<{
+  label: string
+  value: string
+}> & {
   name: Path<T>
   label?: string
   showLabel?: boolean
@@ -23,7 +20,6 @@ const CSelect = <T extends FieldValues = FieldValues>({
   showLabel = true,
   showErrow = true,
   className,
-  children,
   ...props
 }: PropsWithChildren<CSelectType<T>>) => {
   return (
@@ -43,16 +39,16 @@ const CSelect = <T extends FieldValues = FieldValues>({
         render={({ field, fieldState: { error } }) => {
           return (
             <>
-              <select
+              <Select
                 className={classNames('dmc-form-select', className, {
                   'border-red-500': error?.message,
                 })}
+                // styles={{ input: { textAlign: 'center' } }}
                 id={name}
                 {...field}
                 {...props}
-              >
-                {children}
-              </select>
+              />
+
               {showErrow && !!error?.message && (
                 <p className="mt-2 text-xs italic text-red-500">
                   {error?.message}

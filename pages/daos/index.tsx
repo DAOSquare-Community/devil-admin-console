@@ -8,7 +8,6 @@ import { CellProps, Column, TableInstance } from 'react-table'
 import { Alert } from 'components/modal/cmd-alert'
 import { Dao } from 'models/Dao'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
-import { ScreenIndicator } from 'components/Indicator'
 import { useRouter } from 'next/router'
 
 const AvatarCell: FC<
@@ -42,15 +41,15 @@ const AvatarCell: FC<
 const Daos: NextPageWithLayout = () => {
   const router = useRouter()
 
-  const { data, refetch } = useAxiosQuery<{ data: Dao[] }, Dao[]>(
-    '/dao',
-    undefined,
-    {
-      select: (sData) => {
-        return sData.data
-      },
-    }
-  )
+  const {
+    data = [],
+    refetch,
+    isLoading,
+  } = useAxiosQuery<{ data: Dao[] }, Dao[]>('/dao', undefined, {
+    select: (sData) => {
+      return sData.data
+    },
+  })
 
   const { mutate: remove } = useAxiosMutation<unknown>(
     '/dao',
@@ -76,29 +75,29 @@ const Daos: NextPageWithLayout = () => {
         accessor: 'start_time',
         // Cell: StatusPill,
       },
-      // {
-      //   Header: 'Role',
-      //   accessor: 'roles',
-      //   Cell: StatusPill,
-      // },
-      // {
-      //   Header: 'Join Date',
-      //   accessor: 'joinDate',
-      // },
+      {
+        id: '_action_check',
+        Header: '',
+        Cell: ({ row }: CellProps<Dao>) => {
+          return (
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                router.push(`/daos/${row.original.daoId}`)
+              }}
+            >
+              Edit
+            </button>
+          )
+        },
+      },
     ],
-    []
+    [router]
   )
 
   const onAdd = useCallback(() => {
     router.push('/daos/add')
   }, [router])
-
-  const onEdit = useCallback(
-    (e: TableInstance<Dao>) => {
-      router.push(`/daos/${e.selectedFlatRows[0].original.daoId}`)
-    },
-    [router]
-  )
 
   const onDelete = useCallback(
     (e: TableInstance<Dao>) => {
@@ -116,20 +115,16 @@ const Daos: NextPageWithLayout = () => {
     [remove]
   )
 
-  if (!data) {
-    return <ScreenIndicator />
-  }
-
   return (
     <div className="mx-auto pt-4 text-gray-900 sm:px-6 lg:px-0">
       <Table<Dao>
         name={'Accounts'}
         columns={columns}
         data={data}
-        onEdit={onEdit}
         onDelete={onDelete}
         onAdd={onAdd}
         showSelection
+        isLoading={isLoading}
       />
     </div>
   )

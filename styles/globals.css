@@ -34,17 +34,25 @@ a {
   overflow-y: auto;
 }
   
+
 @layer components {
   .dmc-form-checkbox {
-    @apply rounded border-gray-300 text-primary shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100
+    @apply rounded border-gray-300 text-primary shadow-sm  focus:border-indigo-300  focus:outline-none focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 disabled:bg-gray-100
   }
   .dmc-form-input {
-    @apply  block w-full appearance-none rounded border border-gray-100 bg-gray-100 py-3 px-4 leading-tight text-gray-700 focus:bg-white 
-    focus:outline-none focus:border-primary focus:ring-primary disabled:bg-gray-500
+    @apply w-full appearance-none rounded  border border-gray-300 h-[38px] px-[10px] leading-tight text-gray-700 
+    focus:outline-none focus:border-primary focus:border-2 focus:ring-primary disabled:bg-gray-200
   }
 
   .dmc-form-select {
-    @apply  block w-full appearance-none rounded border border-gray-100 bg-gray-100 py-3 px-4 leading-tight text-gray-700 focus:bg-white 
-    focus:outline-none focus:border-primary focus:ring-primary disabled:bg-gray-500
+    @apply  rounded bg-white  border-gray-300 disabled:bg-gray-200  focus:border-primary focus:border-2 text-gray-700  focus:outline-none
+  }
+  
+  .spinner {
+    @apply absolute  h-12 w-12 animate-spin rounded-full border-8 border-dashed border-primary border-t-transparent 
+  }
+  
+  .abs-center {
+    @apply absolute top-1/2 left-1/2
   }
 }

@@ -41,7 +41,7 @@ const Pagination: FC<
           </span>
           <label>
             <select
-              className="mt-1 block w-full rounded-md focus:border-primary"
+              className="dmc-form-select   select-bordered   select   mt-1 block w-full border"
               value={state.pageSize}
               onChange={(e) => {
                 setPageSize(Number(e.target.value))

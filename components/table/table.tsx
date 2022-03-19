@@ -7,22 +7,6 @@ import {
 } from 'react-table'
 import { SortIcon, SortUpIcon, SortDownIcon } from './icons'
 
-export const TableContainer: FC<{
-  getTableProps: (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    propGetter?: TablePropGetter<any> | undefined
-  ) => TableProps
-}> = ({ children, getTableProps, ...ohter }) => {
-  const { role, ...othertable } = getTableProps()
-  return (
-    <div className="mt-4 flex flex-col overflow-x-auto">
-      <table {...ohter} {...othertable} className="table   ">
-        {children}
-      </table>
-    </div>
-  )
-}
-
 export const TableHeader: FC<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   headerGroups: HeaderGroup<any>[]
@@ -68,17 +52,17 @@ export function TBody<
 >({ getTableBodyProps, page, prepareRow }: TableInstance<D>) {
   return (
     <tbody {...getTableBodyProps()}>
-      {page.map((row) => {
+      {page.map((row, index) => {
         prepareRow(row)
         return (
-          <tr {...row.getRowProps()} key={row.id}>
+          <tr {...row.getRowProps()} key={row.id ?? index}>
             {row.cells.map((cell, i) => {
               return (
                 <td
                   {...cell.getCellProps()}
                   className="whitespace-nowrap px-6 py-4"
                   role="cell"
-                  key={cell.value ?? i}
+                  key={i}
                 >
                   {cell.render('Cell')}
                 </td>
