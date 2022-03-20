@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import Header from 'components/nav/header'
+import Header from 'components/admin-nav/header'
 import { NextPageWithLayout } from 'types/page'
-import { NoSlideMenuLayout } from 'components/nav/layout'
+import { NoSlideMenuLayout } from 'components/admin-nav/layout'
 import React from 'react'
 
 // import enums

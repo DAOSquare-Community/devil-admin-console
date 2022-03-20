@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import CInput from 'components/c-input'
+import CInput from 'components/input/c-input'
 import { gql } from 'graphql-request'
 import { useGqlMutation } from 'lib/request/use-gql-fetch'
 import { FC } from 'react'

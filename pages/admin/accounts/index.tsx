@@ -1,4 +1,4 @@
-import Layout from 'components/nav/layout'
+import Layout from 'components/admin-nav/layout'
 import React, { FC, useCallback } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import Table from 'components/table'

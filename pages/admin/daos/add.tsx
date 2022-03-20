@@ -1,5 +1,5 @@
 import DaoForm from 'components/form/dao'
-import Layout from 'components/nav/layout'
+import Layout from 'components/admin-nav/layout'
 import { DaoPostRequest } from 'lib/request/http-api-type'
 import { useAxiosMutation } from 'lib/request/use-fetch'
 import { useRouter } from 'next/router'
