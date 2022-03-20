@@ -7,7 +7,6 @@ import queryClient from 'lib/request/query-client'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import SignCheckLayout from 'components/auth'
-import { DontSignPathList } from 'lib/config'
 
 // import web3
 import Web3 from 'web3'
@@ -36,10 +35,7 @@ function MyApp({
     <Web3ReactProvider getLibrary={getLibrary}>
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
-          <SignCheckLayout
-            pathname={pathname}
-            dontSignPathList={DontSignPathList}
-          >
+          <SignCheckLayout pathname={pathname}>
             {getLayout(<Component {...pageProps} />)}
           </SignCheckLayout>
           <ReactQueryDevtools initialIsOpen={false} />

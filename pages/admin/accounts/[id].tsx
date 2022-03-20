@@ -39,7 +39,7 @@ const DaoEdit: NextPageWithLayout = () => {
   )
 
   if (isFetching) {
-    return <div className="spinner abs-center" />
+    return <div className=" abs-center before:spinner flex-center" />
   }
 
   return (
