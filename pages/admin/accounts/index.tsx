@@ -1,7 +1,7 @@
 import Layout from 'components/nav/layout'
 import React, { FC, useCallback } from 'react'
 import { NextPageWithLayout } from 'types/page'
-import Table from '../../components/table'
+import Table from 'components/table'
 import { Cell, CellProps, Column, TableInstance } from 'react-table'
 import { Role } from 'types/permission'
 import classNames from 'classnames'
@@ -110,7 +110,7 @@ const Accounts: NextPageWithLayout = () => {
             <button
               className="btn btn-primary"
               onClick={() => {
-                router.push(`/accounts/${row.original._id}`)
+                router.push(`/admin/accounts/${row.original._id}`)
               }}
             >
               Edit

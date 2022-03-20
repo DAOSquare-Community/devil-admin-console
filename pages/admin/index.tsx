@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import { NextPageWithLayout } from 'types/page'
 // Define a default UI for filtering
 
-const Home: NextPageWithLayout = () => {
+const DashBoard: NextPageWithLayout = () => {
   const { data: session } = useSession()
   return (
     <div>
@@ -21,4 +21,6 @@ const Home: NextPageWithLayout = () => {
   )
 }
 
-export default Home
+DashBoard.getLayout = (page) => <Layout>{page}</Layout>
+
+export default DashBoard

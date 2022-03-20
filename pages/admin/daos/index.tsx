@@ -1,7 +1,7 @@
 import Layout from 'components/nav/layout'
 import React, { FC, useCallback } from 'react'
 import { NextPageWithLayout } from 'types/page'
-import Table from '../../components/table'
+import Table from 'components/table'
 import Image from 'next/image'
 import { CellProps, Column, TableInstance } from 'react-table'
 
@@ -83,7 +83,7 @@ const Daos: NextPageWithLayout = () => {
             <button
               className="btn btn-primary"
               onClick={() => {
-                router.push(`/daos/${row.original.daoId}`)
+                router.push(`/admin/daos/${row.original.daoId}`)
               }}
             >
               Edit
@@ -96,7 +96,7 @@ const Daos: NextPageWithLayout = () => {
   )
 
   const onAdd = useCallback(() => {
-    router.push('/daos/add')
+    router.push('/admin/daos/add')
   }, [router])
 
   const onDelete = useCallback(

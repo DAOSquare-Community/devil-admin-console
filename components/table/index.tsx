@@ -90,7 +90,7 @@ function ComboTable<T extends Record<string, any>>(
           {...othertable}
           className={
             isLoading
-              ? 'before:spinner before:abs-center table min-h-[200px]'
+              ? 'before:spinner table min-h-[200px] before:left-1/2 before:top-1/2'
               : ''
           }
         >
