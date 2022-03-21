@@ -1,5 +1,4 @@
 import DaoForm from 'components/form/dao'
-import { ScreenIndicator } from 'components/Indicator'
 import Layout from 'components/nav/layout'
 import { DaoPostRequest } from 'lib/request/http-api-type'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
@@ -23,7 +22,7 @@ const DaoAdd: NextPageWithLayout = () => {
   )
 
   if (isFetching) {
-    return <ScreenIndicator />
+    return <div className=" abs-center before:spinner flex-center" />
   }
   return (
     <>

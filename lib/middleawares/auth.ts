@@ -1,6 +1,5 @@
 import { HttpMethod } from 'types/const-enum'
 import { RoleApis } from './../config/index'
-import { Role } from 'types/permission'
 import {
   createMiddlewareDecorator,
   NextFunction,

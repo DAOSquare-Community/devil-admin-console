@@ -40,50 +40,17 @@ const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
     )
   }
 
-  return (
-    <div className="flex h-screen items-center justify-center ">
-      <div className="h-10 w-10 animate-spin rounded-full border-t-4 border-b-4 border-green-900" />
-    </div>
-  )
-}
-
-const DontSignInLayout: FC = ({ children }) => {
-  // const router = useRouter()
-  // const { error } = useAxiosQuery(
-  //   '/auth/status',
-  //   {},
-  //   {
-  //     onError: (e: DMCError) => {
-  //       const { response } = error || {}
-  //       if (response) {
-  //         const { status } = response
-  //         if (status !== 401) errorHandler(e)
-  //       }
-  //     },
-  //     onSuccess: () => {
-  //       router.replace(HomeRoute)
-  //     },
-  //   }
-  // )
-  // if (error) {
-  //   return <>{children}</>
-  // }
-  return <>{children}</>
-  // return (
-  //   <div className="flex h-screen items-center justify-center ">
-  //     <div className="h-10 w-10 animate-spin rounded-full border-t-4 border-b-4 border-green-900" />
-  //   </div>
-  // )
+  return <div className=" abs-center before:spinner flex-center" />
 }
 
 const SignCheckLayout: FC<{
   pathname: string
-  dontSignPathList?: string[]
-}> = ({ children, pathname, dontSignPathList }) => {
-  if (dontSignPathList?.includes(pathname)) {
-    return <DontSignInLayout>{children}</DontSignInLayout>
+  signPathList?: string[]
+}> = ({ children, pathname, signPathList }) => {
+  if (pathname.startsWith('/admin') || signPathList?.includes(pathname)) {
+    return <SignInLayout pathname={pathname}>{children}</SignInLayout>
   }
-  return <SignInLayout pathname={pathname}>{children}</SignInLayout>
+  return <>{children}</>
 }
 
 export default SignCheckLayout

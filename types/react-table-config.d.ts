@@ -11,7 +11,6 @@ import {
   UseFiltersInstanceProps,
   UseFiltersOptions,
   UseFiltersState,
-  UseGlobalFiltersColumnOptions,
   UseGlobalFiltersInstanceProps,
   UseGlobalFiltersOptions,
   UseGlobalFiltersState,
@@ -46,6 +45,7 @@ import {
   UseSortByInstanceProps,
   UseSortByOptions,
   UseSortByState,
+  UseGlobalFiltersColumnOptions,
 } from 'react-table'
 
 declare module 'react-table' {
@@ -103,7 +103,7 @@ declare module 'react-table' {
   export interface ColumnInterface<
     D extends Record<string, unknown> = Record<string, unknown>
   > extends UseFiltersColumnOptions<D>,
-      UseGlobalFiltersColumnOptions<D>,
+      UseGlobalFiltersColumnOptionsPlus<D>,
       UseGroupByColumnOptions<D>,
       UseResizeColumnsColumnOptions<D>,
       UseSortByColumnOptions<D> {}
@@ -127,5 +127,16 @@ declare module 'react-table' {
   > extends UseExpandedRowProps<D>,
       UseGroupByRowProps<D>,
       UseRowSelectRowProps<D>,
+      // UseRowClickRowProps<D>,
       UseRowStateRowProps<D> {}
 }
+
+export interface UseGlobalFiltersColumnOptionsPlus<D extends object>
+  extends UseGlobalFiltersColumnOptions<D> {
+  globalFiltersKey?: string
+}
+
+// export interface UseRowClickRowProps<D extends object> {
+//   onClick: (e?: ChangeEvent) => void
+//   getToggleRowClickProps: (props?: Partial<TableKeyedProps>) => TableKeyedProps
+// }

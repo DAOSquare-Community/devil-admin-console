@@ -85,7 +85,7 @@ class UserController {
 
   /**
    * get user by id
-   * @param id
+   * @Query   id
    * @returns
    */
   @Get()

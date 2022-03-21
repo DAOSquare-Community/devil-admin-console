@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, PropsWithChildren, useEffect } from 'react'
+import React, { PropsWithChildren } from 'react'
 import 'regenerator-runtime/runtime'
 import Pagination from './pagination'
 import {
@@ -12,12 +12,10 @@ import {
   Row,
   useRowSelect,
 } from 'react-table'
-import { FilterBar } from './filter'
-import { TableContainer, TableHeader, TBody } from './table'
+import { FilterBar, useGlobalMatchSorter } from './filter'
 import { selectionHook } from './hooks'
 import { ToolBar } from './toolbar'
-// import { useDebounce, useLocalStorage } from 'lib/utils'
-
+import { TableHeader, TBody } from './table'
 export interface TableProperties<T extends Record<string, unknown>>
   extends TableOptions<T> {
   name?: string
@@ -26,6 +24,7 @@ export interface TableProperties<T extends Record<string, unknown>>
   onEdit?: (instance: TableInstance<T>) => void
   onClick?: (row: Row<T>) => void
   showSelection?: boolean
+  isLoading?: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,6 +32,9 @@ function ComboTable<T extends Record<string, any>>(
   props: PropsWithChildren<TableProperties<T>>
 ) {
   // Use the state and functions returned from useTable to build your UI
+
+  const globalFilter = useGlobalMatchSorter<T>()
+
   const {
     name,
     onAdd,
@@ -40,6 +42,7 @@ function ComboTable<T extends Record<string, any>>(
     onEdit,
     onClick,
     showSelection = false,
+    isLoading,
     ...others
   } = props
   // const [initialState, setInitialState] = useLocalStorage(
@@ -55,7 +58,7 @@ function ComboTable<T extends Record<string, any>>(
     usePagination, // new
     ...slectHooks,
   ]
-  const instance = useTable({ ...others }, ...hooks)
+  const instance = useTable({ ...others, globalFilter }, ...hooks)
   // const { state } = instance
   // const debouncedState = useDebounce(state, 500)
   // useEffect(() => {
@@ -72,6 +75,8 @@ function ComboTable<T extends Record<string, any>>(
   // }, [setInitialState, debouncedState])
 
   // Render the UI for your table
+  const { getTableProps } = instance
+  const { role, ...othertable } = getTableProps()
   return (
     <>
       <div className=" flex flex-1  flex-col-reverse sm:justify-end lg:flex-row lg:justify-between">
@@ -80,10 +85,19 @@ function ComboTable<T extends Record<string, any>>(
           <ToolBar instance={instance} {...{ onAdd, onDelete, onEdit }} />
         )}
       </div>
-      <TableContainer getTableProps={instance.getTableProps}>
-        <TableHeader {...instance} />
-        <TBody {...instance} />
-      </TableContainer>
+      <div className="mt-4 flex flex-col overflow-x-auto">
+        <table
+          {...othertable}
+          className={
+            isLoading
+              ? 'before:spinner table min-h-[200px] before:left-1/2 before:top-1/2'
+              : ''
+          }
+        >
+          <TableHeader {...instance} />
+          <TBody {...instance} />
+        </table>
+      </div>
       <Pagination {...instance} />
     </>
   )

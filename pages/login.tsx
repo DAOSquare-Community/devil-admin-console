@@ -3,22 +3,18 @@ import { useRouter } from 'next/router'
 import Header from 'components/nav/header'
 import { NextPageWithLayout } from 'types/page'
 import { NoSlideMenuLayout } from 'components/nav/layout'
-import React, { useState } from 'react'
+import React from 'react'
 
 // import enums
 import { WalletEnum } from 'types/const-enum'
 // import web3
 import Web3 from 'web3'
-import {
-  useWeb3React,
-  UnsupportedChainIdError,
-  getWeb3ReactContext,
-} from '@web3-react/core'
+import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 
 // next-auth
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 
 //----------------connectors-----------------------
 // import enum
@@ -138,7 +134,7 @@ const LoginMain: FC = () => {
         address: address,
       })
 
-      router.push('/')
+      router.push('/admin')
     },
     [library, router]
   )

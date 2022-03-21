@@ -11,17 +11,15 @@ export enum SessionStorageKeys {
   DEEP_URL_KEY = 'DEEP_URL_KEY',
 }
 
-export const DontSignPathList = ['/login', '/404', '/401']
-
 export const HomeRoute = '/'
 
 export const MenuConfigMap: Map<
   MenuName,
   { name?: string; Icon: IconType; router?: string }
 > = new Map([
-  ['dashboard', { Icon: HiHome, router: '/' }],
-  ['daos', { Icon: HiUserGroup }],
-  ['accounts', { Icon: HiUsers }],
+  ['dashboard', { Icon: HiHome, router: '/admin' }],
+  ['daos', { Icon: HiUserGroup, router: '/admin/daos' }],
+  ['accounts', { Icon: HiUsers, router: '/admin/accounts' }],
 ])
 
 export const DefaultRoloPermissions: Set<Role> = new Set([
@@ -65,37 +63,37 @@ const AllHttpMethod: HttpMethod[] = [
 export const RoleApis: RoleApiPermission[] = [
   // frontend api
   {
-    apiRouter: '/',
+    apiRouter: '/admin',
     role: ['super-admin', 'admin', 'member'],
     method: AllHttpMethod,
   },
   {
-    apiRouter: '/accounts',
+    apiRouter: '/admin/accounts',
     role: ['super-admin'],
     method: AllHttpMethod,
   },
   {
-    apiRouter: '/accounts/add',
+    apiRouter: '/admin/accounts/add',
     role: ['super-admin'],
     method: AllHttpMethod,
   },
   {
-    apiRouter: '/accounts/[id]',
+    apiRouter: '/admin/accounts/[id]',
     role: ['super-admin'],
     method: AllHttpMethod,
   },
   {
-    apiRouter: '/daos/[id]',
+    apiRouter: '/admin/daos/[id]',
     role: ['super-admin'],
     method: AllHttpMethod,
   },
   {
-    apiRouter: '/daos',
+    apiRouter: '/admin/daos',
     role: ['super-admin', 'admin'],
     method: AllHttpMethod,
   },
   {
-    apiRouter: '/daos/add',
+    apiRouter: '/admin/daos/add',
     role: ['super-admin', 'admin'],
     method: AllHttpMethod,
   },
