@@ -73,13 +73,13 @@ export class DaoStats extends BaseModel {
   public treasury!: number
 
   /** dao on chains count */
-  @prop({ required: true, type: () => [ChainCategory] })
+  @prop({ required: true, type: () => [ChainCategory], _id: false })
   public chain_category!: ChainCategory[]
 
-  @prop({ required: true, type: () => Governanace })
+  @prop({ required: true, type: () => Governanace, _id: false })
   public governanace!: Governanace
 
-  @prop({ required: true, type: () => Dework })
+  @prop({ required: true, type: () => Dework, _id: false })
   public dework!: Dework
 
   @prop({ required: true, unique: true })

@@ -90,7 +90,7 @@ class UserController {
    */
   @Get()
   public async getUserById(
-    @Param('id') id: string
+    @Query('id') id: string
   ): Promise<ResultMsg<User | null>> {
     const user = await this._service.getEntityById(id)
     //console.log(user)

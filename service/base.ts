@@ -105,7 +105,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
   /**
    * get entity
    *
-   * @param id
+   * @param filter
    * @returns
    */
   getEntities = async (filter: object): Promise<ResultMsg<T[] | null>> => {
