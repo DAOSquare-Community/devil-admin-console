@@ -18,6 +18,8 @@ import { MeInterface } from 'types/user'
 // : Awaitable<(Omit<UserToken, 'id'> | { id?: string }) | null>
 // req: Pick<IncomingRequest, 'headers' | 'body' | 'query' | 'method'>
 
+const userService = new UserService()
+
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
@@ -56,7 +58,7 @@ export default NextAuth({
 
         // Step 4: Create JWT
         let user = new User()
-        const retMsg = await new UserService().getUser(address)
+        const retMsg = await userService.getUser(address)
         if (retMsg.message)
           throw new InternalServerErrorException(retMsg.message)
 
@@ -96,6 +98,30 @@ export default NextAuth({
     maxAge: 30 * 24 * 30 * 60, // 30 days
   },
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      if (user?.status === 'reject') {
+        return false
+      } else {
+        // sign in success,create user
+        const addr = (user as unknown as MeInterface).name
+        const ucount = await userService.getCount({
+          wallet_address: addr,
+        })
+        if (!ucount.data) {
+          // not exist the user
+          const u = new User()
+          u.wallet_address = addr
+          u.role = (user as unknown as MeInterface).roles
+          u.create_at = u.last_update_at = u.last_loginTime = new Date()
+          u.last_loginTime = null
+          u.session_expired = null
+          u.session_token = ''
+          const retIns = await userService.insertUser(u)
+          if (retIns.message) console.log(retIns.message)
+        }
+        return true
+      }
+    },
     async session({ session, token }) {
       session.user = token.user
       return session

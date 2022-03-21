@@ -2,11 +2,11 @@
  * the message code
  */
 export const enum ChainEnum {
-  Mainnet = 'mainnet',
-  Kovan = 'kovan',
-  Rinkeby = 'rinkeby',
-  xDai = 'xdai',
-  Matic = 'matic',
+  Mainnet = 'Mainnet',
+  Kovan = 'Kovan',
+  Rinkeby = 'Rinkeby',
+  xDai = 'xDai',
+  Matic = 'Matic',
 }
 
 /**
@@ -41,6 +41,7 @@ export const enum MsgCode {
   DUPLICATE_KEY = 'duplicate key',
   FAILURE = 'unkown error,please contact the administrator',
   CLASS_INIT_ERROR = 'class init error',
+  AUTH_FAILED = 'auth failed',
 }
 
 /**
