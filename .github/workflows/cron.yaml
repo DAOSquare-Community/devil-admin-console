@@ -1,13 +1,12 @@
-name: 24-hours-cron
+name: 15-mins-cron
 on:
   schedule:
-    - cron: '0 0 0 * * ?'
+    - cron: '0 */15 * * * ?'
 jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
       - name: Call our API route
-        if: ${{}}
         run: |
           curl --request POST \
           --url '${{ secrets.CORN_URL }}' \
