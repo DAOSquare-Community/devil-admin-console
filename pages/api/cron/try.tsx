@@ -26,18 +26,21 @@ class CronController {
 
   // GET /api/cron/try
   @Post()
-  public async executeCorn(@Req() req: NextApiRequest, res: NextApiResponse) {
+  public async executeCorn(
+    @Req() req: NextApiRequest,
+    @Req() res: NextApiResponse
+  ) {
     try {
       const { authorization } = req.headers
       if (authorization === `Bearer ${process.env.API_SECRET_KEY}`) {
-        res.status(200).json({ success: true })
+        return { success: true }
       } else {
-        throw new Error('Fetch error,the secret key is error')
+        throw new ForbiddenException('Fetch error,the secret key is error')
       }
     } catch (err) {
-      res.status(500).json({
-        message: err instanceof Error ? err.message : MsgCode.FAILURE,
-      })
+      throw new InternalServerErrorException(
+        err instanceof Error ? err.message : MsgCode.FAILURE
+      )
     }
   }
 }
