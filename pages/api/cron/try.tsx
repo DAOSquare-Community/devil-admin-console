@@ -1,29 +1,14 @@
 import {
   createHandler,
   ForbiddenException,
-  Get,
   InternalServerErrorException,
   Post,
   Req,
 } from '@storyofams/next-api-decorators'
-import { ChainCategory, DaoStats, Dework, Governanace } from 'models/DaoStats'
 import { NextApiRequest, NextApiResponse } from 'next'
-import DaoService from 'service/dao'
-import MemberService from 'service/member'
-import TreasuryService from 'service/treasury'
-import * as DeworkService from 'service/dework'
-import * as GovernanaceService from 'service/governance'
-import DaoStatsService from 'service/daostats'
 import { MsgCode } from 'types/const-enum'
 
 class CronController {
-  private _daoService = new DaoService()
-  private _memberService = new MemberService()
-  private _treasuryService = new TreasuryService()
-  private _deworkService = new DeworkService.default()
-  private _daoStatsService = new DaoStatsService()
-  //private _govService = new GovernanaceService.default()
-
   // GET /api/cron/try
   @Post()
   public async executeCorn(
