@@ -185,10 +185,10 @@ const LoginMain: FC = () => {
       <div className="modal" id="wallet-moda">
         <div className="modal-box">
           <div className="flex items-center justify-between rounded-t border-b py-4 px-6 dark:border-gray-600">
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white lg:text-xl">
+            <h3 className="text-base font-semibold text-gray-900  lg:text-xl">
               Connect wallet
             </h3>
-            <a href="#" className="btn ">
+            <a href="#" className="btn btn-ghost btn-circle">
               <ConnextSVG />
             </a>
           </div>

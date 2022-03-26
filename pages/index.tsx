@@ -1,4 +1,3 @@
-import Layout from 'components/admin-nav/layout'
 import { useSession } from 'next-auth/react'
 import { NextPageWithLayout } from 'types/page'
 // Define a default UI for filtering

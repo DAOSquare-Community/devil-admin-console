@@ -56,9 +56,9 @@ const SlideMenu = () => {
             className="flex-0 btn btn-ghost px-2"
           >
             <div className="inline-flex  transition-all duration-200">
-              <span className=" text-2xl font-light lowercase	 ">hire</span>
-              <span className="text-2xl  uppercase italic text-yellow-400 ">
-                EZ
+              <span className=" text-2xl font-light uppercase 	 ">Dao</span>
+              <span className=" text-2xl capitalize  italic text-orange-500 ">
+                Suqare
               </span>
             </div>
           </a>

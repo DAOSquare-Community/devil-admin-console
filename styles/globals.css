@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
 a {
@@ -18,6 +18,55 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+
+
+
+#__next {
+  background-color: #e6ecff;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+  'Helvetica Neue', sans-serif;
+  /* min-height: 100vh; */
+}
+
+#__next .click-card {
+  cursor: pointer;
+  transition: box-shadow 0.5s;
+  background: rgb(255, 255, 255, 1);
+} 
+.click-card:hover {
+  box-shadow: 0px 0px 20px rgb(0 0 0 / 25%);
+  transition: box-shadow 0.2s;
+}
+
+
+#calendar .color-calendar {
+  display: flex;
+  align-items: center;
+}
+#calendar .color-calendar .calendar__arrow-inner {
+  background: #ff98d3;
+}
+
+.article .chakra-text {
+  font-size: 16px;
+  margin: 28px 0;
+}
+@media (min-width: 768px) {
+  .article .chakra-text {
+    font-size: 18px;
+    margin: 32px 0;
+  }
+}
+@media (min-width: 992px) {
+  .article .chakra-text {
+    font-size: 20px;
+    margin: 36px 0;
+  }
+}
+
 
 .modal--overlay {
   position: fixed;

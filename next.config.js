@@ -4,6 +4,8 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['images.unsplash.com', 'iph.href.lu', 'etherscan.io'],
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   env: {
     DEVIL_CONSOLE_BACKEND_URL: process.env.DEVIL_CONSOLE_BACKEND_URL,
