@@ -1,4 +1,4 @@
-// import Layout from 'components/nav/layout'
+// import Layout from 'components/admin-nav/layout'
 import { HomeRoute } from 'lib/config'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'

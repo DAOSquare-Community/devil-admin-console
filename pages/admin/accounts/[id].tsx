@@ -1,5 +1,5 @@
 import UserForm, { UserFormData, UserOptions } from 'components/form/account'
-import Layout from 'components/nav/layout'
+import Layout from 'components/admin-nav/layout'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
 import { User } from 'models/User'
 import { useRouter } from 'next/router'

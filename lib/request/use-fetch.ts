@@ -8,7 +8,7 @@ import {
 import { request } from './axios-helper'
 import { PathUnionType } from './path-union'
 
-const BACKEND_URL = process.env.DEVIL_CONSOLE_BACKEND_URL || ''
+export const BACKEND_URL = process.env.DEVIL_CONSOLE_BACKEND_URL || ''
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type KeysType = any[] | string

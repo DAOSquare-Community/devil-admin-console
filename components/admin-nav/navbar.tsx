@@ -153,9 +153,9 @@ const NavBar: FC<NavBarProps> = ({}) => {
                 className="flex-0 btn btn-ghost px-2 "
               >
                 <div className="inline-flex  transition-all duration-200">
-                  <span className=" text-xl font-light lowercase	 ">hire</span>
-                  <span className="text-xl  uppercase italic text-yellow-400 ">
-                    EZ
+                  <span className=" text-xl font-light uppercase	 ">Dao</span>
+                  <span className="text-xl   italic  text-orange-500 ">
+                    Suqare
                   </span>
                 </div>
               </a>

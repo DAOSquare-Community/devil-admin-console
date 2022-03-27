@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import Header from 'components/nav/header'
+import Header from 'components/admin-nav/header'
 import { NextPageWithLayout } from 'types/page'
-import { NoSlideMenuLayout } from 'components/nav/layout'
+import { NoSlideMenuLayout } from 'components/admin-nav/layout'
 import React from 'react'
 
 // import enums
@@ -185,10 +185,10 @@ const LoginMain: FC = () => {
       <div className="modal" id="wallet-moda">
         <div className="modal-box">
           <div className="flex items-center justify-between rounded-t border-b py-4 px-6 dark:border-gray-600">
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white lg:text-xl">
+            <h3 className="text-base font-semibold text-gray-900  lg:text-xl">
               Connect wallet
             </h3>
-            <a href="#" className="btn ">
+            <a href="#" className="btn btn-ghost btn-circle">
               <ConnextSVG />
             </a>
           </div>

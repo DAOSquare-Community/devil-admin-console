@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { AriaAttributes, FC } from 'react'
 import Link from 'next/link'
 

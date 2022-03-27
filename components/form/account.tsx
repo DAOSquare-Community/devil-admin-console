@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 // import CInput from 'components/c-input'
-import CSelect from 'components/c-select'
+import CSelect from 'components/input/c-select'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { Role } from 'types/permission'

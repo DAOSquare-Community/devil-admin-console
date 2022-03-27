@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import Router from 'next/router'
 import { FC, useEffect, useReducer } from 'react'
 import { MeInterface } from 'types/user'
-import PermissionLayout from './nav/permission-layout'
+import PermissionLayout from './permission-layout'
 
 const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
   const [state, dispatch] = useReducer(meReducer, {} as MeInterface)

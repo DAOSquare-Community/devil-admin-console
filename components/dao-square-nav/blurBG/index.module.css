@@ -1,0 +1,36 @@
+.blur_bg {
+  opacity: 0.6;
+  position: fixed;
+
+  width: 400px;
+  height: 400px;
+  top: 160px;
+  filter: blur(120px);
+}
+.blur_bg.left {
+  left: -140px;
+  background: #ffd391;
+}
+.blur_bg.right {
+  right: -140px;
+  background: #ff96d5;
+}
+@media (min-width: 768px) {
+  .blur_bg {
+    width: 33vw;
+    height: 33vw;
+    top: 232px;
+    filter: blur(140px);
+  }
+  .blur_bg.left {
+    left: 20%;
+  }
+  .blur_bg.right {
+    right: 20%;
+  }
+}
+@media (min-width: 1280px) {
+  .blur_bg {
+    filter: blur(200px);
+  }
+}
