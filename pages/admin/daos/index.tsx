@@ -123,7 +123,7 @@ const Daos: NextPageWithLayout = () => {
         data={data}
         onDelete={onDelete}
         onAdd={onAdd}
-        showSelection
+        disableSelection={false}
         isLoading={isLoading}
       />
     </div>

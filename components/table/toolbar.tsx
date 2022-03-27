@@ -16,8 +16,9 @@ export function ToolBar<T extends Record<string, unknown>>({
   onDelete,
 }: PropsWithChildren<TableToolbarProps<T>>) {
   const { state } = instance
+
   return (
-    <div className="mb-2 sm:flex sm:gap-x-2">
+    <div className="sm:flex sm:gap-x-2">
       {onEdit &&
         (!state.selectedRowIds ||
           Object.keys(state.selectedRowIds).length === 1) && (
@@ -36,29 +37,39 @@ export function ToolBar<T extends Record<string, unknown>>({
       {onDelete &&
         (!state.selectedRowIds ||
           Object.keys(state.selectedRowIds).length !== 0) && (
-          <button
-            className="btn btn-ghost btn-sm btn-circle"
-            onClick={() => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              //@ts-ignore
-              state.selectedRowIds = {}
-              onDelete(instance)
-            }}
-            disabled={
-              state.selectedRowIds &&
-              Object.keys(state.selectedRowIds).length === 0
-            }
+          <div
+            className=" tooltip-top tooltip  tooltip-primary hover:tooltip-open"
+            data-tip="Delete"
           >
-            <MinusIcon className="h-5 w-5 text-gray-400" />
-          </button>
+            <button
+              className="btn btn-ghost btn-sm btn-circle"
+              onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                state.selectedRowIds = {}
+                onDelete(instance)
+              }}
+              disabled={
+                state.selectedRowIds &&
+                Object.keys(state.selectedRowIds).length === 0
+              }
+            >
+              <MinusIcon className="h-5 w-5 text-gray-400" />
+            </button>
+          </div>
         )}
       {onAdd && (
-        <button
-          className="btn btn-ghost btn-sm btn-circle"
-          onClick={() => onAdd(instance)}
+        <div
+          className="  tooltip-top tooltip  tooltip-primary hover:tooltip-open"
+          data-tip="Add"
         >
-          <PlusIcon className="h-5 w-5 text-gray-400" />
-        </button>
+          <button
+            className="btn btn-ghost btn-sm btn-circle"
+            onClick={() => onAdd(instance)}
+          >
+            <PlusIcon className="h-5 w-5 text-gray-400" />
+          </button>
+        </div>
       )}
     </div>
   )

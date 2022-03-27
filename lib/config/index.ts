@@ -1,4 +1,4 @@
-import { HiHome, HiUserGroup, HiUsers } from 'react-icons/hi'
+import { HiHome, HiMoon, HiUserGroup, HiUsers } from 'react-icons/hi'
 const logoAddress = 'https://iph.href.lu/80x15?text=logo&fg=000000&bg=ffffff'
 
 import memoryCache, { CacheClass } from 'memory-cache'
@@ -20,6 +20,7 @@ export const MenuConfigMap: Map<
   ['dashboard', { Icon: HiHome, router: '/admin' }],
   ['daos', { Icon: HiUserGroup, router: '/admin/daos' }],
   ['accounts', { Icon: HiUsers, router: '/admin/accounts' }],
+  ['action-log', { Icon: HiMoon, router: '/admin/action-log' }],
 ])
 
 export const DefaultRoloPermissions: Set<Role> = new Set([
@@ -94,6 +95,11 @@ export const RoleApis: RoleApiPermission[] = [
   },
   {
     apiRouter: '/admin/daos/add',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/admin/action-log',
     role: ['super-admin', 'admin'],
     method: AllHttpMethod,
   },

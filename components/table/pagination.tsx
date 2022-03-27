@@ -37,7 +37,7 @@ const Pagination: FC<
         <div className="flex items-baseline gap-x-2">
           <span className="text-sm text-gray-700">
             Page <span className="font-medium">{state.pageIndex + 1}</span> of{' '}
-            <span className="font-medium">{pageOptions.length}</span>
+            <span className="font-medium">{pageOptions?.length}</span>
           </span>
           <label>
             <select

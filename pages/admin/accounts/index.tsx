@@ -145,7 +145,7 @@ const Accounts: NextPageWithLayout = () => {
         columns={columns}
         data={data ?? []}
         onDelete={onDelete}
-        showSelection
+        disableSelection={false}
         isLoading={isLoading}
       />
     </div>
