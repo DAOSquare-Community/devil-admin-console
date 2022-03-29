@@ -6,4 +6,4 @@ export type NextPageWithLayout = NextPage & {
 }
 
 export type PermissionPageName = 'accounts'
-export type MenuName = 'dashboard' | 'accounts' | 'daos'
+export type MenuName = 'dashboard' | 'accounts' | 'daos' | 'action-log'

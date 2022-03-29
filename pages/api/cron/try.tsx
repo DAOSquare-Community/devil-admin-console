@@ -1,32 +1,16 @@
 import {
   createHandler,
   ForbiddenException,
-  InternalServerErrorException,
   Post,
   Req,
 } from '@storyofams/next-api-decorators'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { MsgCode } from 'types/const-enum'
 
 class CronController {
   // GET /api/cron/try
   @Post()
-  public async executeCorn(
-    @Req() req: NextApiRequest,
-    @Req() res: NextApiResponse
-  ) {
-    try {
-      const { authorization } = req.headers
-      if (authorization === `Bearer ${process.env.API_SECRET_KEY}`) {
-        return { success: true }
-      } else {
-        throw new ForbiddenException('Fetch error,the secret key is error')
-      }
-    } catch (err) {
-      throw new InternalServerErrorException(
-        err instanceof Error ? err.message : MsgCode.FAILURE
-      )
-    }
+  public async executeCorn(@Req() req: NextApiRequest) {
+    return { success: true }
   }
 }
 export default createHandler(CronController)

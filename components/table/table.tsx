@@ -1,10 +1,5 @@
 import { FC } from 'react'
-import {
-  HeaderGroup,
-  TableInstance,
-  TablePropGetter,
-  TableProps,
-} from 'react-table'
+import { HeaderGroup, TableInstance } from 'react-table'
 import { SortIcon, SortUpIcon, SortDownIcon } from './icons'
 
 export const TableHeader: FC<{
@@ -52,7 +47,7 @@ export function TBody<
 >({ getTableBodyProps, page, prepareRow }: TableInstance<D>) {
   return (
     <tbody {...getTableBodyProps()}>
-      {page.map((row, index) => {
+      {page?.map((row, index) => {
         prepareRow(row)
         return (
           <tr {...row.getRowProps()} key={row.id ?? index}>

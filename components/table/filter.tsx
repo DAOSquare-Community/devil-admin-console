@@ -61,7 +61,7 @@ export function SelectColumnFilter<
     <label className="flex items-baseline gap-x-2">
       <span className="text-gray-700">{render('Header')}: </span>
       <select
-        className="rounded-md "
+        // className="dmc-form-select  "
         name={id}
         id={id}
         value={filterValue}
@@ -80,13 +80,39 @@ export function SelectColumnFilter<
   )
 }
 
+export function InputColumnFilter<
+  D extends Record<string, unknown> = Record<string, unknown>
+>({
+  column: { filterValue, setFilter, id, render },
+}: {
+  column: ColumnInstance<D>
+}) {
+  // Render a multi-select box
+  return (
+    <label className="mr-2 flex  items-baseline gap-x-2">
+      <span className="dmc-lable min-w-[80px] sm:min-w-fit">
+        {render('Header')}:{' '}
+      </span>
+      <input
+        className="dmc-form-input  "
+        name={id}
+        id={id}
+        value={filterValue || ''}
+        onChange={(e) => {
+          setFilter(e.target.value || undefined)
+        }}
+      />
+    </label>
+  )
+}
+
 export function FilterBar<
   D extends Record<string, unknown> = Record<string, unknown>
->(props: TableInstance<D>) {
-  const { headerGroups } = props
+>(props: TableInstance<D> & { disableGlobalFilter?: boolean }) {
+  const { headerGroups, disableGlobalFilter } = props
   return (
-    <div className="sm:flex sm:gap-x-2">
-      <GlobalFilter {...props} />
+    <div className="sm:flex sm:gap-x-2 ">
+      {!disableGlobalFilter && <GlobalFilter {...props} />}
       {headerGroups.map((headerGroup) =>
         headerGroup.headers.map((column) =>
           column.Filter ? (
