@@ -1,10 +1,5 @@
-import {
-  createHandler,
-  ForbiddenException,
-  Post,
-  Req,
-} from '@storyofams/next-api-decorators'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { createHandler, Post, Req } from '@storyofams/next-api-decorators'
+import { NextApiRequest } from 'next'
 
 class CronController {
   // GET /api/cron/try

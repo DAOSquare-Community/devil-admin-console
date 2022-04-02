@@ -1,17 +1,15 @@
 import { PropsWithChildren } from 'react'
 import { TableInstance } from 'react-table'
-import { MinusIcon, PencilAltIcon, PlusIcon } from './icons'
+import { MinusIcon, PlusIcon } from './icons'
 
 type TableToolbarProps<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   onAdd?: (instance: TableInstance<T>) => void
   onDelete?: (instance: TableInstance<T>) => void
-  onEdit?: (instance: TableInstance<T>) => void
 }
 
 export function ToolBar<T extends Record<string, unknown>>({
   instance,
-  onEdit,
   onAdd,
   onDelete,
 }: PropsWithChildren<TableToolbarProps<T>>) {
@@ -19,26 +17,11 @@ export function ToolBar<T extends Record<string, unknown>>({
 
   return (
     <div className="sm:flex sm:gap-x-2">
-      {onEdit &&
-        (!state.selectedRowIds ||
-          Object.keys(state.selectedRowIds).length === 1) && (
-          <button
-            className="btn btn-ghost btn-sm btn-circle"
-            onClick={() => onEdit(instance)}
-            disabled={
-              state.selectedRowIds &&
-              Object.keys(state.selectedRowIds).length !== 1
-            }
-          >
-            <PencilAltIcon className="h-5 w-5 text-gray-400" />
-          </button>
-        )}
-
       {onDelete &&
         (!state.selectedRowIds ||
           Object.keys(state.selectedRowIds).length !== 0) && (
           <div
-            className=" tooltip-top tooltip  tooltip-primary hover:tooltip-open"
+            className=" tooltip-top tooltip   hover:tooltip-open"
             data-tip="Delete"
           >
             <button
@@ -60,7 +43,7 @@ export function ToolBar<T extends Record<string, unknown>>({
         )}
       {onAdd && (
         <div
-          className="  tooltip-top tooltip  tooltip-primary hover:tooltip-open"
+          className="  tooltip-top tooltip  hover:tooltip-open"
           data-tip="Add"
         >
           <button

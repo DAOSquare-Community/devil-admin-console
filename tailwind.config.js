@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require('daisyui')],
+  plugins: [require('daisyui'), require('tailwindcss-animate')],
+  themes: ['winter'],
   daisyui: {
     themes: ['winter'],
     darkTheme: 'winter',

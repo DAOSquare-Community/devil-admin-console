@@ -1,7 +1,6 @@
 import {
   Get,
   createHandler,
-  Param,
   BadRequestException,
   Query,
 } from '@storyofams/next-api-decorators'

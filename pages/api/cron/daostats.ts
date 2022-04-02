@@ -75,7 +75,6 @@ class CronDaoStatsController {
           { daoId: 1 }
         )
         if (daosResult.message) {
-          console.log(`corn error:${daosResult.message},page:${p + 1}`)
           throw new InternalServerErrorException(
             `corn error:${daosResult.message},page:${p + 1}`
           )
@@ -142,11 +141,9 @@ class CronDaoStatsController {
       const retDaoStats = await this._daoStatsService.insertEntity(daoStats)
       if (retDaoStats.message) {
         const err = `corn error:${retDaoStats.message},datetime:${new Date()}`
-        console.log(err)
         throw new InternalServerErrorException(err)
       }
     } catch (err) {
-      console.log(err instanceof Error ? err.message : MsgCode.FAILURE)
       throw new InternalServerErrorException(
         err instanceof Error ? err.message : MsgCode.FAILURE
       )

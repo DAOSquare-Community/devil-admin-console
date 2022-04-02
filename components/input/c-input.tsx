@@ -5,15 +5,17 @@ import {
 } from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import classNames from 'classnames'
+// import { Input } from '@hireteammate/hiretual-design'
 type CInputType<T extends FieldValues> = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 > & {
   name: Path<T>
   label?: string
-  showLabel?: boolean
-  showErrow?: boolean
+  disableLabel?: boolean
+  disbaleError?: boolean
   control: Control<T>
+  labelClassName?: string
 }
 
 const CInput = <T extends FieldValues = FieldValues>({
@@ -21,16 +23,17 @@ const CInput = <T extends FieldValues = FieldValues>({
   name,
   control,
   type = 'text',
-  showLabel = true,
-  showErrow = true,
+  disableLabel = false,
+  disbaleError = false,
   className,
+  labelClassName,
   ...props
 }: PropsWithChildren<CInputType<T>>) => {
   return (
     <>
-      {showLabel && (
+      {!disableLabel && (
         <label
-          className="mb-2 block text-xs font-bold uppercase tracking-wide text-gray-700"
+          className={`dmc-label mb-2 ${labelClassName ? labelClassName : ''}`}
           htmlFor={name}
         >
           {label ?? name}
@@ -39,6 +42,7 @@ const CInput = <T extends FieldValues = FieldValues>({
       <Controller<T, Path<T>>
         name={name}
         control={control}
+        // defaultValue={props.defaultValue}
         render={({ field, fieldState: { error } }) => {
           return (
             <>
@@ -52,8 +56,8 @@ const CInput = <T extends FieldValues = FieldValues>({
                 {...props}
                 value={field.value ?? ''}
               />
-              {showErrow && !!error?.message && (
-                <p className="mt-2 text-xs italic text-red-500">
+              {!disbaleError && !!error?.message && (
+                <p className="mt-2 text-xs lowercase italic text-red-500 first-letter:uppercase">
                   {error?.message}
                 </p>
               )}

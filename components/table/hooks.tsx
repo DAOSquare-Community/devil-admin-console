@@ -78,7 +78,7 @@ export const selectionHook = <D extends Record<string, unknown>>(
       ...columns.filter((i) => i.id !== SELECTION_ID),
     ]
   })
-  hooks.useInstanceBeforeDimensions.push(({ headerGroups, state }) => {
+  hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
     // fix the parent group of the selection button to not be resizable
     const selectionGroupHeader = headerGroups[0].headers[0]
     selectionGroupHeader.canResize = false

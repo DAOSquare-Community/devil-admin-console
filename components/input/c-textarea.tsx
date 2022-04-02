@@ -1,11 +1,15 @@
-import { PropsWithChildren } from 'react'
+import {
+  DetailedHTMLProps,
+  PropsWithChildren,
+  InputHTMLAttributes,
+} from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import classNames from 'classnames'
-import Select, { Props } from 'react-select'
-type CSelectType<T extends FieldValues> = Props<{
-  label: string
-  value: string
-}> & {
+// import { Input } from '@hireteammate/hiretual-design'
+type CInputType<T extends FieldValues> = DetailedHTMLProps<
+  InputHTMLAttributes<HTMLTextAreaElement>,
+  HTMLTextAreaElement
+> & {
   name: Path<T>
   label?: string
   disableLabel?: boolean
@@ -14,7 +18,7 @@ type CSelectType<T extends FieldValues> = Props<{
   labelClassName?: string
 }
 
-const CSelect = <T extends FieldValues = FieldValues>({
+const CTextarea = <T extends FieldValues = FieldValues>({
   label,
   name,
   control,
@@ -23,7 +27,7 @@ const CSelect = <T extends FieldValues = FieldValues>({
   className,
   labelClassName,
   ...props
-}: PropsWithChildren<CSelectType<T>>) => {
+}: PropsWithChildren<CInputType<T>>) => {
   return (
     <>
       {!disableLabel && (
@@ -41,16 +45,19 @@ const CSelect = <T extends FieldValues = FieldValues>({
         render={({ field, fieldState: { error } }) => {
           return (
             <>
-              <Select
-                className={classNames('dmc-form-select', className, {
-                  'border-red-500': error?.message,
-                })}
-                // styles={{ input: { textAlign: 'center' } }}
+              <textarea
+                className={classNames(
+                  'dmc-form-input min-h-[100px] py-2',
+                  className,
+                  {
+                    'border-red-500': error?.message,
+                  }
+                )}
                 id={name}
                 {...field}
                 {...props}
+                value={field.value || ''}
               />
-
               {!disbaleError && !!error?.message && (
                 <p className="mt-2 text-xs lowercase italic text-red-500 first-letter:uppercase">
                   {error?.message}
@@ -64,4 +71,4 @@ const CSelect = <T extends FieldValues = FieldValues>({
   )
 }
 
-export default CSelect
+export default CTextarea

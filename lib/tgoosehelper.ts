@@ -1,9 +1,5 @@
+import { AnyParamConstructor, BeAnObject } from '@typegoose/typegoose/lib/types'
 import {
-  AnyParamConstructor,
-  BeAnObject,
-  IModelOptions,
-} from '@typegoose/typegoose/lib/types'
-import QueryHelpers, {
   getModelForClass,
   ReturnModelType,
   Severity,

@@ -1,10 +1,7 @@
 import UserService from 'service/user'
-import { ResultMsg } from 'types/resultmsg'
 import {
   BadRequestException,
-  Get,
   InternalServerErrorException,
-  Param,
 } from '@storyofams/next-api-decorators'
 import NextAuth from 'next-auth'
 import { UserNonceCache } from 'lib/config'
@@ -116,8 +113,6 @@ export default NextAuth({
           u.last_loginTime = null
           u.session_expired = null
           u.session_token = ''
-          const retIns = await userService.insertUser(u)
-          if (retIns.message) console.log(retIns.message)
         }
         return true
       }
