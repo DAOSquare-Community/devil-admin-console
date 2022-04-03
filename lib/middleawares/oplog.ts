@@ -33,7 +33,7 @@ const OpLogGuard = createMiddlewareDecorator(
       }
     } catch (err) {
       const error = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log(`OpLogGuard--${error}`)
+      //console.log(`OpLogGuard--${error}`)
     }
 
     next()

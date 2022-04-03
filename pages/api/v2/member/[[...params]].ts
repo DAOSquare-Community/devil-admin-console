@@ -1,4 +1,3 @@
-import { MsgCode } from 'types/const-enum'
 import {
   Get,
   Query,
