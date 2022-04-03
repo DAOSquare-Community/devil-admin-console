@@ -49,8 +49,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       resMsg.data = pd
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log(`getList--------${typeof this.model}`)
-      console.log(err)
+      //console.log(`getList--------${typeof this.model}`)
+      //console.log(err)
       resMsg.message = errmsg
     }
 
@@ -73,8 +73,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('getCount--------')
-      console.log(err)
+      ////console.log('getCount--------')
+      ////console.log(err)
       ret.message = errmsg
     }
     return ret
@@ -95,8 +95,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('getEntityById--------')
-      console.log(err)
+      //console.log('getEntityById--------')
+      //console.log(err)
       ret.message = errmsg
     }
     return ret
@@ -117,8 +117,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('getEntities--------')
-      console.log(err)
+      //console.log('getEntities--------')
+      //console.log(err)
       ret.message = errmsg
     }
     return ret
@@ -137,8 +137,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('getEntity--------')
-      console.log(err)
+      //console.log('getEntity--------')
+      //console.log(err)
       ret.message = errmsg
     }
     return ret
@@ -163,8 +163,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       retUpdate.data = true
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('updateEntity--------')
-      console.log(err)
+      //console.log('updateEntity--------')
+      //console.log(err)
       retUpdate.message = errmsg
     }
     return retUpdate
@@ -185,8 +185,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       retDel.data = true
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('deleteEntity--------')
-      console.log(err)
+      //console.log('deleteEntity--------')
+      //console.log(err)
       retDel.message = errmsg
     }
     return retDel
@@ -212,8 +212,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       retDel.data = true
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('deleteEntityByIds--------')
-      console.log(err)
+      //console.log('deleteEntityByIds--------')
+      //console.log(err)
       retDel.message = errmsg
     }
     return retDel
@@ -237,8 +237,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
         err instanceof MongoError && err.code === 11000
           ? MsgCode.DUPLICATE_KEY
           : MsgCode.FAILURE
-      console.log('insertEntity--------')
-      console.log(err)
+      //console.log('insertEntity--------')
+      //console.log(err)
       retInsert.message = errmsg
     }
     return retInsert
@@ -262,8 +262,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
         err instanceof MongoError && err.code === 11000
           ? MsgCode.DUPLICATE_KEY
           : MsgCode.FAILURE
-      console.log('insertEntities--------')
-      console.log(err)
+      //console.log('insertEntities--------')
+      //console.log(err)
       retInsertMutl.message = errmsg
     }
     return retInsertMutl
