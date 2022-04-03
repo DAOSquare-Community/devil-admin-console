@@ -26,9 +26,9 @@ export interface TableProperties<T extends Record<string, unknown>>
   name?: string
   onAdd?: (instance: TableInstance<T>) => void
   onDelete?: (instance: TableInstance<T>) => void
-  onEdit?: (instance: TableInstance<T>) => void
   onClick?: (row: Row<T>) => void
   disableSelection?: boolean
+  disableGlobalMatchSorter?: boolean
   isLoading?: boolean
   onStateChange?: (state: TableState<T>) => void
 }
@@ -45,16 +45,18 @@ function ComboTable<T extends Record<string, any>>(
     name,
     onAdd,
     onDelete,
-    onEdit,
+    onClick,
     onStateChange,
     disableSelection = true,
     isLoading,
     disableGlobalFilter,
+    disableGlobalMatchSorter = false,
+    initialState: initialStateProp,
     ...others
   } = props
   const [initialState, setInitialState] = useLocalStorage(
     `tableState:${name}`,
-    {}
+    initialStateProp ?? {}
   )
   const slectHooks = !disableSelection ? [useRowSelect, selectionHook] : []
   const hooks = [
@@ -62,10 +64,19 @@ function ComboTable<T extends Record<string, any>>(
     useGlobalFilter,
     useSortBy,
     usePagination, // new
+    // useBlockLayout,
+    // useResizeColumns,
+    // useFlexLayout,
+    // useResizeColumns,
     ...slectHooks,
   ]
   const instance = useTable(
-    { ...others, globalFilter, initialState, disableGlobalFilter },
+    {
+      ...others,
+      globalFilter: !disableGlobalMatchSorter ? globalFilter : undefined,
+      initialState,
+      disableGlobalFilter,
+    },
     ...hooks
   )
   const { state, getTableProps } = instance
@@ -92,7 +103,7 @@ function ComboTable<T extends Record<string, any>>(
   }, [debouncedState])
 
   // Render the UI for your table
-  const { role, ...othertable } = getTableProps()
+  const { ...othertable } = getTableProps()
   return (
     <>
       <div className=" flex flex-1  flex-col-reverse  sm:justify-end lg:flex-row lg:justify-between">
@@ -100,7 +111,7 @@ function ComboTable<T extends Record<string, any>>(
         <div className="mb-2 flex gap-x-2">
           <ColumnHidePage {...instance} />
           {!disableSelection && (
-            <ToolBar instance={instance} {...{ onAdd, onDelete, onEdit }} />
+            <ToolBar instance={instance} {...{ onAdd, onDelete }} />
           )}
         </div>
       </div>
@@ -109,12 +120,12 @@ function ComboTable<T extends Record<string, any>>(
           {...othertable}
           className={
             isLoading
-              ? 'before:spinner  table min-h-[200px] before:left-1/2 before:top-1/2'
+              ? 'before:spinner  table min-h-[200px]   before:left-1/2  before:top-1/2'
               : 'table'
           }
         >
           <TableHeader {...instance} />
-          <TBody {...instance} />
+          <TBody {...instance} onClick={onClick} />
         </table>
       </div>
       <Pagination {...instance} />

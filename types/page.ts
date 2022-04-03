@@ -7,3 +7,10 @@ export type NextPageWithLayout = NextPage & {
 
 export type PermissionPageName = 'accounts'
 export type MenuName = 'dashboard' | 'accounts' | 'daos' | 'action-log'
+
+export type PagenationType = {
+  page: number
+  pageSize: number
+  filters?: { id: string; value?: string }[]
+  sortBy?: { id: string; desc?: boolean }[]
+}

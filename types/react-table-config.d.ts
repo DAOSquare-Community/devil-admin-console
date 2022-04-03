@@ -102,7 +102,7 @@ declare module 'react-table' {
 
   export interface ColumnInterface<
     D extends Record<string, unknown> = Record<string, unknown>
-  > extends UseFiltersColumnOptions<D>,
+  > extends UseFiltersColumnOptionsPlus<D>,
       UseGlobalFiltersColumnOptionsPlus<D>,
       UseGroupByColumnOptions<D>,
       UseResizeColumnsColumnOptions<D>,
@@ -134,6 +134,12 @@ declare module 'react-table' {
 export interface UseGlobalFiltersColumnOptionsPlus<D extends object>
   extends UseGlobalFiltersColumnOptions<D> {
   globalFiltersKey?: string
+}
+
+export interface UseFiltersColumnOptionsPlus<D extends object>
+  extends UseFiltersColumnOptions<D> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filterOptions?: { label: string; value: any }[]
 }
 
 // export interface UseRowClickRowProps<D extends object> {

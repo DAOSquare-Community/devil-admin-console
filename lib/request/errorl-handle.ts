@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { SessionStorageKeys } from 'lib/config'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 
 const signInPath = '/login'
 
@@ -18,7 +18,6 @@ export const errorHandler = (error: DMCError) => {
     const errorMessage = errors?.map((e) => e.message).join('.\n')
     const errorText =
       errorMessage || response.error || data?.message || statusText
-    console.log('errorText', errorText)
 
     // if (status === 404 && window.location.pathname !== '/404') {
     //   // window.location.href = '/404'

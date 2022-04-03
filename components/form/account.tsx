@@ -50,7 +50,6 @@ const UserForm: FC<{
     defaultValues,
     resolver: yupResolver(schema),
   })
-  console.log('defaultValues', defaultValues)
 
   return (
     <form id={id} className="w-full" onSubmit={handleSubmit(onSubmit)}>

@@ -16,7 +16,6 @@ const AvatarCell: FC<
   }
 > = ({ value, column, row }) => {
   // row.original
-  console.log('AvatarCell', row.original[column.imgAccessor])
   return (
     <div className="flex items-center">
       <div className="h-10 w-10 flex-shrink-0">

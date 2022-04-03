@@ -1,6 +1,5 @@
 import { FC, useContext, useState } from 'react'
 import Image from 'next/image'
-import { useAxiosMutation } from 'lib/request/use-fetch'
 import { useRouter } from 'next/router'
 import MeContext from 'lib/me-provider'
 import { Modal } from '../modal'

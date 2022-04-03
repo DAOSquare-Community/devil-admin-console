@@ -9,6 +9,7 @@ import {
   useAsyncDebounce,
 } from 'react-table'
 import { matchSorter } from 'match-sorter'
+import Select from 'react-select'
 
 // Define a default UI for filtering
 export function GlobalFilter<
@@ -42,40 +43,46 @@ export function GlobalFilter<
 export function SelectColumnFilter<
   D extends Record<string, unknown> = Record<string, unknown>
 >({
-  column: { filterValue, setFilter, preFilteredRows, id, render },
+  column: {
+    filterValue,
+    setFilter,
+    preFilteredRows,
+    id,
+    render,
+    filterOptions,
+  },
 }: {
   column: ColumnInstance<D>
 }) {
   // Calculate the options for filtering
   // using the preFilteredRows
   const options = React.useMemo(() => {
-    const options = new Set()
+    if (filterOptions) {
+      return filterOptions
+    }
+    const options = new Set<string>()
     preFilteredRows.forEach((row) => {
       options.add(row.values[id])
     })
-    return [...options.values()]
-  }, [id, preFilteredRows])
+    return [{ label: 'all', value: '' }].concat(
+      ...[...options.values()].map((value) => ({ value, label: value }))
+    )
+  }, [id, preFilteredRows, filterOptions])
 
   // Render a multi-select box
   return (
-    <label className="flex items-baseline gap-x-2">
-      <span className="text-gray-700">{render('Header')}: </span>
-      <select
-        // className="dmc-form-select  "
-        name={id}
-        id={id}
+    <label className="mr-2 flex  items-baseline gap-x-2">
+      <span className="mb-2 min-w-[80px] text-gray-700 xl:min-w-fit">
+        {render('Header')}:{' '}
+      </span>
+      <Select
+        className={'dmc-form-select  xl:min-w-fit'}
+        options={options}
         value={filterValue}
         onChange={(e) => {
-          setFilter(e.target.value || undefined)
+          setFilter(e)
         }}
-      >
-        <option value="">All</option>
-        {options.map((option, i) => (
-          <option key={i} value={option as string}>
-            {option as string}
-          </option>
-        ))}
-      </select>
+      />
     </label>
   )
 }
@@ -90,16 +97,60 @@ export function InputColumnFilter<
   // Render a multi-select box
   return (
     <label className="mr-2 flex  items-baseline gap-x-2">
-      <span className="dmc-lable min-w-[80px] sm:min-w-fit">
+      <span className="mb-2 min-w-[80px] text-gray-700 xl:min-w-fit">
         {render('Header')}:{' '}
       </span>
       <input
-        className="dmc-form-input  "
+        className="dmc-form-input min-w-[150px] "
         name={id}
         id={id}
         value={filterValue || ''}
         onChange={(e) => {
-          setFilter(e.target.value || undefined)
+          setFilter(e.target.value ?? undefined)
+        }}
+      />
+    </label>
+  )
+}
+
+export function DateColumnFilter<
+  D extends Record<string, unknown> = Record<string, unknown>
+>({
+  column: { filterValue, setFilter, id, render },
+}: {
+  column: ColumnInstance<D>
+}) {
+  // Render a multi-select box
+  return (
+    <label className=" mr-2 flex  items-baseline gap-x-2">
+      <span className="mb-2 min-w-[80px] text-gray-700 xl:min-w-fit">
+        {render('Header')}:{' '}
+      </span>
+      <input
+        className="dmc-form-input max-w-[160px] "
+        name={id}
+        id={id}
+        type="date"
+        value={filterValue?.from ?? ''}
+        onChange={(e) => {
+          setFilter((s: object) => ({
+            ...s,
+            from: e.target.value?.length > 0 ? e.target.value : undefined,
+          }))
+        }}
+      />
+      <span className="dmc-label mb-2">To</span>
+      <input
+        className="dmc-form-input max-w-[160px] "
+        name={id}
+        id={id}
+        type="date"
+        value={filterValue?.to ?? ''}
+        onChange={(e) => {
+          setFilter((s: object) => ({
+            ...s,
+            to: e.target.value?.length > 0 ? e.target.value : undefined,
+          }))
         }}
       />
     </label>
@@ -111,12 +162,12 @@ export function FilterBar<
 >(props: TableInstance<D> & { disableGlobalFilter?: boolean }) {
   const { headerGroups, disableGlobalFilter } = props
   return (
-    <div className="sm:flex sm:gap-x-2 ">
+    <div className="flex flex-wrap gap-x-2">
       {!disableGlobalFilter && <GlobalFilter {...props} />}
       {headerGroups.map((headerGroup) =>
         headerGroup.headers.map((column) =>
           column.Filter ? (
-            <div className="mt-2 sm:mt-0" key={column.id}>
+            <div className="mt-2 " key={column.id}>
               {column.render('Filter')}
             </div>
           ) : null
@@ -129,7 +180,7 @@ export function FilterBar<
 export const useGlobalMatchSorter = <T extends object>() => {
   return useCallback((rows: Row<T>[], ids: IdType<T>[], query: string) => {
     const keys = rows?.[0]?.cells
-      ?.filter((res) => !res.column.disableGlobalFilter)
+      ?.filter?.((res) => !res.column.disableGlobalFilter)
       .map(({ column }) =>
         Array.isArray(column.globalFiltersKey)
           ? column.globalFiltersKey

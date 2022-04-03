@@ -2,7 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { request } from 'lib/request/axios-helper'
 import DaoService from 'service/dao'
 import { OpenApi } from 'models/Dao'
-import NextCors from 'nextjs-cors'
 
 type Data = {
   organization: {
