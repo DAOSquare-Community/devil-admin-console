@@ -113,6 +113,7 @@ export default NextAuth({
           u.last_loginTime = null
           u.session_expired = null
           u.session_token = ''
+          const retIns = await userService.insertUser(u)
         }
         return true
       }

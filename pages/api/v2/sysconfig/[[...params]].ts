@@ -1,3 +1,4 @@
+import { MsgCode } from 'types/const-enum'
 import {
   Get,
   Query,
@@ -11,21 +12,17 @@ import {
 } from '@storyofams/next-api-decorators'
 import NextAuthGuard from 'lib/middleawares/auth'
 import OpLogGuard from 'lib/middleawares/oplog'
-import { User } from 'models/User'
-import UserService from 'service/user'
+import { Config } from 'models/Config'
+import ConfigService from 'service/config'
 import { PageData, ResultMsg } from 'types/resultmsg'
-
-type UserIds = {
-  userIds: string[]
-}
 
 @NextAuthGuard()
 @OpLogGuard()
-class UserController {
-  private _service = new UserService()
+class ConfigController {
+  private _service = new ConfigService()
 
   /**
-   * get user list
+   * get config list
    * @param page
    * @param pageSize
    * @param queryParams
@@ -33,12 +30,12 @@ class UserController {
    * @returns
    */
   @Get('/list')
-  public async getUserList(
+  public async getConfigList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
     @Query('queryParams') queryParams?: object,
     @Query('sortParams') sortParams?: object
-  ): Promise<ResultMsg<PageData<User>>> {
+  ): Promise<ResultMsg<PageData<Config>>> {
     const ret = await this._service.getList(
       page,
       pageSize,
@@ -52,53 +49,56 @@ class UserController {
   }
 
   /**
-   * get user by id
-   * @Query   id
+   * get user by name
+   * @Query name
    * @returns
    */
   @Get()
-  public async getUserById(
-    @Query('id') id: string
-  ): Promise<ResultMsg<User | null>> {
-    const user = await this._service.getEntityById(id)
-    //console.log(user)
-    if (user.message) {
-      throw new InternalServerErrorException(user.message)
+  public async getConfigByName(
+    @Query('name') name: string
+  ): Promise<ResultMsg<Config | null>> {
+    const config: ResultMsg<Config | null> = {
+      message: '',
+      data: null,
     }
-    return user
+    try {
+      const cfg = await this._service.getConfigByName(name)
+      config.data = cfg
+    } catch (err) {
+      const error = err instanceof Error ? err.message : MsgCode.FAILURE
+      config.message = error
+      throw new InternalServerErrorException(error)
+    }
+
+    return config
   }
 
   /**
-   * delete users by ids
-   * @param Ids
+   * delete config by filter
+   * @param filter
    * @returns
    */
   @Delete()
-  public async deleteUsersByIds(
-    @Body() body: UserIds
+  public async deleteConfigByFilter(
+    @Body() body: { filter: string }
   ): Promise<ResultMsg<boolean>> {
-    const delUsers = await this._service.deleteEntityByIds(body.userIds)
-    if (delUsers.message) {
-      throw new InternalServerErrorException(delUsers.message)
+    const del = await this._service.deleteEntity(JSON.parse(body.filter))
+    if (del.message) {
+      throw new InternalServerErrorException(del.message)
     }
-    return delUsers
+    return del
   }
 
   /**
-   * insert user
-   * @param user
+   * insert config
+   * @param config
    * @returns
-   * @example
-   * {
-      "wallet_address" : "0xb9D8956d1290ee0818923ed5545c910FC8766666",
-      "role" : ["super-admin","admin"]
-     }
    */
   @Post()
-  public async insertUser(@Body() body: object): Promise<ResultMsg<boolean>> {
-    const user = new User()
-    const u = Object.assign(user, body)
-    const ret = await this._service.insertEntity(u)
+  public async insertConfig(@Body() body: object): Promise<ResultMsg<boolean>> {
+    const config = new Config()
+    const cfg = Object.assign(config, body)
+    const ret = await this._service.insertEntity(cfg)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
     }
@@ -106,13 +106,13 @@ class UserController {
   }
 
   /**
-   * update user
+   * update config
    * @param filter
    * @param update
    * @returns
    */
   @Put()
-  public async updateUser(
+  public async updateConfig(
     @Body() body: { filter: string; update: string }
   ): Promise<ResultMsg<boolean>> {
     const ret = await this._service.updateEntity(
@@ -126,4 +126,4 @@ class UserController {
   }
 }
 
-export default createHandler(UserController)
+export default createHandler(ConfigController)

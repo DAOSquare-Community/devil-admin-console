@@ -9,16 +9,16 @@ export class User extends BaseModel {
   @prop({ required: true, unique: true })
   public wallet_address!: string
 
-  @prop()
+  @prop({ default: null })
   public last_loginTime!: Date | null
 
-  @prop()
+  @prop({ default: '' })
   public session_token!: string
 
-  @prop()
+  @prop({ default: null })
   public session_expired!: Date | null
 
-  @prop({ required: true })
+  @prop({ required: true, default: [] })
   public role!: string[]
 }
 

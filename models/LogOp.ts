@@ -13,12 +13,16 @@ export class LogOp extends BaseModel {
   @prop({ required: true })
   public path!: string
 
+  /** the params */
+  @prop({ default: '' })
+  public params!: string
+
   /** result status 500/200/404 */
-  @prop({ required: true })
+  @prop({ required: true, default: '200' })
   public status!: string
 
   /** the operation time */
-  @prop({ required: true })
+  @prop({ required: true, default: new Date() })
   public optime!: Date
 }
 

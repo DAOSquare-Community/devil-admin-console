@@ -50,8 +50,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       resMsg.data = pd
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log(`getList--------${typeof this.model}`)
-      console.log(err)
+      //console.log(`getList--------${typeof this.model}`)
+      //console.log(err)
       resMsg.message = errmsg
     }
 
@@ -64,7 +64,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param filter
    * @returns
    */
-  getCount = async (filter: object): Promise<ResultMsg<number>> => {
+  public getCount = async (filter: object): Promise<ResultMsg<number>> => {
     const ret: ResultMsg<number> = {
       message: '',
       data: 0,
@@ -74,8 +74,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('getCount--------')
-      console.log(err)
+      ////console.log('getCount--------')
+      ////console.log(err)
       ret.message = errmsg
     }
     return ret
@@ -87,7 +87,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param id
    * @returns
    */
-  getEntityById = async (id: string): Promise<ResultMsg<T | null>> => {
+  public getEntityById = async (id: string): Promise<ResultMsg<T | null>> => {
     const ret: ResultMsg<T | null> = {}
     try {
       const entity = await this.model.findById<T>(
@@ -96,8 +96,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('getEntityById--------')
-      console.log(err)
+      //console.log('getEntityById--------')
+      //console.log(err)
       ret.message = errmsg
     }
     return ret
@@ -109,15 +109,37 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param filter
    * @returns
    */
-  getEntities = async (filter: object): Promise<ResultMsg<T[] | null>> => {
+  public getEntities = async (
+    filter: object
+  ): Promise<ResultMsg<T[] | null>> => {
     const ret: ResultMsg<T[] | null> = {}
     try {
       const entity = await this.model.find<T>(filter)
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('getEntities--------')
-      console.log(err)
+      //console.log('getEntities--------')
+      //console.log(err)
+      ret.message = errmsg
+    }
+    return ret
+  }
+
+  /**
+   * get entity
+   *
+   * @param filter
+   * @returns
+   */
+  public getEntity = async (filter: object): Promise<ResultMsg<T | null>> => {
+    const ret: ResultMsg<T | null> = {}
+    try {
+      const entity = await this.model.findOne<T>(filter)
+      if (!!entity) ret.data = entity
+    } catch (err) {
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
+      //console.log('getEntity--------')
+      //console.log(err)
       ret.message = errmsg
     }
     return ret
@@ -130,7 +152,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param updateData
    * @returns
    */
-  updateEntity = async (
+  public updateEntity = async (
     filter: object,
     updateData: object
   ): Promise<ResultMsg<boolean>> => {
@@ -142,8 +164,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       retUpdate.data = true
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('updateEntity--------')
-      console.log(err)
+      //console.log('updateEntity--------')
+      //console.log(err)
       retUpdate.message = errmsg
     }
     return retUpdate
@@ -155,7 +177,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param filter
    * @returns
    */
-  deleteEntity = async (filter: object): Promise<ResultMsg<boolean>> => {
+  public deleteEntity = async (filter: object): Promise<ResultMsg<boolean>> => {
     const retDel: ResultMsg<boolean> = {
       data: false,
     }
@@ -164,8 +186,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       retDel.data = true
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('deleteEntity--------')
-      console.log(err)
+      //console.log('deleteEntity--------')
+      //console.log(err)
       retDel.message = errmsg
     }
     return retDel
@@ -177,7 +199,9 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param Ids
    * @returns
    */
-  deleteEntityByIds = async (Ids: string[]): Promise<ResultMsg<boolean>> => {
+  public deleteEntityByIds = async (
+    Ids: string[]
+  ): Promise<ResultMsg<boolean>> => {
     const retDel: ResultMsg<boolean> = {
       data: false,
     }
@@ -189,8 +213,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       retDel.data = true
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      console.log('deleteEntityByIds--------')
-      console.log(err)
+      //console.log('deleteEntityByIds--------')
+      //console.log(err)
       retDel.message = errmsg
     }
     return retDel
@@ -202,7 +226,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param entity
    * @returns
    */
-  insertEntity = async (entity: T): Promise<ResultMsg<boolean>> => {
+  public insertEntity = async (entity: T): Promise<ResultMsg<boolean>> => {
     const retInsert: ResultMsg<boolean> = {
       data: false,
     }
@@ -214,8 +238,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
         err instanceof MongoError && err.code === 11000
           ? MsgCode.DUPLICATE_KEY
           : MsgCode.FAILURE
-      console.log('insertEntity--------')
-      console.log(err)
+      //console.log('insertEntity--------')
+      //console.log(err)
       retInsert.message = errmsg
     }
     return retInsert
@@ -227,7 +251,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param entity
    * @returns
    */
-  insertEntities = async (entity: T[]): Promise<ResultMsg<boolean>> => {
+  public insertEntities = async (entity: T[]): Promise<ResultMsg<boolean>> => {
     const retInsertMutl: ResultMsg<boolean> = {
       data: false,
     }
@@ -239,8 +263,8 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
         err instanceof MongoError && err.code === 11000
           ? MsgCode.DUPLICATE_KEY
           : MsgCode.FAILURE
-      console.log('insertEntities--------')
-      console.log(err)
+      //console.log('insertEntities--------')
+      //console.log(err)
       retInsertMutl.message = errmsg
     }
     return retInsertMutl

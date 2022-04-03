@@ -6,6 +6,18 @@ export default class ConfigService extends BaseService<Config, typeof Config> {
     super(ConfigModel)
   }
 
+  /**
+   * get config entity by name
+   *
+   * @param name
+   * @returns
+   */
+  public getConfigByName = async (name: string): Promise<Config | null> => {
+    return await ConfigModel.findOne<Config>({
+      name: name,
+    })
+  }
+
   insertConfig = async () => {
     const cfg = new ConfigModel()
     cfg.name = 'ChainType'
