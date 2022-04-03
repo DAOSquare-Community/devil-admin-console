@@ -1,4 +1,3 @@
-import Web3 from 'web3'
 import crypto from 'crypto'
 import { bufferToHex } from 'ethereumjs-util'
 import { recoverPersonalSignature } from 'eth-sig-util'

@@ -52,8 +52,6 @@ export function StatusPill({ value }: Cell<Record<string, unknown>, Role[]>) {
     )
   })
 
-  // console.log(roles)
-
   return <div className={'flex  flex-col gap-2 xl:flex-row'}>{roles}</div>
 }
 

@@ -1,5 +1,5 @@
 import { TableInstance } from 'react-table'
-import { ColumnsIcon, MinusIcon } from './icons'
+import { ColumnsIcon } from './icons'
 
 interface ColumnHidePageProps<T extends Record<string, unknown>>
   extends TableInstance<T> {

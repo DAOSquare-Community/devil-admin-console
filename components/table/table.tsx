@@ -1,5 +1,6 @@
-import { FC } from 'react'
-import { HeaderGroup, TableInstance } from 'react-table'
+import classNames from 'classnames'
+import { BaseSyntheticEvent, FC } from 'react'
+import { Cell, HeaderGroup, Row, TableInstance } from 'react-table'
 import { SortIcon, SortUpIcon, SortDownIcon } from './icons'
 
 export const TableHeader: FC<{
@@ -14,8 +15,8 @@ export const TableHeader: FC<{
             // Add the sorting props to control sorting. For this example
             // we can add them into the header props
             <th
-              scope="col"
-              className=" px-6 py-3  "
+              // scope="col"
+              // className=" px-6 py-3  "
               {...column.getHeaderProps(column.getSortByToggleProps())}
               key={column.id}
             >
@@ -44,19 +45,41 @@ export const TableHeader: FC<{
 
 export function TBody<
   D extends Record<string, unknown> = Record<string, unknown>
->({ getTableBodyProps, page, prepareRow }: TableInstance<D>) {
+>({
+  getTableBodyProps,
+  page,
+  prepareRow,
+  onClick,
+}: TableInstance<D> & {
+  onClick?: (row: Row<D>, e: BaseSyntheticEvent) => void
+}) {
+  const cellClickHandler = (cell: Cell<D>) => (e: BaseSyntheticEvent) => {
+    onClick &&
+      !cell.column.isGrouped &&
+      !cell.row.isGrouped &&
+      cell.column.id !== '_selector' &&
+      onClick(cell.row, e)
+  }
   return (
     <tbody {...getTableBodyProps()}>
       {page?.map((row, index) => {
         prepareRow(row)
         return (
-          <tr {...row.getRowProps()} key={row.id ?? index}>
+          <tr
+            {...row.getRowProps()}
+            key={row.id ?? index}
+            className={classNames({
+              hover: !!onClick,
+              'cursor-pointer': !!onClick,
+            })}
+          >
             {row.cells.map((cell, i) => {
               return (
                 <td
-                  {...cell.getCellProps()}
-                  className="whitespace-nowrap px-6 py-4"
+                  // className="whitespace-pre-line "
                   role="cell"
+                  onClick={cellClickHandler(cell)}
+                  {...cell.getCellProps()}
                   key={i}
                 >
                   {cell.render('Cell')}

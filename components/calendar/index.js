@@ -30,14 +30,12 @@ function CalendarComponent({ isLargerThan1280, eventsData }) {
 
       eventsData,
       selectedDateClicked: (currentDate, events) => {
-        // console.log('selected date clicked', currentDate, events);
         if (events.length > 0) {
           setCurEvents(events)
           setIsOpen(true)
         }
       },
       dateChanged: (currentDate, events) => {
-        // console.log('date change', currentDate, events);
         if (events.length > 0) {
           setCurEvents(events)
           setIsOpen(true)

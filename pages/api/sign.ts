@@ -9,7 +9,6 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  //console.log(req.method)
   setTimeout(() => {
     res.status(200).json({ userId: '1000' })
   }, 1000)

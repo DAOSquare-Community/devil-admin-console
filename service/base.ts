@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor, BeAnObject } from '@typegoose/typegoose/lib/types'
 import { MongoError } from 'mongodb'

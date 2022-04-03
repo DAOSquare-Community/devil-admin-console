@@ -1,5 +1,4 @@
 import { ComponentWithAs, Flex, FlexProps } from '@chakra-ui/react'
-import Link from 'next/link'
 import Image from 'next/image'
 import discord from '../../../public/assets/images/discord.svg'
 import twitter from '../../../public/assets/images/twitter.svg'
