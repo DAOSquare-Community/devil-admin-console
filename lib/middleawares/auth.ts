@@ -37,13 +37,6 @@ const NextAuthGuard = createMiddlewareDecorator(
     // no permission
     if (!hasRolePermission) throw new UnauthorizedException()
 
-    //Todo: update
-    // req.user = {
-    //   name: token.name,
-    //   role: 'super-admin',
-    //   walletAddr: 'asdasdas',
-    // }
-
     // "sign-in" except 要排除例外的请求路由
 
     next()

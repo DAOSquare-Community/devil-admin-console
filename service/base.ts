@@ -63,7 +63,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param filter
    * @returns
    */
-  getCount = async (filter: object): Promise<ResultMsg<number>> => {
+  public getCount = async (filter: object): Promise<ResultMsg<number>> => {
     const ret: ResultMsg<number> = {
       message: '',
       data: 0,
@@ -86,7 +86,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param id
    * @returns
    */
-  getEntityById = async (id: string): Promise<ResultMsg<T | null>> => {
+  public getEntityById = async (id: string): Promise<ResultMsg<T | null>> => {
     const ret: ResultMsg<T | null> = {}
     try {
       const entity = await this.model.findById<T>(
@@ -108,7 +108,9 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param filter
    * @returns
    */
-  getEntities = async (filter: object): Promise<ResultMsg<T[] | null>> => {
+  public getEntities = async (
+    filter: object
+  ): Promise<ResultMsg<T[] | null>> => {
     const ret: ResultMsg<T[] | null> = {}
     try {
       const entity = await this.model.find<T>(filter)
@@ -123,13 +125,33 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
   }
 
   /**
+   * get entity
+   *
+   * @param filter
+   * @returns
+   */
+  public getEntity = async (filter: object): Promise<ResultMsg<T | null>> => {
+    const ret: ResultMsg<T | null> = {}
+    try {
+      const entity = await this.model.findOne<T>(filter)
+      if (!!entity) ret.data = entity
+    } catch (err) {
+      const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
+      console.log('getEntity--------')
+      console.log(err)
+      ret.message = errmsg
+    }
+    return ret
+  }
+
+  /**
    * update entity
    *
    * @param filter
    * @param updateData
    * @returns
    */
-  updateEntity = async (
+  public updateEntity = async (
     filter: object,
     updateData: object
   ): Promise<ResultMsg<boolean>> => {
@@ -154,7 +176,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param filter
    * @returns
    */
-  deleteEntity = async (filter: object): Promise<ResultMsg<boolean>> => {
+  public deleteEntity = async (filter: object): Promise<ResultMsg<boolean>> => {
     const retDel: ResultMsg<boolean> = {
       data: false,
     }
@@ -176,7 +198,9 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param Ids
    * @returns
    */
-  deleteEntityByIds = async (Ids: string[]): Promise<ResultMsg<boolean>> => {
+  public deleteEntityByIds = async (
+    Ids: string[]
+  ): Promise<ResultMsg<boolean>> => {
     const retDel: ResultMsg<boolean> = {
       data: false,
     }
@@ -201,7 +225,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param entity
    * @returns
    */
-  insertEntity = async (entity: T): Promise<ResultMsg<boolean>> => {
+  public insertEntity = async (entity: T): Promise<ResultMsg<boolean>> => {
     const retInsert: ResultMsg<boolean> = {
       data: false,
     }
@@ -226,7 +250,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @param entity
    * @returns
    */
-  insertEntities = async (entity: T[]): Promise<ResultMsg<boolean>> => {
+  public insertEntities = async (entity: T[]): Promise<ResultMsg<boolean>> => {
     const retInsertMutl: ResultMsg<boolean> = {
       data: false,
     }

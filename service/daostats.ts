@@ -9,4 +9,13 @@ export default class DaoStatsService extends BaseService<
   constructor() {
     super(DaoStatsModel)
   }
+
+  /**
+   * get the last dao stats
+   *
+   * @returns
+   */
+  public getLastDaoStatsEntity = async (): Promise<DaoStats[]> => {
+    return await this.model.find<DaoStats>({}).sort({ create_at: -1 }).limit(1)
+  }
 }

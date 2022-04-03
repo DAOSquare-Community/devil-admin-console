@@ -11,21 +11,17 @@ import {
 } from '@storyofams/next-api-decorators'
 import NextAuthGuard from 'lib/middleawares/auth'
 import OpLogGuard from 'lib/middleawares/oplog'
-import { User } from 'models/User'
-import UserService from 'service/user'
 import { PageData, ResultMsg } from 'types/resultmsg'
-
-type UserIds = {
-  userIds: string[]
-}
+import DaoService from 'service/dao'
+import { Dao } from 'models/Dao'
 
 @NextAuthGuard()
 @OpLogGuard()
-class UserController {
-  private _service = new UserService()
+class DaoController {
+  private _service = new DaoService()
 
   /**
-   * get user list
+   * get dao list
    * @param page
    * @param pageSize
    * @param queryParams
@@ -33,12 +29,12 @@ class UserController {
    * @returns
    */
   @Get('/list')
-  public async getUserList(
+  public async getMemberList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
     @Query('queryParams') queryParams?: object,
     @Query('sortParams') sortParams?: object
-  ): Promise<ResultMsg<PageData<User>>> {
+  ): Promise<ResultMsg<PageData<Dao>>> {
     const ret = await this._service.getList(
       page,
       pageSize,
@@ -52,53 +48,45 @@ class UserController {
   }
 
   /**
-   * get user by id
-   * @Query   id
+   * get dao by daoid
+   * @Query daoid
    * @returns
    */
   @Get()
-  public async getUserById(
-    @Query('id') id: string
-  ): Promise<ResultMsg<User | null>> {
-    const user = await this._service.getEntityById(id)
-    //console.log(user)
-    if (user.message) {
-      throw new InternalServerErrorException(user.message)
-    }
-    return user
+  public async getDaoByDaoId(
+    @Query('daoid') daoid: string
+  ): Promise<ResultMsg<Dao | null>> {
+    const dao = await this._service.getEntity({ daoId: daoid })
+    if (dao.message) throw new InternalServerErrorException(dao.message)
+    return dao
   }
 
   /**
-   * delete users by ids
-   * @param Ids
+   * delete dao by filter
+   * @param filter
    * @returns
    */
   @Delete()
-  public async deleteUsersByIds(
-    @Body() body: UserIds
+  public async deleteDaoByFilter(
+    @Body() body: { filter: string }
   ): Promise<ResultMsg<boolean>> {
-    const delUsers = await this._service.deleteEntityByIds(body.userIds)
-    if (delUsers.message) {
-      throw new InternalServerErrorException(delUsers.message)
+    const del = await this._service.deleteEntity(JSON.parse(body.filter))
+    if (del.message) {
+      throw new InternalServerErrorException(del.message)
     }
-    return delUsers
+    return del
   }
 
   /**
-   * insert user
-   * @param user
+   * insert dao
+   * @param dao
    * @returns
-   * @example
-   * {
-      "wallet_address" : "0xb9D8956d1290ee0818923ed5545c910FC8766666",
-      "role" : ["super-admin","admin"]
-     }
    */
   @Post()
-  public async insertUser(@Body() body: object): Promise<ResultMsg<boolean>> {
-    const user = new User()
-    const u = Object.assign(user, body)
-    const ret = await this._service.insertEntity(u)
+  public async insertDao(@Body() body: object): Promise<ResultMsg<boolean>> {
+    const dao = new Dao()
+    const d = Object.assign(dao, body)
+    const ret = await this._service.insertEntity(d)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
     }
@@ -106,13 +94,13 @@ class UserController {
   }
 
   /**
-   * update user
+   * update dao
    * @param filter
    * @param update
    * @returns
    */
   @Put()
-  public async updateUser(
+  public async updateDao(
     @Body() body: { filter: string; update: string }
   ): Promise<ResultMsg<boolean>> {
     const ret = await this._service.updateEntity(
@@ -126,4 +114,4 @@ class UserController {
   }
 }
 
-export default createHandler(UserController)
+export default createHandler(DaoController)
