@@ -9,6 +9,7 @@
     "ts-check": "tsc --noEmit",
     "postinstall": "husky install"
   },
+  
   "dependencies": {
     "@chakra-ui/react": "^1.8.1",
     "@hookform/resolvers": "^2.8.8",
