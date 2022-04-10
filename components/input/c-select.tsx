@@ -1,7 +1,8 @@
 import { PropsWithChildren } from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import classNames from 'classnames'
-import Select, { Props } from 'react-select'
+import { Props } from 'react-select'
+import RSelect from 'components/the-third-party/select'
 type CSelectType<T extends FieldValues> = Props<{
   label: string
   value: string
@@ -41,11 +42,10 @@ const CSelect = <T extends FieldValues = FieldValues>({
         render={({ field, fieldState: { error } }) => {
           return (
             <>
-              <Select
-                className={classNames('dmc-form-select', className, {
-                  'border-red-500': error?.message,
+              <RSelect
+                className={classNames('dmc-react-select border-2', className, {
+                  'rounded-primary border-2 border-red-500': error?.message,
                 })}
-                // styles={{ input: { textAlign: 'center' } }}
                 id={name}
                 {...field}
                 {...props}

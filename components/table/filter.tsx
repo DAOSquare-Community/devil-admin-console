@@ -9,7 +9,7 @@ import {
   useAsyncDebounce,
 } from 'react-table'
 import { matchSorter } from 'match-sorter'
-import Select from 'react-select'
+import RSelect from 'components/the-third-party/select'
 
 // Define a default UI for filtering
 export function GlobalFilter<
@@ -22,8 +22,8 @@ export function GlobalFilter<
   }, 200)
 
   return (
-    <label className="flex items-baseline gap-x-2">
-      <span className="text-gray-700">Search: </span>
+    <label className="label flex items-baseline gap-x-2">
+      <span>Search: </span>
       <input
         type="text"
         className="dmc-form-input"
@@ -71,12 +71,12 @@ export function SelectColumnFilter<
 
   // Render a multi-select box
   return (
-    <label className="mr-2 flex  items-baseline gap-x-2">
-      <span className="mb-2 min-w-[80px] text-gray-700 xl:min-w-fit">
+    <label className="label mr-2 flex  items-baseline gap-x-2">
+      <span className="mb-2 min-w-[80px] xl:min-w-fit">
         {render('Header')}:{' '}
       </span>
-      <Select
-        className={'dmc-form-select  xl:min-w-fit'}
+      <RSelect
+        className={'dmc-react-select  xl:min-w-fit'}
         options={options}
         value={filterValue}
         onChange={(e) => {
@@ -96,8 +96,8 @@ export function InputColumnFilter<
 }) {
   // Render a multi-select box
   return (
-    <label className="mr-2 flex  items-baseline gap-x-2">
-      <span className="mb-2 min-w-[80px] text-gray-700 xl:min-w-fit">
+    <label className="label mr-2 flex  items-baseline gap-x-2">
+      <span className="mb-2 min-w-[80px] xl:min-w-fit">
         {render('Header')}:{' '}
       </span>
       <input
@@ -122,8 +122,8 @@ export function DateColumnFilter<
 }) {
   // Render a multi-select box
   return (
-    <label className=" mr-2 flex  items-baseline gap-x-2">
-      <span className="mb-2 min-w-[80px] text-gray-700 xl:min-w-fit">
+    <label className="label mr-2 flex  items-baseline gap-x-2">
+      <span className="mb-2 min-w-[80px]  xl:min-w-fit">
         {render('Header')}:{' '}
       </span>
       <input
@@ -139,7 +139,7 @@ export function DateColumnFilter<
           }))
         }}
       />
-      <span className="dmc-label mb-2">To</span>
+      <span className="label mb-2">To</span>
       <input
         className="dmc-form-input max-w-[160px] "
         name={id}

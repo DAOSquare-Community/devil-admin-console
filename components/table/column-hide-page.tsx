@@ -24,24 +24,24 @@ const ColumnHidePage = <T extends Record<string, unknown>>(
   return hideableColumns.length > 3 ? (
     <div className="dropdown-down  dropdown lg:dropdown-end">
       <div
-        className=" tooltip tooltip-right      tooltip-primary   hover:tooltip-open lg:tooltip-left"
+        className=" tooltip tooltip-right   hover:tooltip-open lg:tooltip-left"
         data-tip="Show/Hide columns"
       >
         <button
           // tabIndex="0"
-          className="btn btn-ghost btn-sm btn-circle"
+          className="btn btn-ghost  btn-circle"
           // onClick={() => {}}
         >
-          <ColumnsIcon className="h-5 w-5 text-gray-400" />
+          <ColumnsIcon className="h-5 w-5" />
         </button>
       </div>
       <ul
         tabIndex={0}
-        className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow-lg"
+        className="dropdown-content menu rounded-box w-52 bg-base-200 p-2 shadow-lg"
       >
         {hideableColumns.map((column) => (
           <li key={column.id} className="flex">
-            <label className="dmc-lable flex">
+            <label className="dmc-label flex  p-3">
               <input
                 disabled={column.isVisible && onlyOneOptionLeft}
                 type={'checkbox'}

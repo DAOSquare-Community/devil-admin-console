@@ -110,9 +110,7 @@ function ComboTable<T extends Record<string, any>>(
         <FilterBar {...instance} disableGlobalFilter={disableGlobalFilter} />
         <div className="mb-2 flex gap-x-2">
           <ColumnHidePage {...instance} />
-          {!disableSelection && (
-            <ToolBar instance={instance} {...{ onAdd, onDelete }} />
-          )}
+          <ToolBar instance={instance} {...{ onAdd, onDelete }} />
         </div>
       </div>
       <div className="mt-4 flex flex-col overflow-x-auto">

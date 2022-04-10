@@ -47,7 +47,7 @@ const CTextarea = <T extends FieldValues = FieldValues>({
             <>
               <textarea
                 className={classNames(
-                  'dmc-form-input min-h-[100px] py-2',
+                  'dmc-form-textarea  min-h-[100px] py-2',
                   className,
                   {
                     'border-red-500': error?.message,

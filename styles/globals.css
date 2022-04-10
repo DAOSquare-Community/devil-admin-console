@@ -90,31 +90,55 @@ a {
   z-index: 999;
   overflow-y: auto;
 }
+
+.rounded-primary {
+  border-radius: var(--rounded-btn, 0.5rem);
+}
+
+.dmc-form-select-child > div:first-of-type {
+  border-radius: var(--rounded-btn, 0.5rem);
+  box-shadow: 0 0 0 0px  !important;
+  @apply  bg-base-100   
+}
+
+.dmc-form-select-child-focus > div:first-of-type {
+  border-radius: var(--rounded-btn, 0.5rem);
+  box-shadow: 0 0 0 0px  !important;
+  @apply  bg-base-100   border-primary
+}
   
 
 @layer components {
   .dmc-form-checkbox {
-    @apply rounded border-gray-300 text-primary   focus:border-indigo-300  focus:outline-none focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 disabled:bg-gray-100
+    @apply checkbox  checkbox-primary h-[1rem] w-[1rem] rounded p-0  border-gray-300   focus:border-indigo-300  focus:outline-none focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 
   }
   .dmc-form-input {
-    @apply w-full appearance-none rounded  border border-gray-300 h-[38px] px-[10px] leading-tight text-gray-700 
+    @apply input w-full  h-[38px] px-[10px] border border-gray-300  leading-tight  
+    focus:outline-none focus:border-primary focus:border-2 focus:ring-primary disabled:bg-gray-200
+  }
+  .dmc-form-textarea {
+    @apply textarea    w-full  h-[38px] px-[10px] border border-gray-300  leading-tight  
     focus:outline-none focus:border-primary focus:border-2 focus:ring-primary disabled:bg-gray-200
   }
 
   .dmc-form-select {
-    @apply  rounded bg-white  border-gray-300 disabled:bg-gray-200  focus:border-primary focus:border-2 text-gray-700  focus:outline-none
+    @apply  rounded-t-box rounded-b-box text-sm disabled:bg-gray-200  focus:border-primary focus:border-2  focus:outline-none
+  }
+
+  .dmc-react-select {
+    @apply text-sm  dmc-form-select-child 
   }
 
   .dmc-label {
-    @apply block text-xs font-bold uppercase tracking-wide text-gray-700
+    @apply label text-xs font-bold uppercase p-0
   }
 
   .required {
-    @apply after:content-['*'] after:text-red-600 after:ml-1 after:font-normal
+    @apply  after:content-['*'] after:text-red-600 after:ml-1 after:font-normal
   }
 
   .spinner {
-    @apply absolute  h-12 w-12 animate-spin rounded-full border-8 border-dashed border-primary border-t-transparent 
+    @apply  absolute  h-12 w-12 animate-spin rounded-full border-8 border-dashed border-primary border-t-transparent 
   }
   
   .abs-center {
