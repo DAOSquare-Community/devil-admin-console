@@ -11,13 +11,13 @@ export const CmdManage = {
   emitQueue: new Map(),
   on(event: Event, callback: Callback) {
     this.list.has(event) || this.list.set(event, [])
-    this.list.get(event)!.push(callback)
+    this.list.get(event)?.push(callback)
     return this
   },
 
   off(event: Event, callback?: Callback) {
     if (callback) {
-      const cb = this.list.get(event)!.filter((cb: Callback) => cb !== callback)
+      const cb = this.list.get(event)?.filter((cb: Callback) => cb !== callback)
       this.list.set(event, cb)
       return this
     }
@@ -37,7 +37,7 @@ export const CmdManage = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emit(event: Event, ...args: any[]) {
     this.list.has(event) &&
-      this.list.get(event)!.forEach((callback: Callback) => {
+      this.list.get(event)?.forEach((callback: Callback) => {
         const timer = setTimeout(() => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -45,7 +45,7 @@ export const CmdManage = {
         }, 0)
 
         this.emitQueue.has(event) || this.emitQueue.set(event, [])
-        this.emitQueue.get(event)!.push(timer)
+        this.emitQueue.get(event)?.push(timer)
       })
   },
 }

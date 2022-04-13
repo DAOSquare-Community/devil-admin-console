@@ -1,0 +1,15 @@
+.dmc-form-select-child > div:first-of-type {
+    @apply  !bg-base-100  !border-base-300 !rounded-btn !shadow-none
+  }
+  
+.dmc-form-select-child-focus > div:first-of-type {
+    @apply  !bg-base-100   !border-primary border-2 !rounded-btn shadow-none
+  }
+  
+.dmc-form-select-child-error > div:first-of-type {
+    @apply  !bg-base-100   !border-0
+}
+  
+.dmc-react-select {
+  @apply !text-sm   !dmc-form-select-child 
+}

@@ -17,7 +17,7 @@ const HeaderBar: FC<HeaderBarProps> = ({
   if (!showHeaderBar) return null
   return (
     <>
-      <h1 className=" mb-5 text-xl font-bold capitalize">
+      <h1 className=" mb-5 text-xl font-semibold capitalize">
         {title ?? currentPath}
       </h1>
       {!!discirb && <p>{discirb}</p>}

@@ -9,7 +9,6 @@
     "ts-check": "tsc --noEmit",
     "postinstall": "husky install"
   },
-  
   "dependencies": {
     "@chakra-ui/react": "^1.8.1",
     "@emotion/styled": "^11.8.1",
@@ -49,6 +48,7 @@
     "react-table": "^7.7.0",
     "react-twitter-widgets": "^1.10.0",
     "recharts": "^2.1.8",
+    "theme-change": "^2.0.2",
     "uuid-base62": "^0.1.0",
     "web3": "^1.7.1",
     "yup": "^1.0.0-beta.1"

@@ -6,7 +6,6 @@ import {
   UseQueryOptions,
 } from 'react-query'
 import { request } from './axios-helper'
-import { PathUnionType } from './path-union'
 
 export const BACKEND_URL = process.env.DEVIL_CONSOLE_BACKEND_URL || ''
 
@@ -46,7 +45,7 @@ export const useAxiosMutation = <
   TError = unknown,
   TContext = unknown
 >(
-  path: PathUnionType,
+  path: string,
   options?: Omit<
     UseMutationOptions<TData, TError, TVariables, TContext>,
     'mutationKey' | 'mutationFn'

@@ -19,6 +19,7 @@ import { selectionHook } from './hooks'
 import { ToolBar } from './toolbar'
 import { useDebounce, useLocalStorage } from 'lib/utils'
 import ColumnHidePage from './column-hide-page'
+import classNames from 'classnames'
 // import { useDebounce, useLocalStorage } from 'lib/utils'
 
 export interface TableProperties<T extends Record<string, unknown>>
@@ -52,6 +53,7 @@ function ComboTable<T extends Record<string, any>>(
     disableGlobalFilter,
     disableGlobalMatchSorter = false,
     initialState: initialStateProp,
+    data,
     ...others
   } = props
   const [initialState, setInitialState] = useLocalStorage(
@@ -73,6 +75,7 @@ function ComboTable<T extends Record<string, any>>(
   const instance = useTable(
     {
       ...others,
+      data,
       globalFilter: !disableGlobalMatchSorter ? globalFilter : undefined,
       initialState,
       disableGlobalFilter,
@@ -110,19 +113,23 @@ function ComboTable<T extends Record<string, any>>(
         <FilterBar {...instance} disableGlobalFilter={disableGlobalFilter} />
         <div className="mb-2 flex gap-x-2">
           <ColumnHidePage {...instance} />
-          {!disableSelection && (
-            <ToolBar instance={instance} {...{ onAdd, onDelete }} />
-          )}
+          <ToolBar instance={instance} {...{ onAdd, onDelete }} />
         </div>
       </div>
       <div className="mt-4 flex flex-col overflow-x-auto">
         <table
           {...othertable}
-          className={
-            isLoading
-              ? 'before:spinner  table min-h-[200px]   before:left-1/2  before:top-1/2'
-              : 'table'
-          }
+          className={classNames(
+            'table',
+            {
+              'before:spinner  min-h-[200px]   before:left-1/2  before:top-1/2':
+                isLoading,
+            },
+            {
+              "min-h-[200px] before:absolute  before:left-1/2 before:top-1/2  before:content-['NO_DATA']":
+                !isLoading && !data.length,
+            }
+          )}
         >
           <TableHeader {...instance} />
           <TBody {...instance} onClick={onClick} />

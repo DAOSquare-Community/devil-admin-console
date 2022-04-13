@@ -13,6 +13,7 @@ import NextAuthGuard from 'lib/middleawares/auth'
 import OpLogGuard from 'lib/middleawares/oplog'
 import { User } from 'models/User'
 import UserService from 'service/user'
+import { Role } from 'types/permission'
 import { PageData, ResultMsg } from 'types/resultmsg'
 
 type UserIds = {
@@ -113,12 +114,9 @@ class UserController {
    */
   @Put()
   public async updateUser(
-    @Body() body: { filter: string; update: string }
+    @Body() body: { filter: { _id: string }; update: { role: Role[] } }
   ): Promise<ResultMsg<boolean>> {
-    const ret = await this._service.updateEntity(
-      JSON.parse(body.filter),
-      JSON.parse(body.update)
-    )
+    const ret = await this._service.updateEntity(body.filter, body.update)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
     }

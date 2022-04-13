@@ -90,31 +90,39 @@ a {
   z-index: 999;
   overflow-y: auto;
 }
-  
+
+
+
 
 @layer components {
   .dmc-form-checkbox {
-    @apply rounded border-gray-300 text-primary   focus:border-indigo-300  focus:outline-none focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 disabled:bg-gray-100
+    @apply checkbox  checkbox-primary  border-base-300 border-2  rounded-md   h-[1rem] w-[1rem]  p-0   
+    focus:border-indigo-300   focus:outline-none   focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 
   }
   .dmc-form-input {
-    @apply w-full appearance-none rounded  border border-gray-300 h-[38px] px-[10px] leading-tight text-gray-700 
-    focus:outline-none focus:border-primary focus:border-2 focus:ring-primary disabled:bg-gray-200
+    @apply input input-primary w-full border-base-300  h-[38px]     leading-tight 
+    focus:outline-none focus:border-2 focus:ring-primary  focus:border-primary
+  }
+  .dmc-form-textarea {
+    @apply textarea  textarea-primary border-base-300  w-full leading-tight  
+    focus:outline-none  focus:border-2 focus:ring-primary  focus:border-primary
   }
 
   .dmc-form-select {
-    @apply  rounded bg-white  border-gray-300 disabled:bg-gray-200  focus:border-primary focus:border-2 text-gray-700  focus:outline-none
+    @apply  select  border-base-300 select-primary  focus:border-2  focus:outline-none focus:border-primary
   }
 
+
   .dmc-label {
-    @apply block text-xs font-bold uppercase tracking-wide text-gray-700
+    @apply label  font-medium uppercase p-0
   }
 
   .required {
-    @apply after:content-['*'] after:text-red-600 after:ml-1 after:font-normal
+    @apply  after:content-['*'] after:text-red-600 after:ml-1 after:font-normal
   }
 
   .spinner {
-    @apply absolute  h-12 w-12 animate-spin rounded-full border-8 border-dashed border-primary border-t-transparent 
+    @apply  absolute  h-12 w-12 animate-spin rounded-full border-8 border-dashed border-primary border-t-transparent 
   }
   
   .abs-center {
