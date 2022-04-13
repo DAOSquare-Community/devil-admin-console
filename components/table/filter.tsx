@@ -122,37 +122,39 @@ export function DateColumnFilter<
 }) {
   // Render a multi-select box
   return (
-    <label className="label mr-2 flex  items-baseline gap-x-2">
+    <label className="label mr-2 flex   items-baseline gap-x-2">
       <span className="mb-2 min-w-[80px]  xl:min-w-fit">
         {render('Header')}:{' '}
       </span>
-      <input
-        className="dmc-form-input max-w-[160px] "
-        name={id}
-        id={id}
-        type="date"
-        value={filterValue?.from ?? ''}
-        onChange={(e) => {
-          setFilter((s: object) => ({
-            ...s,
-            from: e.target.value?.length > 0 ? e.target.value : undefined,
-          }))
-        }}
-      />
-      <span className="label mb-2">To</span>
-      <input
-        className="dmc-form-input max-w-[160px] "
-        name={id}
-        id={id}
-        type="date"
-        value={filterValue?.to ?? ''}
-        onChange={(e) => {
-          setFilter((s: object) => ({
-            ...s,
-            to: e.target.value?.length > 0 ? e.target.value : undefined,
-          }))
-        }}
-      />
+      <div className="flex flex-wrap gap-2">
+        <input
+          className="dmc-form-input max-w-[160px] "
+          name={id}
+          id={id}
+          type="date"
+          value={filterValue?.from ?? ''}
+          onChange={(e) => {
+            setFilter((s: object) => ({
+              ...s,
+              from: e.target.value?.length > 0 ? e.target.value : undefined,
+            }))
+          }}
+        />
+        <span className="label">To</span>
+        <input
+          className="dmc-form-input max-w-[160px] "
+          name={id}
+          id={id}
+          type="date"
+          value={filterValue?.to ?? ''}
+          onChange={(e) => {
+            setFilter((s: object) => ({
+              ...s,
+              to: e.target.value?.length > 0 ? e.target.value : undefined,
+            }))
+          }}
+        />
+      </div>
     </label>
   )
 }

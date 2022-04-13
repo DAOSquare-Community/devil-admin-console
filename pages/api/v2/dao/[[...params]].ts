@@ -54,9 +54,9 @@ class DaoController {
    */
   @Get()
   public async getDaoByDaoId(
-    @Query('daoid') daoid: string
+    @Query('daoId') daoId: string
   ): Promise<ResultMsg<Dao | null>> {
-    const dao = await this._service.getEntity({ daoId: daoid })
+    const dao = await this._service.getEntity({ daoId })
     if (dao.message) throw new InternalServerErrorException(dao.message)
     return dao
   }

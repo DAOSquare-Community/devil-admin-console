@@ -91,46 +91,30 @@ a {
   overflow-y: auto;
 }
 
-.rounded-primary {
-  border-radius: var(--rounded-btn, 0.5rem);
-}
 
-.dmc-form-select-child > div:first-of-type {
-  border-radius: var(--rounded-btn, 0.5rem);
-  box-shadow: 0 0 0 0px  !important;
-  @apply  bg-base-100   
-}
 
-.dmc-form-select-child-focus > div:first-of-type {
-  border-radius: var(--rounded-btn, 0.5rem);
-  box-shadow: 0 0 0 0px  !important;
-  @apply  bg-base-100   border-primary
-}
-  
 
 @layer components {
   .dmc-form-checkbox {
-    @apply checkbox  checkbox-primary h-[1rem] w-[1rem] rounded p-0  border-gray-300   focus:border-indigo-300  focus:outline-none focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 
+    @apply checkbox  checkbox-primary  border-base-300 border-2  rounded-md   h-[1rem] w-[1rem]  p-0   
+    focus:border-indigo-300   focus:outline-none   focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 
   }
   .dmc-form-input {
-    @apply input w-full  h-[38px] px-[10px] border border-gray-300  leading-tight  
-    focus:outline-none focus:border-primary focus:border-2 focus:ring-primary disabled:bg-gray-200
+    @apply input input-primary w-full border-base-300  h-[38px]     leading-tight 
+    focus:outline-none focus:border-2 focus:ring-primary  focus:border-primary
   }
   .dmc-form-textarea {
-    @apply textarea    w-full  h-[38px] px-[10px] border border-gray-300  leading-tight  
-    focus:outline-none focus:border-primary focus:border-2 focus:ring-primary disabled:bg-gray-200
+    @apply textarea  textarea-primary border-base-300  w-full leading-tight  
+    focus:outline-none  focus:border-2 focus:ring-primary  focus:border-primary
   }
 
   .dmc-form-select {
-    @apply  rounded-t-box rounded-b-box text-sm disabled:bg-gray-200  focus:border-primary focus:border-2  focus:outline-none
+    @apply  select  border-base-300 select-primary  focus:border-2  focus:outline-none focus:border-primary
   }
 
-  .dmc-react-select {
-    @apply text-sm  dmc-form-select-child 
-  }
 
   .dmc-label {
-    @apply label text-xs font-bold uppercase p-0
+    @apply label  font-medium uppercase p-0
   }
 
   .required {

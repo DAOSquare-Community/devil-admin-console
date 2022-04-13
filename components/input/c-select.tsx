@@ -43,8 +43,9 @@ const CSelect = <T extends FieldValues = FieldValues>({
           return (
             <>
               <RSelect
-                className={classNames('dmc-react-select border-2', className, {
-                  'rounded-primary border-2 border-red-500': error?.message,
+                className={classNames('dmc-react-select', className, {
+                  'dmc-form-select-child-error rounded-btn border-[1px] border-red-500':
+                    error?.message,
                 })}
                 id={name}
                 {...field}

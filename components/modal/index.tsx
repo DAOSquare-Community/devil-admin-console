@@ -40,9 +40,7 @@ export const Modal: FC<ComstomModalProps & ModalFooterType> = ({
         })}
         title={title}
       >
-        <div className="divider m-0 p-0" />
         <ModalMain>{children}</ModalMain>
-        <div className="divider m-0 p-0" />
         <ModalFooter onClose={onClose} form={form} loading={loading} />
       </ModalContainer>
       {/* {children} */}
@@ -72,7 +70,7 @@ export const ModalFooter: FC<ModalFooterType> = ({
   type,
 }) => {
   return (
-    <div className="rounde flex items-center  justify-end p-6">
+    <div className="rounde flex items-center justify-end  bg-base-200 px-4 py-3 sm:px-6">
       <button className="btn btn-ghost mr-2 " type="button" onClick={onClose}>
         Close
       </button>

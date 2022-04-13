@@ -3,7 +3,7 @@ import errorHandler from './errorl-handle'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnMount: false,
+      refetchOnMount: true,
       refetchOnWindowFocus: false,
       retry: false,
       onError: errorHandler as (err: unknown) => void,

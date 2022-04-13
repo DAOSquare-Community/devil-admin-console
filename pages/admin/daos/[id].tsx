@@ -10,9 +10,9 @@ import { NextPageWithLayout } from 'types/page'
 const DaoAdd: NextPageWithLayout = () => {
   const router = useRouter()
   const { id } = router.query
-  const { data, isFetching } = useAxiosQuery<Dao>(`/dao/${id}`)
+  const { data, isFetching } = useAxiosQuery<Dao>(`/v2/dao`, { daoId: id })
   const { mutate } = useAxiosMutation<DaoPostRequest>(
-    '/dao',
+    '/v2/dao',
     {
       onSuccess: () => {
         router.back()

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Select, { components, Props } from 'react-select'
-
+import styles from 'styles/react-select.module.css'
 export const SelectContainer: typeof components.SelectContainer = ({
   isFocused,
   className,
@@ -12,7 +12,9 @@ export const SelectContainer: typeof components.SelectContainer = ({
       {...other}
       isFocused={isFocused}
       className={
-        isFocused ? `dmc-form-select-child-focus  text-inherit ` : className
+        isFocused
+          ? `${styles['dmc-form-select-child-focus']}  !text-inherit `
+          : className
       }
     />
   )
@@ -22,8 +24,8 @@ export const Option: typeof components.Option = (props) => {
   return (
     <components.Option
       {...props}
-      className={`   text-base-content  hover:bg-base-200   active:bg-base-300 ${
-        props.isFocused ? 'bg-base-200 ' : 'bg-white'
+      className={`   !active:bg-base-300  !hover:bg-base-200   !text-base-content ${
+        props.isFocused ? '!bg-base-200 ' : '!bg-base'
       }`}
     />
   )

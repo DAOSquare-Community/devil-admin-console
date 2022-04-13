@@ -20,7 +20,7 @@ const ActionLog: NextPageWithLayout = () => {
   const { data = [], isLoading } = useAxiosQuery<
     { data: { items: LogOp[] } },
     LogOp[]
-  >('/v2/logops/list', state, {
+  >('/v2/logop/list', state, {
     select: (sData) => {
       return sData.data.items
     },

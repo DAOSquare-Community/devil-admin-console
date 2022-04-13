@@ -13,7 +13,7 @@ const DaoEdit: NextPageWithLayout = () => {
   const { data, isFetching } = useAxiosQuery<{ data: User }>('/v2/user', {
     id: id,
   })
-  const { mutate } = useAxiosMutation<{
+  const { mutate, isLoading } = useAxiosMutation<{
     filter: { _id: string }
     update: Partial<User>
   }>(
@@ -50,7 +50,11 @@ const DaoEdit: NextPageWithLayout = () => {
           role: UserOptions.filter((r) => data?.data?.role.includes(r.value)),
         }}
       />
-      <button className="btn btn-primary" form={UserForm.displayName}>
+      <button
+        className={`btn btn-primary ${isLoading ? 'loading' : ''}`}
+        form={UserForm.displayName}
+        disabled={isLoading}
+      >
         Submit
       </button>
     </>

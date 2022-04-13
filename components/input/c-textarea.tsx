@@ -5,7 +5,6 @@ import {
 } from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import classNames from 'classnames'
-// import { Input } from '@hireteammate/hiretual-design'
 type CInputType<T extends FieldValues> = DetailedHTMLProps<
   InputHTMLAttributes<HTMLTextAreaElement>,
   HTMLTextAreaElement
@@ -46,13 +45,9 @@ const CTextarea = <T extends FieldValues = FieldValues>({
           return (
             <>
               <textarea
-                className={classNames(
-                  'dmc-form-textarea  min-h-[100px] py-2',
-                  className,
-                  {
-                    'border-red-500': error?.message,
-                  }
-                )}
+                className={classNames(className, 'dmc-form-textarea  py-2', {
+                  'border-red-500': error?.message,
+                })}
                 id={name}
                 {...field}
                 {...props}
