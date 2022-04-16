@@ -124,6 +124,16 @@ export const RoleApis: RoleApiPermission[] = [
     role: ['super-admin', 'admin', 'member'],
     method: [HttpMethod.POST],
   },
+  {
+    apiRouter: '/api/v2/logop',
+    role: ['super-admin', 'admin'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/logop/list',
+    role: ['super-admin', 'admin'],
+    method: [HttpMethod.GET],
+  },
 ]
 
 export { logoAddress }
