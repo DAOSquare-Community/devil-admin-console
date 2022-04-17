@@ -93,6 +93,16 @@ a {
 
 
 
+.bg-blur {
+  background: rgba(230, 236, 255, 0.8);
+  backdrop-filter: blur(24px);
+}
+
+.text-shadow-sm {
+  text-shadow: 0 4px 4px rgb(0 0 0 / 25%)
+}
+
+
 
 @layer components {
   .dmc-form-checkbox {

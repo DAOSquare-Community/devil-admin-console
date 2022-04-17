@@ -3,7 +3,12 @@ const nextConfig = {
   swcMinify: true,
   reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com', 'iph.href.lu', 'etherscan.io'],
+    domains: [
+      'images.unsplash.com',
+      'iph.href.lu',
+      'etherscan.io',
+      's3-alpha-sig.figma.com',
+    ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
