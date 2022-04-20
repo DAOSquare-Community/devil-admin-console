@@ -28,6 +28,40 @@ class DaoController {
    * @param sortParams
    * @returns
    */
+
+  /**
+   * @swagger
+   * /api/v2/dao/list:
+   *   get:
+   *     tags:
+   *       - dao
+   *     summary: get dao list
+   *     parameters:
+   *            - name: page
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: pageSize
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: queryParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *            - name: sortParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: dao list
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<PageData<Dao>>
+   */
   @Get('/list')
   public async getMemberList(
     @Query('page', DefaultValuePipe(0)) page: number,
@@ -52,6 +86,27 @@ class DaoController {
    * @Query daoid
    * @returns
    */
+  /**
+   * @swagger
+   * /api/v2/dao:
+   *   get:
+   *     tags:
+   *       - dao
+   *     summary: get dao by daoid
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: dao object
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<Dao | null>
+   */
   @Get()
   public async getDaoByDaoId(
     @Query('daoId') daoId: string
@@ -65,6 +120,28 @@ class DaoController {
    * delete dao by filter
    * @param filter
    * @returns
+   */
+
+  /**
+   * @swagger
+   * /api/v2/dao:
+   *   delete:
+   *     tags:
+   *       - dao
+   *     summary: delete dao by filter
+   *     parameters:
+   *            - name: filter
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: delete dao
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Delete()
   public async deleteDaoByFilter(
@@ -82,6 +159,28 @@ class DaoController {
    * @param dao
    * @returns
    */
+
+  /**
+   * @swagger
+   * /api/v2/dao:
+   *   post:
+   *     tags:
+   *       - dao
+   *     summary: insert a dao
+   *     parameters:
+   *            - name: body
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: insert a dao
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
+   */
   @Post()
   public async insertDao(@Body() body: object): Promise<ResultMsg<boolean>> {
     const dao = new Dao()
@@ -98,6 +197,28 @@ class DaoController {
    * @param filter
    * @param update
    * @returns
+   */
+
+  /**
+   * @swagger
+   * /api/v2/dao:
+   *   put:
+   *     tags:
+   *       - dao
+   *     summary: update dao
+   *     parameters:
+   *            - name: body
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: update dao
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Put()
   public async updateDao(

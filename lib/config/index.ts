@@ -121,7 +121,7 @@ export const RoleApis: RoleApiPermission[] = [
   },
   {
     apiRouter: '/api/v2/sign-in',
-    role: ['super-admin', 'admin', 'member'],
+    role: ['super-admin', 'admin', 'member', 'guest'],
     method: [HttpMethod.POST],
   },
   {
@@ -132,6 +132,82 @@ export const RoleApis: RoleApiPermission[] = [
   {
     apiRouter: '/api/v2/logop/list',
     role: ['super-admin', 'admin'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/sysconfig',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/api/v2/sysconfig/list',
+    role: ['super-admin', 'admin'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/dao',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/api/v2/dao',
+    role: ['member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/dao/list',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/member',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/api/v2/member',
+    role: ['member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/member/list',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  // data api
+  {
+    apiRouter: '/api/v2/sesh',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/twitter',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/discord',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/dework',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/daostats/list',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/daostats',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/daogovernance',
+    role: ['super-admin', 'admin', 'member', 'guest'],
     method: [HttpMethod.GET],
   },
 ]

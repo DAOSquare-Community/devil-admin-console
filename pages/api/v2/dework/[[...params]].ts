@@ -14,6 +14,28 @@ import { DeworkData } from 'types/models/dework'
 class DeworkController {
   private _DeworkService = new Dework()
   // GET /api/dework
+
+  /**
+   * @swagger
+   * /api/v2/dework:
+   *   get:
+   *     tags:
+   *       - data-api(v2)
+   *     summary: get dework info
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: dework info
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<DeworkData | null>
+   */
   @Get()
   public async getDiscord(
     @Query('daoId') daoId: string

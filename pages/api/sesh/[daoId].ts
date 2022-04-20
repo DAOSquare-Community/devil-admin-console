@@ -30,6 +30,27 @@ const fetchCalendarEvents = async (daoId: string) => {
   }
 }
 
+/**
+ * @swagger
+ * /api/sesh/{daoId}:
+ *   get:
+ *     tags:
+ *       - data-api
+ *     summary: get sesh data,only daosquare data
+ *     parameters:
+ *            - name: daoId
+ *              required: true
+ *              in: path
+ *              type: string
+ *
+ *     responses:
+ *       200:
+ *         description: sesh data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: Data
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

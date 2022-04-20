@@ -8,6 +8,28 @@ import { createHandler, Get, Query } from '@storyofams/next-api-decorators'
 
 class CoinController {
   // GET /api/coingecko
+
+  /**
+   * @swagger
+   * /api/v2/coingecko:
+   *   get:
+   *     tags:
+   *       - data-api(v2)
+   *     summary: get coingecko coin info
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: coingecko coin info
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<CoinInfoData | null>
+   */
   @Get()
   public async getCoinInfo(
     @Query('daoId') daoId: string
@@ -22,6 +44,27 @@ class CoinController {
   }
 
   // GET /api/coingecko/market
+  /**
+   * @swagger
+   * /api/v2/coingecko/market:
+   *   get:
+   *     tags:
+   *       - data-api(v2)
+   *     summary: get coingecko coin market info
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: coingecko coin market info
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<CoinMarketInfoData | null>
+   */
   @Get('/market')
   public async getCoinMarket(
     @Query('daoId') daoId: string

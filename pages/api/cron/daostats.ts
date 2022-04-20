@@ -5,7 +5,13 @@ import {
   Post,
   Req,
 } from '@storyofams/next-api-decorators'
-import { ChainCategory, DaoStats, Dework, Governanace } from 'models/DaoStats'
+import {
+  ChainCategory,
+  DaoCategory,
+  DaoStats,
+  Dework,
+  Governanace,
+} from 'models/DaoStats'
 import { NextApiRequest } from 'next'
 import DaoService from 'service/dao'
 import MemberService from 'service/member'
@@ -46,6 +52,8 @@ class CronDaoStatsController {
 
       // the chain count
       const chainMap = new Map<string, number>()
+      // the dao count
+      const daoCategoryMap = new Map<string, number>()
       // the treasury
       let treasury = 0
       // the Governanace
@@ -62,6 +70,8 @@ class CronDaoStatsController {
         progress: 0,
         todo: 0,
         inreview: 0,
+        suggestion: 0,
+        done: 0,
       }
 
       // get the DAO entity
@@ -81,11 +91,22 @@ class CronDaoStatsController {
         } else {
           for (const dao of daosResult.data?.items ?? []) {
             // get the  chain count
-            const chainTypeCount = chainMap.get(dao.dao_contract.chain_type)
-            chainMap.set(
-              dao.dao_contract.chain_type,
-              chainTypeCount ? chainTypeCount + 1 : 1
-            )
+            if (!!dao.dao_contract.chain_type) {
+              const chainTypeCount = chainMap.get(dao.dao_contract.chain_type)
+              chainMap.set(
+                dao.dao_contract.chain_type,
+                chainTypeCount ? chainTypeCount + 1 : 1
+              )
+            }
+
+            // get the  dao category
+            if (!!dao.category) {
+              const daoCategoryCount = daoCategoryMap.get(dao.category)
+              daoCategoryMap.set(
+                dao.category,
+                daoCategoryCount ? daoCategoryCount + 1 : 1
+              )
+            }
 
             // get the treasury
             const t = await this._treasuryService.addTreasuryTokenFromDao(dao)
@@ -117,6 +138,14 @@ class CronDaoStatsController {
               dework.todo += d.organization.tasks.filter(
                 (item) => item.status === 'TODO'
               ).length
+
+              dework.suggestion += d.organization.tasks.filter(
+                (item) => item.status === 'COMMUNITY_SUGGESTIONS'
+              ).length
+
+              dework.done += d.organization.tasks.filter(
+                (item) => item.status === 'DONE'
+              ).length
             }
           }
         }
@@ -129,12 +158,24 @@ class CronDaoStatsController {
         }
         return c
       })
+
+      //daoCategoryCount
+
+      const dcc = Array.from(daoCategoryMap).map((item) => {
+        const d: DaoCategory = {
+          dao_category: item[0],
+          count: item[1],
+        }
+        return d
+      })
+
       const date = new Date()
       const daoStats = new DaoStats()
       daoStats.daos = daoCount
       daoStats.members = memberCount
       daoStats.treasury = treasury
       daoStats.chain_category = ccArr
+      daoStats.dao_category = dcc
       daoStats.governanace = gov
       daoStats.dework = dework
       daoStats.create_at = daoStats.last_update_at = date

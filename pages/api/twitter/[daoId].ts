@@ -28,6 +28,27 @@ const fetchTwitterData = async (daoId: string) => {
   }
 }
 
+/**
+ * @swagger
+ * /api/twitter/{daoId}:
+ *   get:
+ *     tags:
+ *       - data-api
+ *     summary: get twitter data,only daosquare data
+ *     parameters:
+ *            - name: daoId
+ *              required: true
+ *              in: path
+ *              type: string
+ *
+ *     responses:
+ *       200:
+ *         description: twitter data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: Data
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

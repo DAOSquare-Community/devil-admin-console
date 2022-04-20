@@ -27,6 +27,27 @@ const fetchDiscordData = async (daoId: string) => {
   }
 }
 
+/**
+ * @swagger
+ * /api/discord/{daoId}:
+ *   get:
+ *     tags:
+ *       - data-api
+ *     summary: get discord data,only daosquare data
+ *     parameters:
+ *            - name: daoId
+ *              required: true
+ *              in: path
+ *              type: string
+ *
+ *     responses:
+ *       200:
+ *         description: discord data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: Data
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

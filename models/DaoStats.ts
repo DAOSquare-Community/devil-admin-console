@@ -16,6 +16,17 @@ export class ChainCategory {
   public count!: number
 }
 
+/** Dao Category */
+export class DaoCategory {
+  /** the Dao Category */
+  @prop({ required: true })
+  public dao_category!: string
+
+  /** total counts */
+  @prop({ required: true })
+  public count!: number
+}
+
 /** governanace */
 export class Governanace {
   /** number of in grace */
@@ -56,6 +67,14 @@ export class Dework {
   /** number of in review */
   @prop({ required: true })
   public inreview!: number
+
+  /** number of in suggestion */
+  @prop({ required: true })
+  public suggestion!: number
+
+  /** number of in done */
+  @prop({ required: true })
+  public done!: number
 }
 
 /** stats of daos */
@@ -75,6 +94,10 @@ export class DaoStats extends BaseModel {
   /** dao on chains count */
   @prop({ required: true, type: () => [ChainCategory], _id: false })
   public chain_category!: ChainCategory[]
+
+  /** dao category count */
+  @prop({ required: true, type: () => [DaoCategory], _id: false })
+  public dao_category!: DaoCategory[]
 
   @prop({ required: true, type: () => Governanace, _id: false })
   public governanace!: Governanace
