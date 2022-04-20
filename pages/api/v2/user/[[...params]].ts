@@ -26,12 +26,37 @@ class UserController {
   private _service = new UserService()
 
   /**
-   * get user list
-   * @param page
-   * @param pageSize
-   * @param queryParams
-   * @param sortParams
-   * @returns
+   * @swagger
+   * /api/v2/user/list:
+   *   get:
+   *     tags:
+   *       - user
+   *     summary: Returns user list
+   *     parameters:
+   *            - name: page
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: pageSize
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: queryParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *            - name: sortParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: user list
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<PageData<User>>
    */
   @Get('/list')
   public async getUserList(
@@ -53,9 +78,25 @@ class UserController {
   }
 
   /**
-   * get user by id
-   * @Query   id
-   * @returns
+   * @swagger
+   * /api/v2/user:
+   *   get:
+   *     tags:
+   *       - user
+   *     summary: Returns user object
+   *     parameters:
+   *            - name: id
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: user list
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<User | null>
    */
   @Get()
   public async getUserById(
@@ -70,9 +111,27 @@ class UserController {
   }
 
   /**
-   * delete users by ids
-   * @param Ids
-   * @returns
+   * @swagger
+   *
+   * /api/v2/user:
+   *
+   *   delete:
+   *     tags:
+   *       - user
+   *     summary: delete users by ids
+   *     parameters:
+   *            - name: ids
+   *              in: body
+   *              required: true
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: delete users
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Delete()
   public async deleteUsersByIds(
@@ -95,6 +154,28 @@ class UserController {
       "role" : ["super-admin","admin"]
      }
    */
+
+  /**
+   * @swagger
+   * /api/v2/user:
+   *   post:
+   *     tags:
+   *       - user
+   *     summary: insert user
+   *     parameters:
+   *            - name: user
+   *              in: body
+   *              required: true
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: insert user
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
+   */
   @Post()
   public async insertUser(@Body() body: object): Promise<ResultMsg<boolean>> {
     const user = new User()
@@ -111,6 +192,28 @@ class UserController {
    * @param filter
    * @param update
    * @returns
+   */
+
+  /**
+   * @swagger
+   * /api/v2/user:
+   *   put:
+   *     tags:
+   *       - user
+   *     summary: update user
+   *     parameters:
+   *            - name: body
+   *              in: body
+   *              required: true
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: update user
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Put()
   public async updateUser(

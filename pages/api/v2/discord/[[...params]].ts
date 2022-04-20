@@ -13,6 +13,28 @@ import { DiscordData } from 'types/models/discord'
 class DiscordController {
   private _discordService = new Discord()
   // GET /api/discord
+
+  /**
+   * @swagger
+   * /api/v2/discord:
+   *   get:
+   *     tags:
+   *       - data-api(v2)
+   *     summary: get discord info
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: discord info
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<DiscordData | null>
+   */
   @Get()
   public async getDiscord(
     @Query('daoId') daoId: string

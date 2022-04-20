@@ -6,7 +6,6 @@ import { HolderTokens } from 'lib/onchain/holdertokens'
 import dayjs from 'dayjs'
 import BaseService from './base'
 import DaoService from './dao'
-import XDaiplorer from 'lib/onchain/xdaiplorer'
 /**
  * Treasury
  *
@@ -28,9 +27,9 @@ export default class TreasuryService extends BaseService<
    */
   public getTreasuryDataFormDB = async (
     daoId: string
-  ): Promise<HolderTokens | null> => {
+  ): Promise<TreasuryToken | null> => {
     const ret = await this.model
-      .findOne<HolderTokens>({ daoId: daoId })
+      .findOne<TreasuryToken>({ daoId: daoId })
       .sort({ ts: -1 })
       .limit(1)
     return ret
@@ -69,9 +68,9 @@ export default class TreasuryService extends BaseService<
           null
         break
       case ChainEnum.xDai:
-        holderTokens =
-          (await XDaiplorer.getInstance()?.getHolderTokensByAddress(addr)) ??
-          null
+        // holderTokens =
+        //   (await XDaiplorer.getInstance()?.getHolderTokensByAddress(addr)) ??
+        //   null
         break
       default:
         break

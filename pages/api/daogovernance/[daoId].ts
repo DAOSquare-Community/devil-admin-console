@@ -102,6 +102,27 @@ const fetchDaoProposalsData = async () => {
   })
 }
 
+/**
+ * @swagger
+ * /api/daogovernanace/{daoId}:
+ *   get:
+ *     tags:
+ *       - data-api
+ *     summary: get daogovernanace data,only daosquare data
+ *     parameters:
+ *            - name: daoId
+ *              required: true
+ *              in: path
+ *              type: string
+ *
+ *     responses:
+ *       200:
+ *         description: daogovernanace data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: Data
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>

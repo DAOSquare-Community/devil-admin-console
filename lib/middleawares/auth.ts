@@ -17,7 +17,7 @@ const NextAuthGuard = createMiddlewareDecorator(
 
     const { user } = token
     const roles =
-      !user.roles || user.roles.length === 0 ? ['member'] : user.roles
+      !user.roles || user.roles.length === 0 ? ['guest'] : user.roles
 
     let hasRolePermission = false
 

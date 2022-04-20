@@ -28,6 +28,39 @@ class MemberController {
    * @param sortParams
    * @returns
    */
+  /**
+   * @swagger
+   * /api/v2/member/list:
+   *   get:
+   *     tags:
+   *       - member
+   *     summary: get member list
+   *     parameters:
+   *            - name: page
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: pageSize
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: queryParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *            - name: sortParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: member list
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<PageData<Member>>
+   */
   @Get('/list')
   public async getMemberList(
     @Query('page', DefaultValuePipe(0)) page: number,
@@ -48,25 +81,68 @@ class MemberController {
   }
 
   /**
-   * get member by name
-   * @Query name
+   * get member by filter
+   * @Query filter
    * @returns
    * @example
    * filter={'wallet_address':'34524654356'}
    */
+
+  /**
+   * @swagger
+   * /api/v2/member:
+   *   get:
+   *     tags:
+   *       - member
+   *     summary: get member by filter
+   *     parameters:
+   *            - name: filter
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: member object
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<Member[] | null>
+   */
   @Get()
   public async getMemberByAddr(
     @Query('filter') filter: string
-  ): Promise<ResultMsg<Member | null>> {
-    const member = await this._service.getEntity(JSON.parse(filter))
-    if (member.message) throw new InternalServerErrorException(member.message)
-    return member
+  ): Promise<ResultMsg<Member[] | null>> {
+    const members = await this._service.getEntities(JSON.parse(filter))
+    if (members.message) throw new InternalServerErrorException(members.message)
+    return members
   }
 
   /**
    * delete member by filter
    * @param filter
    * @returns
+   */
+  /**
+   * @swagger
+   * /api/v2/member:
+   *   delete:
+   *     tags:
+   *       - member
+   *     summary: delete member by filter
+   *     parameters:
+   *            - name: filter
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: delete member
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Delete()
   public async deleteMemberByFilter(
@@ -81,8 +157,29 @@ class MemberController {
 
   /**
    * insert member
-   * @param config
+   * @param member
    * @returns
+   */
+  /**
+   * @swagger
+   * /api/v2/member:
+   *   post:
+   *     tags:
+   *       - member
+   *     summary: insert a member
+   *     parameters:
+   *            - name: body
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: insert a member
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Post()
   public async insertMember(@Body() body: object): Promise<ResultMsg<boolean>> {
@@ -100,6 +197,27 @@ class MemberController {
    * @param filter
    * @param update
    * @returns
+   */
+  /**
+   * @swagger
+   * /api/v2/member:
+   *   put:
+   *     tags:
+   *       - member
+   *     summary: update member
+   *     parameters:
+   *            - name: body
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: update member
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Put()
   public async updateMember(

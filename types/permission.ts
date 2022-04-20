@@ -1,7 +1,7 @@
 import { HttpMethod } from 'types/const-enum'
 // import { HttpMethod } from './const-enum'
 
-type Role = 'super-admin' | 'admin' | 'member'
+type Role = 'super-admin' | 'admin' | 'member' | 'guest'
 
 /**
  * the role api permission

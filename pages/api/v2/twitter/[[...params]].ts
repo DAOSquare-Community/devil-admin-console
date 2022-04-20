@@ -12,7 +12,28 @@ import { TwitterData } from 'types/models/twitter'
 
 class TwitterController {
   private _twitterService = new Twitter()
-  // GET /api/twitter
+
+  /**
+   * @swagger
+   * /api/v2/twitter:
+   *   get:
+   *     tags:
+   *       - data-api(v2)
+   *     summary: get twitter info
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: twitter info
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<TwitterData | null>
+   */
   @Get()
   public async getTwitter(
     @Query('daoId') daoId: string

@@ -15,6 +15,28 @@ import {
 class GovernanceController {
   private _daoService = new DaoService()
   // GET /api/daogovernance
+
+  /**
+   * @swagger
+   * /api/v2/daogovernance:
+   *   get:
+   *     tags:
+   *       - data-api(v2)
+   *     summary: get daogovernance info
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: daogovernance info
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<GovernanceData | null>
+   */
   @Get()
   public async getDaoGovernance(
     @Query('daoId') daoId: string

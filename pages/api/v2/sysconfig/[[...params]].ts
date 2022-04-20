@@ -22,12 +22,37 @@ class ConfigController {
   private _service = new ConfigService()
 
   /**
-   * get config list
-   * @param page
-   * @param pageSize
-   * @param queryParams
-   * @param sortParams
-   * @returns
+   * @swagger
+   * /api/v2/sysconfig/list:
+   *   get:
+   *     tags:
+   *       - config
+   *     summary: get config list
+   *     parameters:
+   *            - name: page
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: pageSize
+   *              required: false
+   *              in: query
+   *              type: number
+   *            - name: queryParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *            - name: sortParams
+   *              required: false
+   *              in: query
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: config list
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<PageData<Config>>
    */
   @Get('/list')
   public async getConfigList(
@@ -49,9 +74,25 @@ class ConfigController {
   }
 
   /**
-   * get user by name
-   * @Query name
-   * @returns
+   * @swagger
+   * /api/v2/sysconfig:
+   *   get:
+   *     tags:
+   *       - config
+   *     summary: get config by name
+   *     parameters:
+   *            - name: name
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: config object
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<Config | null>
    */
   @Get()
   public async getConfigByName(
@@ -74,9 +115,25 @@ class ConfigController {
   }
 
   /**
-   * delete config by filter
-   * @param filter
-   * @returns
+   * @swagger
+   * /api/v2/sysconfig:
+   *   delete:
+   *     tags:
+   *       - config
+   *     summary: delete config by filter
+   *     parameters:
+   *            - name: filter
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: delete config
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Delete()
   public async deleteConfigByFilter(
@@ -94,6 +151,27 @@ class ConfigController {
    * @param config
    * @returns
    */
+  /**
+   * @swagger
+   * /api/v2/sysconfig:
+   *   post:
+   *     tags:
+   *       - config
+   *     summary: insert a config
+   *     parameters:
+   *            - name: config
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: insert a config
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
+   */
   @Post()
   public async insertConfig(@Body() body: object): Promise<ResultMsg<boolean>> {
     const config = new Config()
@@ -110,6 +188,27 @@ class ConfigController {
    * @param filter
    * @param update
    * @returns
+   */
+  /**
+   * @swagger
+   * /api/v2/sysconfig:
+   *   put:
+   *     tags:
+   *       - config
+   *     summary: update config
+   *     parameters:
+   *            - name: body
+   *              required: true
+   *              in: body
+   *              type: object
+   *
+   *     responses:
+   *       200:
+   *         description: update config
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<boolean>
    */
   @Put()
   public async updateConfig(

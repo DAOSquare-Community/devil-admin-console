@@ -22,6 +22,27 @@ const fetchCoinGeckoData = async (daoId: string) => {
     .then((response) => response.data)
 }
 
+/**
+ * @swagger
+ * /api/coingecko/marketchart/{daoId}:
+ *   get:
+ *     tags:
+ *       - data-api
+ *     summary: get coingecko coin marketchart data,only daosquare data
+ *     parameters:
+ *            - name: daoId
+ *              required: true
+ *              in: path
+ *              type: string
+ *
+ *     responses:
+ *       200:
+ *         description: coingecko coin marketchart data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: Data
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>

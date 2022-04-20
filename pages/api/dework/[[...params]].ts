@@ -49,6 +49,27 @@ const fetchDeworkData = async (daoId: string) => {
 }
 @CrosGuard()
 class Handler {
+  /**
+   * @swagger
+   * /api/dework/{daoId}:
+   *   get:
+   *     tags:
+   *       - data-api
+   *     summary: get dework data,only daosquare data
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: path
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: dework data
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: Data
+   */
   @Get('/:daoId')
   public async fetchDework(@Param('daoId') daoId: string) {
     const data = await fetchDeworkData(daoId)

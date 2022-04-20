@@ -12,7 +12,28 @@ import { SeshData } from 'types/models/sesh'
 
 class SeshController {
   private _seshService = new Sesh()
-  // GET /api/sesh
+
+  /**
+   * @swagger
+   * /api/v2/sesh:
+   *   get:
+   *     tags:
+   *       - data-api(v2)
+   *     summary: get sesh info
+   *     parameters:
+   *            - name: daoId
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: sesh info
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<SeshData | null>
+   */
   @Get()
   public async getSesh(
     @Query('daoId') daoId: string
