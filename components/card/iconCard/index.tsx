@@ -1,8 +1,11 @@
-import { Box, ChakraComponent, Flex } from '@chakra-ui/react'
+import { Box, ChakraComponent, Flex, Link } from '@chakra-ui/react'
 import BaseCard from '../baseCard'
 import Image from 'next/image'
+import { FC } from 'react'
 
-const IconCard: ChakraComponent<'div', { icon: string; text: string }> = ({
+type IconCardProps = { icon: string; text: string; title: string }
+
+const IconCard: ChakraComponent<'div', IconCardProps> = ({
   icon,
   title,
   text,
@@ -39,6 +42,25 @@ const IconCard: ChakraComponent<'div', { icon: string; text: string }> = ({
         </Box>
       </Flex>
     </BaseCard>
+  )
+}
+
+export const IconCardLink: FC<IconCardProps & { link?: string }> = ({
+  link,
+  ...props
+}) => {
+  return (
+    <div className=" w-full  md:w-[49%]  lg:w-[23.5%]">
+      {link ? (
+        <Link href={link}>
+          <a rel="noopener noreferrer">
+            <IconCard {...props} className="click-card" />
+          </a>
+        </Link>
+      ) : (
+        <IconCard {...props} />
+      )}
+    </div>
   )
 }
 

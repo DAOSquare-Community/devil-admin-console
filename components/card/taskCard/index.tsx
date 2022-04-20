@@ -1,15 +1,26 @@
-import { Box, Flex, Text, Link } from '@chakra-ui/react'
+import { Box, Flex, Text, Link, ChakraComponent } from '@chakra-ui/react'
 import BaseCard from '../baseCard'
 import Image from 'next/image'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function TaskCard({ icon, title, text, color, data, link }: any) {
+type TaskCardProps = ChakraComponent<
+  'div',
+  {
+    icon: string
+    title: string
+    text: string
+    color: string
+    data: { text: string; title: string }[]
+    link?: string
+  }
+>
+
+const TaskCard: TaskCardProps = ({ icon, title, text, color, data, link }) => {
   return (
     <BaseCard p={{ base: 4, md: 8, lg: 12 }}>
       <Link href={link} target="_blank">
         <Flex>
           <div className="mr-2">
-            <Image src={icon} width="60px" />
+            <Image src={icon} width="60px" height={'60px'} alt="image" />
           </div>
           <Box>
             <Text fontSize="24px" fontWeight={900} color="#414152">
@@ -27,7 +38,7 @@ function TaskCard({ icon, title, text, color, data, link }: any) {
         mt={{ base: 4, md: 6, lg: 10 }}
         mb="-16px"
       >
-        {data.map((d: { text: string; title: string }, i: number) => (
+        {data.map((d, i) => (
           <Box
             key={i}
             borderRadius="12px"

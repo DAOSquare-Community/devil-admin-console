@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from 'react'
-import { Box, Flex, Text, useMediaQuery } from '@chakra-ui/react'
+import { Box, Flex, useMediaQuery } from '@chakra-ui/react'
 import {
   AreaChart,
   Area,
@@ -10,10 +10,8 @@ import {
   Legend,
 } from 'recharts'
 import Image from 'next/image'
-import { Timeline } from 'react-twitter-widgets'
-import Calendar from 'components/calendar'
 import BaseCard from 'components/card/baseCard'
-import IconCard from 'components/card/iconCard'
+import IconCard, { IconCardLink } from 'components/card/iconCard'
 import TaskCard from 'components/card/taskCard'
 import TitleCard from 'components/card/titleCard'
 
@@ -34,14 +32,14 @@ import brightid from 'public/assets/images/brightid.svg'
 import unlock from 'public/assets/images/unlock.svg'
 import multis from 'public/assets/images/multis.svg'
 import doingud from 'public/assets/images/doingud.svg'
-import home from 'public/assets/images/home.svg'
-import discord2 from 'public/assets/images/discord2.svg'
-import twitter2 from 'public/assets/images/twitter2.svg'
-import daosquare2 from 'public/assets/images/daosquare2.svg'
 import dework from 'public/assets/images/dework2.svg'
 import dao from 'public/assets/images/dao.svg'
 import DaoLayout from 'components/dao-square-nav/layout'
 import { NextPageWithLayout } from 'types/page'
+import dayjs from 'dayjs'
+import { Timeline } from 'react-twitter-widgets'
+import Calendar from 'components/calendar'
+import { DaoPeopleLink } from 'components/card/peopleCard'
 // import Link from 'next/link'
 
 const chartData = [
@@ -78,29 +76,6 @@ const chartData = [
 const chartData1 = [
   { name: 'ETH', value: 1096 },
   { name: 'GC', value: 815 },
-]
-
-const data = [
-  {
-    icon: discord2,
-    title: '13,100+',
-    text: 'Members',
-  },
-  {
-    icon: twitter2,
-    title: '13,000+',
-    text: 'Follower',
-  },
-  {
-    icon: home,
-    title: '$84,624,068', // Math.floor(96167102 * 0.879968526705165),https://etherscan.io/token/0xbd9908b0cdd50386f92efcc8e1d71766c2782df0#balances https://gnosis-safe.io/app/eth:0xf383975B49d2130e3BA0Df9e10dE5FF2Dd7A215a/balances
-    text: 'Treasury',
-  },
-  {
-    icon: daosquare2,
-    title: '$0.88',
-    text: 'Token Price',
-  },
 ]
 
 const taskData = [
@@ -183,6 +158,7 @@ const productsData = [
     icon: daoscape,
     title: 'DAOscape',
     text: 'Treasury',
+    link: '/daos/123',
   },
   {
     icon: nft4ever,
@@ -278,14 +254,26 @@ const newsData = [
   },
 ]
 
+const peopleData = [
+  { name: 'Jerome Bell', title: 'MetaCartel' },
+  { name: 'Jerome Bell2', title: 'MetaCartel' },
+  { name: 'Jerome Bell3', title: 'MetaCartel' },
+  { name: 'Jerome Bell4', title: 'MetaCartel' },
+  { name: 'Jerome Bell5', title: 'MetaCartel' },
+  { name: 'Jerome Bell6', title: 'MetaCartel' },
+]
+
 const Events: FC = () => {
   return (
-    <div className="my-6 flex flex-1 gap-7">
+    <div className="mt-10 mb-16 flex flex-1 flex-wrap justify-between">
       {newsData.map(({ title, image, date, location }) => {
         return (
-          <div
+          <a
+            href="https://www.figma.com/file/JFKsusO1q62WzRFTY0Phms/DAOscape?node-id=2%3A2015"
             key={title}
-            className="relative flex h-[291px] flex-1 rounded-xl "
+            target="_blank"
+            className="relative mb-4 h-[291px]  w-full rounded-xl lg:mb-0 lg:w-[49%] "
+            rel="noreferrer"
           >
             <Image
               src={image}
@@ -295,11 +283,14 @@ const Events: FC = () => {
               className=" rounded-xl"
             />
 
-            <div className="bg-blur absolute  bottom-0 flex w-full justify-between  rounded-r-xl p-3">
-              <p className="text-[#121127 text-base font-bold">{title}</p>
-              <p>{location}</p>
+            <div className="absolute bottom-0 flex  w-full justify-between rounded-b-xl bg-ds-content/70  p-3 backdrop-blur-lg">
+              <p className="text-base font-bold text-ds-900">{title}</p>
+              <p>
+                {`${dayjs(date).format('MM.DD.YYYY')}  `}
+                {location}
+              </p>
             </div>
-          </div>
+          </a>
         )
       })}
     </div>
@@ -425,23 +416,9 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
       <Events />
-      <Flex wrap="wrap" justifyContent="space-between" mb={8}>
-        {data.map((d, i) => {
-          const item = { ...d }
-          item.title = i === 3 ? `$${price.toFixed(2)}` : d.title
-          return (
-            <Box
-              key={i}
-              w={{ base: '100%', md: '49%', lg: '23.5%' }}
-              mb={{ base: 4, lg: 0 }}
-            >
-              <IconCard {...item} />
-            </Box>
-          )
-        })}
-      </Flex>
 
-      <Flex wrap="wrap" justifyContent="space-between" mb={16}>
+      <h3 className="mb-2 mt-10 text-sm text-ds-600">Panorama</h3>
+      <Flex wrap="wrap" justifyContent="space-between" mb={8}>
         <Box
           w={{ base: '100%', md: '49%', lg: '23.5%' }}
           mb={{ base: 4, lg: 0 }}
@@ -631,6 +608,52 @@ const Home: NextPageWithLayout = () => {
         ))}
       </Flex>
 
+      <h3 className="mb-2 mt-10 text-sm text-ds-600">Hots</h3>
+      <div className="mb-6 flex flex-wrap justify-between gap-y-6">
+        {peopleData.map((d) => (
+          // eslint-disable-next-line react/jsx-no-undef
+          <DaoPeopleLink key={d.name} {...d} />
+        ))}
+      </div>
+      <div className="flex flex-wrap justify-between gap-y-6 ">
+        {productsData.map((d) => (
+          <IconCardLink key={d.title} {...d} />
+        ))}
+      </div>
+
+      <h3 className="mb-2 mt-10 text-sm text-ds-600">Guilds</h3>
+      <Flex wrap="wrap" justifyContent="space-between">
+        {guildsData.map((d, i) => (
+          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+            <a
+              href={`/guild#${d.title}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IconCard {...d} className="click-card" />
+            </a>
+          </Box>
+        ))}
+      </Flex>
+
+      <h3 className="mb-2 mt-10 text-sm text-ds-600">Portfolio</h3>
+      <Flex wrap="wrap" justifyContent="space-between">
+        {portfolioData.map((d, i) => (
+          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+            <a href={d.link} target="_blank" rel="noopener noreferrer">
+              <IconCard {...d} className="click-card" />
+            </a>
+          </Box>
+        ))}
+        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+          <BaseCard visibility="hidden" />
+        </Box>
+        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+          <BaseCard visibility="hidden" />
+        </Box>
+      </Flex>
+
+      <h3 className="mb-2 mt-10 text-sm text-ds-600">News</h3>
       <Flex wrap="wrap" justifyContent="space-between" mb={16}>
         <Box w={{ base: '100%', md: '49%' }} mb={6}>
           <BaseCard p={0} className="click-card  h-[456px] xl:h-[610px]">
@@ -656,59 +679,6 @@ const Home: NextPageWithLayout = () => {
               eventsData={eventsData}
             />
           </BaseCard>
-        </Box>
-      </Flex>
-
-      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
-        Products
-      </Text>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {productsData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            {d.link ? (
-              <a href={d.link} target="_blank" rel="noopener noreferrer">
-                <IconCard {...d} className="click-card" />
-              </a>
-            ) : (
-              <IconCard {...d} />
-            )}
-          </Box>
-        ))}
-      </Flex>
-
-      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
-        Guilds
-      </Text>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {guildsData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            <a
-              href={`/guild#${d.title}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <IconCard {...d} className="click-card" />
-            </a>
-          </Box>
-        ))}
-      </Flex>
-
-      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
-        Portfolio
-      </Text>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {portfolioData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            <a href={d.link} target="_blank" rel="noopener noreferrer">
-              <IconCard {...d} className="click-card" />
-            </a>
-          </Box>
-        ))}
-        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-          <BaseCard visibility="hidden" />
-        </Box>
-        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-          <BaseCard visibility="hidden" />
         </Box>
       </Flex>
 

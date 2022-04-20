@@ -16,11 +16,11 @@ const menuData = [
   },
   {
     name: 'People',
-    path: '/people',
+    path: '/daos/people',
   },
   {
     name: 'Add',
-    path: '/Add',
+    path: '/daos/add',
   },
 ]
 
@@ -47,14 +47,18 @@ function Header() {
           alignItems="center"
         >
           <Link href="/" passHref>
-            <Image src={logo} className={'w-[120px] md:w-[200px]'} alt="logo" />
+            <Image
+              src={logo}
+              className={'w-[120px] cursor-pointer md:w-[200px]'}
+              alt="logo"
+            />
           </Link>
 
           <div className="flex items-center  gap-5">
             <div className=" hidden items-center gap-5  md:flex">
               {menuData.map((i) => (
                 <Link href={i.path} key={i.name} passHref>
-                  <button className="btn btn-ghost btn-sm capitalize">
+                  <button className="btn btn-ghost btn-sm font-medium capitalize text-ds-900">
                     {i.name}
                   </button>
                 </Link>
@@ -78,7 +82,7 @@ function Header() {
         </Container>
       </Box>
       <Box
-        className="bg-blur fixed inset-0 z-[999] flex h-screen flex-col justify-center"
+        className=" fixed inset-0 z-[999] flex h-screen flex-col justify-center bg-ds-content/80 backdrop-blur-xl"
         display={isShowMenu ? 'auto' : 'none'}
       >
         <Box
