@@ -8,8 +8,14 @@ import line from '../../../public/assets/images/line.svg'
 import close from '../../../public/assets/images/close.svg'
 import { useState } from 'react'
 import './index.module.css'
+import WalletModal from 'components/modal/wallet'
+import useWalletSignIn from 'lib/utils/wallet'
 
 const menuData = [
+  {
+    name: 'Admin',
+    path: '/admin',
+  },
   {
     name: 'Daos',
     path: '/daos',
@@ -27,6 +33,12 @@ const menuData = [
 function Header() {
   const [isShowMenu, setIsShowMenu] = useState(false)
   const [curMenu, setCurMenu] = useState(-1)
+  const [isOpen, setOpen] = useState(false)
+  const { connectWallet } = useWalletSignIn((res) => {
+    if (res) {
+      setOpen(false)
+    }
+  })
   return (
     <>
       <Box
@@ -47,11 +59,13 @@ function Header() {
           alignItems="center"
         >
           <Link href="/" passHref>
-            <Image
-              src={logo}
-              className={'w-[120px] cursor-pointer md:w-[200px]'}
-              alt="logo"
-            />
+            <div>
+              <Image
+                src={logo}
+                className={'w-[120px] cursor-pointer md:w-[200px]'}
+                alt="logo"
+              />
+            </div>
           </Link>
 
           <div className="flex items-center  gap-5">
@@ -64,10 +78,16 @@ function Header() {
                 </Link>
               ))}
             </div>
-            <Link href="/" passHref>
-              <Button className="">Connect</Button>
-            </Link>
-
+            <Button className="" onClick={() => setOpen(true)}>
+              Connect
+            </Button>
+            <WalletModal
+              isOpen={isOpen}
+              setIsOpen={setOpen}
+              onClick={(e) => {
+                connectWallet(e)
+              }}
+            />
             <div className=" block md:hidden">
               <Image
                 className={'w-5 cursor-pointer md:w-7'}

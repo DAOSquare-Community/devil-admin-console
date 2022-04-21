@@ -164,7 +164,6 @@ const productsData = [
     icon: nft4ever,
     title: 'NFT4ever',
     text: 'Equity Marketplace',
-    link: '',
   },
 ]
 
