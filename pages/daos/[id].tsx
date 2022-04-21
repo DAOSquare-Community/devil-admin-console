@@ -1,5 +1,5 @@
-import { useState, useEffect, FC } from 'react'
-import { Box, Flex, useMediaQuery } from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import { Box, Container, Flex, Text, useMediaQuery } from '@chakra-ui/react'
 import {
   AreaChart,
   Area,
@@ -10,8 +10,10 @@ import {
   Legend,
 } from 'recharts'
 import Image from 'next/image'
+import { Timeline } from 'react-twitter-widgets'
+import Calendar from 'components/calendar'
 import BaseCard from 'components/card/baseCard'
-import IconCard, { IconCardLink } from 'components/card/iconCard'
+import IconCard from 'components/card/iconCard'
 import TaskCard from 'components/card/taskCard'
 import TitleCard from 'components/card/titleCard'
 
@@ -32,14 +34,19 @@ import brightid from 'public/assets/images/brightid.svg'
 import unlock from 'public/assets/images/unlock.svg'
 import multis from 'public/assets/images/multis.svg'
 import doingud from 'public/assets/images/doingud.svg'
+import home from 'public/assets/images/home.svg'
+import discord from 'public/assets/images/discord1.svg'
+import discord2 from 'public/assets/images/discord2.svg'
+import twitter2 from 'public/assets/images/twitter2.svg'
+import daosquare from 'public/assets/images/daosquare.svg'
+import daosquare2 from 'public/assets/images/daosquare2.svg'
+import dework1 from 'public/assets/images/dework1.svg'
 import dework from 'public/assets/images/dework2.svg'
 import dao from 'public/assets/images/dao.svg'
+import forum from 'public/assets/images/forum1.svg'
+import twitter from 'public/assets/images/twitter1.svg'
 import DaoLayout from 'components/dao-square-nav/layout'
 import { NextPageWithLayout } from 'types/page'
-import dayjs from 'dayjs'
-import { Timeline } from 'react-twitter-widgets'
-import Calendar from 'components/calendar'
-import { DaoPeopleLink } from 'components/card/peopleCard'
 // import Link from 'next/link'
 
 const chartData = [
@@ -76,6 +83,29 @@ const chartData = [
 const chartData1 = [
   { name: 'ETH', value: 1096 },
   { name: 'GC', value: 815 },
+]
+
+const data = [
+  {
+    icon: discord2,
+    title: '13,100+',
+    text: 'Members',
+  },
+  {
+    icon: twitter2,
+    title: '13,000+',
+    text: 'Follower',
+  },
+  {
+    icon: home,
+    title: '$84,624,068', // Math.floor(96167102 * 0.879968526705165),https://etherscan.io/token/0xbd9908b0cdd50386f92efcc8e1d71766c2782df0#balances https://gnosis-safe.io/app/eth:0xf383975B49d2130e3BA0Df9e10dE5FF2Dd7A215a/balances
+    text: 'Treasury',
+  },
+  {
+    icon: daosquare2,
+    title: '$0.88',
+    text: 'Token Price',
+  },
 ]
 
 const taskData = [
@@ -158,7 +188,6 @@ const productsData = [
     icon: daoscape,
     title: 'DAOscape',
     text: 'Treasury',
-    link: '/daos/123',
   },
   {
     icon: nft4ever,
@@ -235,69 +264,7 @@ const portfolioData = [
   },
 ]
 
-const newsData = [
-  {
-    image:
-      'https://s3-alpha-sig.figma.com/img/0d2e/a304/3bdd227d9fb3bbdf6c7984be8b2a1138?Expires=1650844800&Signature=bMooaTmO66gPZzi26hznVwMH9XIT5~idxtaXs~7X6ngc67KPPMm5rPmsa2SQWp20lKFWrJENdQBDO5PXJzVVx1fCQ6o3bckmME6ugJC6A233lSub0UXECGR4vsj-GYmGlcDChdNoCfpJ-QUrWk~UqUakfH8wDqYa61Jk0jjYBq9bNWyfgUj98-ZexWja1jtNfbjW-Dng-ZrJkfGJYJyxIqHrAK89Pjam-qHElFZ3PF~WWNnhCUEP8oKdXoIp3-ySToFtptf-Y6KgP6b3LDIUPOw1WelkLOEWLI0Xnf2kjBL4-2BDwgGoq7Q40W0EtILx6LgeiMdT~q~e~lthUtSmag__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-    title: 'ETHDenver 2022',
-    date: new Date(),
-    location: 'Denver',
-    link: 'https://www.figma.com/file/JFKsusO1q62WzRFTY0Phms/DAOscape?node-id=2%3A2015',
-  },
-  {
-    image:
-      'https://s3-alpha-sig.figma.com/img/6563/8185/835cd5163b1d5a806f9a0ab4ff5dd6df?Expires=1650844800&Signature=XJ9x2qU-ovpN-2xcLiwCcxGpwVpnMIJA4j1YSnkSfcqqH19IfMvBCYXJqBQZ8VC98Nuh362rkNR8kp2dc81vqUO~FT0Temlypx4VvDEud7iGgA1fDSx3LbfyfQd5XVZObfYyCHzh~y1H2MdfmrP8g-T8fmKZ8tYVWBax-j8SjXzzPdWlFynFa6AahbhxQ2A48mB9yleCOrtnuvn1ZeWpT5Lf~yRIC5EI~foEAOK1NTFMeddCeDQaYECS6b~4M2NFW1-8j6-NifyQi366nLWzf5BE91qrGCmFknc3XDYIQmrpXDssIGnI9CdePY6HMHLDV955TYiNUpjFjDzLpAFx4Q__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
-    title: 'MCON 2022',
-    date: new Date(),
-    location: 'Denver',
-    link: 'https://www.figma.com/file/JFKsusO1q62WzRFTY0Phms/DAOscape?node-id=2%3A2015',
-  },
-]
-
-const peopleData = [
-  { name: 'Jerome Bell', title: 'MetaCartel' },
-  { name: 'Jerome Bell2', title: 'MetaCartel' },
-  { name: 'Jerome Bell3', title: 'MetaCartel' },
-  { name: 'Jerome Bell4', title: 'MetaCartel' },
-  { name: 'Jerome Bell5', title: 'MetaCartel' },
-  { name: 'Jerome Bell6', title: 'MetaCartel' },
-]
-
-const Events: FC = () => {
-  return (
-    <div className="mt-10 mb-16 flex flex-1 flex-wrap justify-between">
-      {newsData.map(({ title, image, date, location }) => {
-        return (
-          <a
-            href="https://www.figma.com/file/JFKsusO1q62WzRFTY0Phms/DAOscape?node-id=2%3A2015"
-            key={title}
-            target="_blank"
-            className="relative mb-4 h-[291px]  w-full rounded-xl lg:mb-0 lg:w-[49%] "
-            rel="noreferrer"
-          >
-            <Image
-              src={image}
-              alt="image"
-              layout="fill"
-              objectFit="cover"
-              className=" rounded-xl"
-            />
-
-            <div className="absolute bottom-0 flex  w-full justify-between rounded-b-xl bg-ds-content/70  p-3 backdrop-blur-lg">
-              <p className="text-base font-bold text-ds-900">{title}</p>
-              <p>
-                {`${dayjs(date).format('MM.DD.YYYY')}  `}
-                {location}
-              </p>
-            </div>
-          </a>
-        )
-      })}
-    </div>
-  )
-}
-
-const Home: NextPageWithLayout = () => {
+const Landscape: NextPageWithLayout = () => {
   const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
 
   const [price, setPrice] = useState(0)
@@ -407,18 +374,113 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <Box>
-      <div className="flex flex-col py-12">
-        <div className=" text-2xl leading-[48px] text-[#121127]">
-          Landscape of DAO ecosystem
-        </div>
-        <div className=" text-base">
-          Owned and managed by DAOSquare community
-        </div>
-      </div>
-      <Events />
+      <Container
+        maxW="container.lg"
+        p={0}
+        mt={9}
+        mb={{ base: '40px', md: '80px', lg: '120px' }}
+        overflow="auto"
+      >
+        <Flex
+          flexDir={{ base: 'column', md: 'row' }}
+          alignItems="center"
+          className="article"
+        >
+          <Box w="20%">
+            <Image src={daosquare} width="140px" height={'140px'} alt="image" />
+          </Box>
+          <Box w="80%">
+            <Box
+              fontSize={{ base: '30px', md: '38px', lg: '48px' }}
+              textAlign={{ base: 'center', md: 'left' }}
+            >
+              DAOSquare
+            </Box>
+            <Text>
+              Born in MetaCartel, DAOSquare is an incubator for web3. It’s based
+              on the concept of Web3 and runs on the Ethereum. It links resource
+              via the thought of DAO to support any valuable innovations of this
+              new era.
+            </Text>
+            <Flex justifyContent={{ base: 'center', md: 'left' }} mt={8}>
+              <a
+                href="https://discord.com/invite/daosquare"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="mx-4">
+                  <Image
+                    src={discord}
+                    alt="discord"
+                    width={'20px'}
+                    height={'15.83px'}
+                  />
+                </div>
+              </a>
+              <a
+                href="https://twitter.com/DAOSquare"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="mx-4">
+                  <Image
+                    src={twitter}
+                    alt="twitter"
+                    width={'20px'}
+                    height={'16.66px'}
+                  />
+                </div>
+              </a>
+              <a
+                href="https://app.dework.xyz/o/daosquare-5T2WcpGDJ3m6cOiG5ItJeL"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="mx-4">
+                  <Image
+                    src={dework1}
+                    alt="dework1"
+                    width={'16px'}
+                    height={'16px'}
+                  />
+                </div>
+              </a>
+              <a
+                href="https://forum.daosquare.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="mx-4">
+                  <Image
+                    src={forum}
+                    alt="forum"
+                    width={'18px'}
+                    height={'18px'}
+                  />
+                </div>
+              </a>
+            </Flex>
+          </Box>
+        </Flex>
+      </Container>
 
-      <h3 className="mb-2 mt-10 text-sm text-ds-600">Panorama</h3>
       <Flex wrap="wrap" justifyContent="space-between" mb={8}>
+        {data.map((d, i) => {
+          const item = { ...d }
+          item.title = i === 3 ? `$${price.toFixed(2)}` : d.title
+          return (
+            <Box
+              key={i}
+              w={{ base: '100%', md: '49%', lg: '23.5%' }}
+              mb={{ base: 4, lg: 0 }}
+            >
+              <IconCard {...item} />
+            </Box>
+          )
+        })}
+      </Flex>
+
+      <Flex wrap="wrap" justifyContent="space-between" mb={16}>
         <Box
           w={{ base: '100%', md: '49%', lg: '23.5%' }}
           mb={{ base: 4, lg: 0 }}
@@ -608,52 +670,6 @@ const Home: NextPageWithLayout = () => {
         ))}
       </Flex>
 
-      <h3 className="mb-2 mt-10 text-sm text-ds-600">Hots</h3>
-      <div className="mb-6 flex flex-wrap justify-between gap-y-6">
-        {peopleData.map((d) => (
-          // eslint-disable-next-line react/jsx-no-undef
-          <DaoPeopleLink key={d.name} {...d} />
-        ))}
-      </div>
-      <div className="flex flex-wrap justify-between gap-y-6 ">
-        {productsData.map((d) => (
-          <IconCardLink key={d.title} {...d} />
-        ))}
-      </div>
-
-      <h3 className="mb-2 mt-10 text-sm text-ds-600">Guilds</h3>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {guildsData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            <a
-              href={`/guild#${d.title}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <IconCard {...d} className="click-card" />
-            </a>
-          </Box>
-        ))}
-      </Flex>
-
-      <h3 className="mb-2 mt-10 text-sm text-ds-600">Portfolio</h3>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {portfolioData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            <a href={d.link} target="_blank" rel="noopener noreferrer">
-              <IconCard {...d} className="click-card" />
-            </a>
-          </Box>
-        ))}
-        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-          <BaseCard visibility="hidden" />
-        </Box>
-        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-          <BaseCard visibility="hidden" />
-        </Box>
-      </Flex>
-
-      <h3 className="mb-2 mt-10 text-sm text-ds-600">News</h3>
       <Flex wrap="wrap" justifyContent="space-between" mb={16}>
         <Box w={{ base: '100%', md: '49%' }} mb={6}>
           <BaseCard p={0} className="click-card  h-[456px] xl:h-[610px]">
@@ -682,11 +698,64 @@ const Home: NextPageWithLayout = () => {
         </Box>
       </Flex>
 
+      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
+        Products
+      </Text>
+      <Flex wrap="wrap" justifyContent="space-between">
+        {productsData.map((d, i) => (
+          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+            {d.link ? (
+              <a href={d.link} target="_blank" rel="noopener noreferrer">
+                <IconCard {...d} className="click-card" />
+              </a>
+            ) : (
+              <IconCard {...d} />
+            )}
+          </Box>
+        ))}
+      </Flex>
+
+      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
+        Guilds
+      </Text>
+      <Flex wrap="wrap" justifyContent="space-between">
+        {guildsData.map((d, i) => (
+          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+            <a
+              href={`/guild#${d.title}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <IconCard {...d} className="click-card" />
+            </a>
+          </Box>
+        ))}
+      </Flex>
+
+      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
+        Portfolio
+      </Text>
+      <Flex wrap="wrap" justifyContent="space-between">
+        {portfolioData.map((d, i) => (
+          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+            <a href={d.link} target="_blank" rel="noopener noreferrer">
+              <IconCard {...d} className="click-card" />
+            </a>
+          </Box>
+        ))}
+        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+          <BaseCard visibility="hidden" />
+        </Box>
+        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
+          <BaseCard visibility="hidden" />
+        </Box>
+      </Flex>
+
       <Box h={{ base: 8, md: 16, lg: 32 }} />
     </Box>
   )
 }
 
-Home.getLayout = (page) => <DaoLayout>{page}</DaoLayout>
+Landscape.getLayout = (page) => <DaoLayout>{page}</DaoLayout>
 
-export default Home
+export default Landscape

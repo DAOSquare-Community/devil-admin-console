@@ -39,10 +39,9 @@ a {
   /* min-height: 100vh; */
 }
 
-#__next .click-card {
+.click-card {
   cursor: pointer;
   transition: box-shadow 0.5s;
-  background: rgb(255, 255, 255, 1);
 } 
 .click-card:hover {
   box-shadow: 0px 0px 20px rgb(0 0 0 / 25%);
@@ -94,9 +93,15 @@ a {
 
 
 
+.text-shadow-sm {
+  text-shadow: 0 4px 4px rgb(0 0 0 / 25%)
+}
+
+
+
 @layer components {
   .dmc-form-checkbox {
-    @apply checkbox  checkbox-primary  border-base-300 border-2  rounded-md   h-[1rem] w-[1rem]  p-0   
+    @apply checkbox  checkbox-primary  border-base-300 border-2  rounded-md   h-4 w-4  p-0   
     focus:border-indigo-300   focus:outline-none   focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-20 
   }
   .dmc-form-input {
@@ -131,5 +136,9 @@ a {
 
   .flex-center {
     @apply flex items-center justify-center
+  }
+
+  .ds-gradient {
+    @apply bg-gradient-to-r from-[#FF96D5]  to-[#FFD390]
   }
 }

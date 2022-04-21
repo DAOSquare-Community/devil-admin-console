@@ -1,4 +1,4 @@
-import { prop, pre } from '@typegoose/typegoose'
+import { prop } from '@typegoose/typegoose'
 /**
  * the base of model
  *

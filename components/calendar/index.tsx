@@ -11,12 +11,21 @@ import {
 import Calendar from 'color-calendar'
 import 'color-calendar/dist/css/theme-glass.css'
 
-function CalendarComponent({ isLargerThan1280, eventsData }) {
+type EventType = { name: string; start: Date; end: Date }
+
+function CalendarComponent({
+  isLargerThan1280,
+  eventsData,
+}: {
+  isLargerThan1280: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  eventsData: any
+}) {
   const [isOpen, setIsOpen] = useState(false)
-  const [curEvents, setCurEvents] = useState([])
+  const [curEvents, setCurEvents] = useState<EventType[]>([])
 
   useEffect(() => {
-    let padding = isLargerThan1280 ? 110 : 30
+    const padding = isLargerThan1280 ? 110 : 30
 
     new Calendar({
       id: '#calendar',
@@ -29,19 +38,19 @@ function CalendarComponent({ isLargerThan1280, eventsData }) {
       headerColor: '#323232',
 
       eventsData,
-      selectedDateClicked: (currentDate, events) => {
+      selectedDateClicked: (_: unknown, events: EventType[]) => {
         if (events.length > 0) {
           setCurEvents(events)
           setIsOpen(true)
         }
       },
-      dateChanged: (currentDate, events) => {
+      dateChanged: (_: unknown, events: EventType[]) => {
         if (events.length > 0) {
           setCurEvents(events)
           setIsOpen(true)
         }
       },
-      monthChanged: (currentDate, events) => {
+      monthChanged: () => {
         // console.log('month change', currentDate, events);
       },
     })
@@ -55,6 +64,7 @@ function CalendarComponent({ isLargerThan1280, eventsData }) {
         onClose={() => setIsOpen(false)}
         isOpen={isOpen}
         isCentered
+        leastDestructiveRef={undefined}
       >
         <AlertDialogOverlay />
 

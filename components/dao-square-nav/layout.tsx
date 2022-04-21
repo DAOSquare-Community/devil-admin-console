@@ -13,20 +13,15 @@ const DaoLayout: FC = ({ children }) => {
       <Header />
 
       <Container
-        maxW={
-          location.pathname === '/landscape' ? 'container.xl' : 'container.md'
-        }
+        maxW={'container.xl'}
         zIndex={2}
         marginTop={{ base: '80px', md: '120px' }}
       >
         {children}
       </Container>
+
       <Footer
-        position={
-          location.pathname === '/' && window.innerHeight > 668
-            ? 'absolute'
-            : 'static'
-        }
+        position={location.pathname === '/' ? 'absolute' : 'static'}
         bottom={0}
         left={0}
         right={0}
