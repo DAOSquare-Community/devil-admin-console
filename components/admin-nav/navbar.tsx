@@ -2,9 +2,6 @@ import { FC, useContext, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import MeContext from 'lib/me-provider'
-import { Modal } from '../modal'
-import ProfileForm from '../form/profile'
-import SettingsForm from '../form/settings'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 
@@ -46,7 +43,7 @@ const AvatarDropdown: FC = () => {
         tabIndex={0}
         className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
       >
-        <li>
+        {/* <li>
           <button
             className="justify-between"
             onClick={() => {
@@ -56,7 +53,7 @@ const AvatarDropdown: FC = () => {
             Profile
             <span className="badge">New</span>
           </button>
-        </li>
+        </li> */}
         {/* <li>
           <button
             className="justify-between"
@@ -80,38 +77,6 @@ const AvatarDropdown: FC = () => {
           </button>
         </li>
       </ul>
-      <Modal
-        isOpen={isopen}
-        onClose={() => setIsopen(false)}
-        title="Update User Profile"
-        form="profile_form"
-        // onClose={() => setIsopen(false)}
-        // onSumbimit={() => setIsopen(false)}
-      >
-        <ProfileForm
-          id={'profile_form'}
-          state={data}
-          onSuccess={(va) => {
-            dispatch({
-              type: 'update',
-              payload: va,
-            })
-            setIsopen(false)
-          }}
-        />
-      </Modal>
-
-      <Modal
-        form="setting_form"
-        isOpen={isSettingsopen}
-        onClose={() => setIsSettingsopen(false)}
-        title="Update Password"
-      >
-        <SettingsForm
-          id={'setting_form'}
-          onSuccess={() => setIsSettingsopen(false)}
-        />
-      </Modal>
     </div>
   )
 }

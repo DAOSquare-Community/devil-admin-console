@@ -10,5 +10,5 @@ export type LoginPostResponse = {
 
 export type DaoPostRequest = {
   name: string
-  profile: string
+  profile?: string
 }

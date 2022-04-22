@@ -33,7 +33,11 @@ export const useAxiosQuery = <
   return useQuery<TQueryFnData, TError, TData, KeysType>(
     !!payload ? [path, payload] : path,
     async () => {
-      return request({ url: `${BACKEND_URL}${path}`, payload, method })
+      return request<TQueryFnData>({
+        url: `${BACKEND_URL}${path}`,
+        payload,
+        method,
+      })
     },
     options
   )

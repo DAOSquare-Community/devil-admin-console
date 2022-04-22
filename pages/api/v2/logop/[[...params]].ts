@@ -54,8 +54,9 @@ class LogOpController {
    *         content:
    *           application/json:
    *             schema:
-   *               type: ResultMsg<PageData<LogOp>>
+   *               type: object
    */
+
   @Get('/list')
   public async getLogList(
     @Query('page', DefaultValuePipe(0)) page: number,
