@@ -72,7 +72,7 @@ const AvatarDropdown: FC = () => {
             onClick={() => {
               // mutate({})
               signOut().then(() => {
-                router.replace('/login')
+                router.replace('/')
               })
             }}
           >

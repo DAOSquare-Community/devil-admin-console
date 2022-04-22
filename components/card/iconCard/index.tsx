@@ -1,7 +1,8 @@
-import { Box, ChakraComponent, Flex, Link } from '@chakra-ui/react'
+import { Box, ChakraComponent, Flex } from '@chakra-ui/react'
 import BaseCard from '../baseCard'
 import Image from 'next/image'
 import { FC } from 'react'
+import Link from 'next/link'
 
 type IconCardProps = { icon: string; text: string; title: string }
 
@@ -58,7 +59,7 @@ export const IconCardLink: FC<IconCardProps & { link?: string }> = ({
           </a>
         </Link>
       ) : (
-        <IconCard {...props} />
+        <IconCard {...props} className="click-card" />
       )}
     </div>
   )

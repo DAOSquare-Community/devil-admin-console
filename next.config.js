@@ -23,6 +23,11 @@ const nextConfig = {
         destination: '/admin',
         permanent: true,
       },
+      {
+        source: '/login',
+        destination: '/',
+        permanent: true,
+      },
     ]
   },
   outputFileTracing: false,

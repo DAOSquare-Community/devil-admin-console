@@ -28,7 +28,7 @@ const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
         // Router.replace('/401')
       }
     } else if (status === 'unauthenticated') {
-      Router.replace('/login')
+      Router.replace('/')
     }
   }, [session?.user, status])
 

@@ -5,8 +5,8 @@ import { NextPageWithLayout } from 'types/page'
 const Daos: NextPageWithLayout = () => {
   return (
     <div>
-      <div className="  flex-center  flex flex-col rounded-xl bg-indigo-500 pt-[96px] pb-[158px]  text-white opacity-50">
-        <h1 className="text-[44px] font-bold"> Coming soon!</h1>
+      <div className=" flex-center  mt-20  flex flex-col rounded-xl bg-indigo-500 pt-[96px] pb-[158px]  text-white opacity-50">
+        <h1 className="text-center text-[44px] font-bold"> Coming soon!</h1>
         <div className="my-5 text-center text-[20px] text-white/[0.56]">
           You can submit your DAO here, and fully own it.
           <br /> Follow us to get the news on time.
