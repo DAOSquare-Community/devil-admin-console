@@ -46,7 +46,7 @@ const Daos: NextPageWithLayout = () => {
     refetch,
     isLoading,
   } = useAxiosQuery<{ data: Dao[] }, Dao[]>(
-    '/v2/dao',
+    '/dao',
     { pageSize: 10000 },
     {
       select: (sData) => {

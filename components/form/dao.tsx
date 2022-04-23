@@ -22,6 +22,7 @@ const openApiScheme = yup.object().shape({
 
 const schema = yup.object().shape({
   name: yup.string().required(),
+  daoId: yup.string().required(),
   profile: yup.string(),
   category: yup.string(),
   logo: yup.string().required(),
@@ -58,18 +59,21 @@ const DaoForm: FC<{
     >
       <div className="-mx-3 mb-6 flex flex-wrap">
         <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
+          <CInput name="daoId" control={control} />
+        </div>
+        <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
           <CInput name="name" control={control} />
         </div>
         <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
           <CInput name="profile" control={control} />
         </div>
-        <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-          <CInput name="category" control={control} />
-        </div>
       </div>
       <div className="-mx-3 mb-6 flex flex-wrap">
         <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
           <CInput name="logo" control={control} />
+        </div>
+        <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
+          <CInput name="category" control={control} />
         </div>
       </div>
       <div className=" divider my-10 uppercase">Office URL</div>

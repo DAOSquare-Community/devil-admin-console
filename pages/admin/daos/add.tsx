@@ -19,11 +19,13 @@ const DaoAdd: NextPageWithLayout = () => {
       <DaoForm
         onSubmit={(fData) => {
           mutate({
+            daoId: fData.daoId,
             name: fData.name,
             profile: fData.profile,
             category: fData.category,
             logo: fData.logo,
             open_api: fData.open_api,
+            start_time: new Date(),
             offical_links: [
               { type: 'twitter', link_text: fData.twitter_url ?? '' },
               { type: 'website', link_text: fData.website_url ?? '' },

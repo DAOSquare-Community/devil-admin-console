@@ -12,7 +12,10 @@ const DaoAdd: NextPageWithLayout = () => {
   const { data, isFetching } = useAxiosQuery<{ data: Dao }>(`/v2/dao`, {
     daoId: id,
   })
-  const { mutate } = useAxiosMutation<Partial<Dao>>(
+  const { mutate } = useAxiosMutation<{
+    filter: { _id?: string }
+    update: Partial<Dao>
+  }>(
     '/v2/dao',
     {
       onSuccess: () => {
@@ -32,16 +35,21 @@ const DaoAdd: NextPageWithLayout = () => {
       <DaoForm
         onSubmit={(fData) => {
           mutate({
-            name: fData.name,
-            profile: fData.profile,
-            category: fData.category,
-            logo: fData.logo,
-            open_api: fData.open_api,
-            offical_links: [
-              { type: 'twitter', link_text: fData.twitter_url ?? '' },
-              { type: 'website', link_text: fData.website_url ?? '' },
-              { type: 'discord', link_text: fData.discord_url ?? '' },
-            ],
+            filter: { _id: dao?._id },
+            update: {
+              daoId: fData.daoId,
+              name: fData.name,
+              profile: fData.profile,
+              category: fData.category,
+              logo: fData.logo,
+              open_api: fData.open_api,
+              last_update_at: new Date(),
+              offical_links: [
+                { type: 'twitter', link_text: fData.twitter_url ?? '' },
+                { type: 'website', link_text: fData.website_url ?? '' },
+                { type: 'discord', link_text: fData.discord_url ?? '' },
+              ],
+            },
           })
         }}
         defaultValues={{
