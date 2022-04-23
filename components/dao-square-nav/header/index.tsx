@@ -10,12 +10,15 @@ import { useState } from 'react'
 import './index.module.css'
 import WalletModal from 'components/modal/wallet'
 import useWalletSignIn from 'lib/utils/wallet'
+import { useAxiosQuery } from 'lib/request/use-fetch'
+import { MeInterface } from 'types/user'
+
+const AdminRoute = {
+  name: 'Admin',
+  path: '/admin',
+}
 
 const menuData = [
-  {
-    name: 'Admin',
-    path: '/admin',
-  },
   {
     name: 'Daos',
     path: '/daos',
@@ -39,6 +42,14 @@ function Header() {
       setOpen(false)
     }
   })
+
+  const innerMenuData = [...menuData]
+  const { data } = useAxiosQuery<{ data: MeInterface }>('/v2/user/me', {})
+  const roles = data?.data?.roles
+  const isAdmin = roles?.includes('admin') || roles?.includes('super-admin')
+  if (isAdmin) {
+    innerMenuData.push(AdminRoute)
+  }
   return (
     <>
       <Box
@@ -70,7 +81,7 @@ function Header() {
 
           <div className="flex items-center  gap-5">
             <div className=" hidden items-center gap-5  md:flex">
-              {menuData.map((i) => (
+              {innerMenuData.map((i) => (
                 <Link href={i.path} key={i.name} passHref>
                   <button className="btn btn-ghost btn-sm font-medium capitalize text-ds-900">
                     {i.name}
@@ -114,7 +125,7 @@ function Header() {
         >
           <Image src={close} alt="close" />
         </Box>
-        {menuData.map((d, i) => (
+        {innerMenuData.map((d, i) => (
           <Box
             key={i}
             className={curMenu === i ? 'menu-item active' : 'menu-item'}

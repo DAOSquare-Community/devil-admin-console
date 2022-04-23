@@ -1,5 +1,5 @@
 import Layout from 'components/admin-nav/layout'
-import React, { FC, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { NextPageWithLayout } from 'types/page'
 import Table from 'components/table'
 import { Cell, CellProps, Column, TableInstance } from 'react-table'
@@ -9,30 +9,6 @@ import { Alert } from 'components/modal/cmd-alert'
 import { useRouter } from 'next/router'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
 import { User } from 'models/User'
-
-const AvatarCell: FC<
-  CellProps<never> & { column: { imgAccessor: string; emailAccessor: string } }
-> = ({ value, column, row }) => {
-  // row.original
-
-  return (
-    <div className="flex items-center">
-      {/* <Image
-          width={40}
-          height={40}
-          className="h-10 w-10 rounded-full"
-          src={row.original[column.imgAccessor]}
-          alt=""
-        /> */}
-      <div className="ml-4">
-        <div className="text-sm font-medium text-gray-900">{value}</div>
-        <div className="text-sm text-gray-500">
-          {row.original[column.emailAccessor]}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export function StatusPill({ value }: Cell<Record<string, unknown>, Role[]>) {
   const roles = value.map((v) => {

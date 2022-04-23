@@ -222,12 +222,9 @@ class DaoController {
    */
   @Put()
   public async updateDao(
-    @Body() body: { filter: string; update: string }
+    @Body() body: { filter: object; update: object }
   ): Promise<ResultMsg<boolean>> {
-    const ret = await this._service.updateEntity(
-      JSON.parse(body.filter),
-      JSON.parse(body.update)
-    )
+    const ret = await this._service.updateEntity(body.filter, body.update)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
     }

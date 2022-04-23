@@ -8,14 +8,6 @@ import PermissionLayout from './permission-layout'
 const SignInLayout: FC<{ pathname: string }> = ({ children, pathname }) => {
   const [state, dispatch] = useReducer(meReducer, {} as MeInterface)
   const { data: session, status } = useSession()
-  // useAxiosQuery<MeInterface>(
-  //   '/auth/me',
-  //   {},
-  //   {
-  //     onSuccess: (data) => dispatch({ type: 'update', payload: data }),
-  //     refetchOnMount: true,
-  //   }
-  // )
 
   useEffect(() => {
     if (status === 'authenticated') {

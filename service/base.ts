@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
+import { InternalServerErrorException } from '@storyofams/next-api-decorators'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor, BeAnObject } from '@typegoose/typegoose/lib/types'
 import { MongoError } from 'mongodb'
 import mongoose from 'mongoose'
 import { MsgCode } from 'types/const-enum'
 import { PageData, ResultMsg } from 'types/resultmsg'
+import { ValidationError } from 'yup'
 
 export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
   protected model
@@ -227,22 +229,17 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @returns
    */
   public insertEntity = async (entity: T): Promise<ResultMsg<boolean>> => {
-    const retInsert: ResultMsg<boolean> = {
-      data: false,
-    }
     try {
       await this.model.create(entity)
-      retInsert.data = true
+      return { data: true }
     } catch (err) {
-      const errmsg =
-        err instanceof MongoError && err.code === 11000
-          ? MsgCode.DUPLICATE_KEY
-          : MsgCode.FAILURE
-      //console.log('insertEntity--------')
-      //console.log(err)
-      retInsert.message = errmsg
+      if (ValidationError.isError(err)) {
+        throw new InternalServerErrorException(err.message)
+      } else {
+        throw new InternalServerErrorException(MsgCode.FAILURE)
+      }
     }
-    return retInsert
+    return {}
   }
 
   /**

@@ -119,7 +119,7 @@ a {
 
 
   .dmc-label {
-    @apply label  font-medium uppercase p-0
+    @apply label  font-medium capitalize p-0
   }
 
   .required {

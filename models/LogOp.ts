@@ -6,7 +6,7 @@ import TgooseHelper from 'lib/tgoosehelper'
 const COLLECTION_NAME = 'logop'
 
 export class LogOp extends BaseModel {
-  @prop({ required: true, unique: true })
+  @prop({ required: true })
   public wallet_address!: string
 
   /** api path */

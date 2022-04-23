@@ -1,14 +1,14 @@
 import DaoForm from 'components/form/dao'
 import Layout from 'components/admin-nav/layout'
-import { DaoPostRequest } from 'lib/request/http-api-type'
 import { useAxiosMutation } from 'lib/request/use-fetch'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from 'types/page'
+import { Dao } from 'models/Dao'
 // Define a default UI for filtering
 
 const DaoAdd: NextPageWithLayout = () => {
   const router = useRouter()
-  const { mutate } = useAxiosMutation<DaoPostRequest>('/dao', {
+  const { mutate } = useAxiosMutation<Partial<Dao>>('/v2/dao', {
     onSuccess: () => {
       router.back()
     },
@@ -16,7 +16,24 @@ const DaoAdd: NextPageWithLayout = () => {
 
   return (
     <>
-      <DaoForm onSubmit={mutate} />
+      <DaoForm
+        onSubmit={(fData) => {
+          mutate({
+            daoId: fData.daoId,
+            name: fData.name,
+            profile: fData.profile,
+            category: fData.category,
+            logo: fData.logo,
+            open_api: fData.open_api,
+            start_time: new Date(),
+            offical_links: [
+              { type: 'twitter', link_text: fData.twitter_url ?? '' },
+              { type: 'website', link_text: fData.website_url ?? '' },
+              { type: 'discord', link_text: fData.discord_url ?? '' },
+            ],
+          })
+        }}
+      />
       <button className="btn btn-primary" form={DaoForm.displayName}>
         Submit
       </button>

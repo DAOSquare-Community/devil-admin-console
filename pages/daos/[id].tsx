@@ -47,6 +47,8 @@ import forum from 'public/assets/images/forum1.svg'
 import twitter from 'public/assets/images/twitter1.svg'
 import DaoLayout from 'components/dao-square-nav/layout'
 import { NextPageWithLayout } from 'types/page'
+import { useAxiosQuery } from 'lib/request/use-fetch'
+import { Dao } from 'models/Dao'
 // import Link from 'next/link'
 
 const chartData = [
@@ -264,7 +266,7 @@ const portfolioData = [
   },
 ]
 
-const Landscape: NextPageWithLayout = () => {
+const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
   const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
 
   const [price, setPrice] = useState(0)
@@ -293,6 +295,14 @@ const Landscape: NextPageWithLayout = () => {
       }
     }, 500)
   }, [])
+
+  const { data: dao, isFetching } = useAxiosQuery<{ data: Dao }, Dao>(
+    `/v2/dao`,
+    {
+      daoId: daoId,
+    },
+    { select: (s) => s.data }
+  )
 
   useEffect(() => {
     fetch(
@@ -757,5 +767,8 @@ const Landscape: NextPageWithLayout = () => {
 }
 
 Landscape.getLayout = (page) => <DaoLayout>{page}</DaoLayout>
+Landscape.getInitialProps = (ctx) => {
+  return { key: String(ctx.query.id), daoId: String(ctx.query.id) }
+}
 
 export default Landscape

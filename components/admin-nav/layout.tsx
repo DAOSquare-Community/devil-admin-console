@@ -28,7 +28,7 @@ const Layout: FC<LayoutProps & HeaderBarProps> = ({
 
           <div className="p-6 pb-16">
             <div className="flex flex-col-reverse justify-between gap-6 xl:flex-row">
-              <div className="prose w-full  flex-grow">
+              <div className=" w-full  flex-grow">
                 <Breadcrumbs useDefaultStyle />
                 <HeaderBar title={title} showHeaderBar={showHeaderBar} />
                 {children}

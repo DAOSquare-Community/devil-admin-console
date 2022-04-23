@@ -9,6 +9,7 @@ import { Alert } from 'components/modal/cmd-alert'
 import { Dao } from 'models/Dao'
 import { useAxiosMutation, useAxiosQuery } from 'lib/request/use-fetch'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const AvatarCell: FC<
   CellProps<never> & {
@@ -44,14 +45,18 @@ const Daos: NextPageWithLayout = () => {
     data = [],
     refetch,
     isLoading,
-  } = useAxiosQuery<{ data: Dao[] }, Dao[]>('/dao', undefined, {
-    select: (sData) => {
-      return sData.data
-    },
-  })
+  } = useAxiosQuery<{ data: Dao[] }, Dao[]>(
+    '/dao',
+    { pageSize: 10000 },
+    {
+      select: (sData) => {
+        return sData.data
+      },
+    }
+  )
 
   const { mutate: remove } = useAxiosMutation<unknown>(
-    '/dao',
+    '/v2/dao',
     {
       onSuccess: () => {
         refetch()
@@ -75,23 +80,31 @@ const Daos: NextPageWithLayout = () => {
         // Cell: StatusPill,
       },
       {
+        id: '_action_check2',
+        Header: '',
+        Cell: ({ row }: CellProps<Dao>) => {
+          return (
+            <Link href={`/daos/${row.original.daoId}`}>
+              <a target={'_blank'} className="btn-outline btn btn-primary">
+                link detail
+              </a>
+            </Link>
+          )
+        },
+      },
+      {
         id: '_action_check',
         Header: '',
         Cell: ({ row }: CellProps<Dao>) => {
           return (
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                router.push(`/admin/daos/${row.original.daoId}`)
-              }}
-            >
-              Edit
-            </button>
+            <Link href={`/admin/daos/${row.original.daoId}`}>
+              <a className="btn btn-primary">Edit</a>
+            </Link>
           )
         },
       },
     ],
-    [router]
+    []
   )
 
   const onAdd = useCallback(() => {

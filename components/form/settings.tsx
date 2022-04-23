@@ -1,8 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import CInput from 'components/input/c-input'
-import { gql } from 'graphql-request'
-import { useGqlMutation } from 'lib/request/use-gql-fetch'
-import { FC } from 'react'
+import { FC, FormEventHandler } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
@@ -12,45 +10,18 @@ const schema = yup.object().shape({
 })
 
 type FormData = yup.InferType<typeof schema>
-type SubmitType = (data: FormData) => void
-
-const usrsMutateGql = gql`
-  mutation changeUserPassword($password: String!) {
-    updateUser(password: $password) {
-      id
-    }
-  }
-`
 
 const SettingsForm: FC<{
   id: string
-  onSuccess: () => void
-}> = ({ id, onSuccess }) => {
+  onSubmit?: FormEventHandler<HTMLFormElement>
+}> = ({ id, onSubmit }) => {
   const { handleSubmit, control, setError } = useForm<FormData>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   })
 
-  const { mutate } = useGqlMutation<{ password: string }>(usrsMutateGql, {
-    onSuccess: () => {
-      onSuccess()
-    },
-  })
-
-  const submit: SubmitType = (data) => {
-    if (data.newPassword === data.password) {
-      mutate({ password: data.newPassword })
-    } else {
-      setError(
-        'password',
-        { message: 'Password does not match' },
-        { shouldFocus: true }
-      )
-    }
-  }
-
   return (
-    <form id={id} className="w-full max-w-lg" onSubmit={handleSubmit(submit)}>
+    <form id={id} className="w-full max-w-lg" onSubmit={onSubmit}>
       {/* <div className="mb-6 ">
             <CInput
               name="oldPassword"
