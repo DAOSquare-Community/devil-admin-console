@@ -1,3 +1,4 @@
+import DaoService from 'service/dao'
 import {
   Get,
   Query,
@@ -14,6 +15,7 @@ import OpLogGuard from 'lib/middleawares/oplog'
 import { PageData, ResultMsg } from 'types/resultmsg'
 import MemberService from 'service/member'
 import { Member } from 'models/Member'
+import { Dao } from 'models/Dao'
 
 @NextAuthGuard()
 @OpLogGuard()
@@ -229,6 +231,49 @@ class MemberController {
     )
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
+    }
+    return ret
+  }
+
+  /**
+   * @swagger
+   * /api/v2/member/daos:
+   *   get:
+   *     tags:
+   *       - member
+   *     summary: get member belong to daos by member addr
+   *     parameters:
+   *            - name: addr
+   *              required: true
+   *              in: query
+   *              type: string
+   *
+   *     responses:
+   *       200:
+   *         description: belong to daos
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<Dao[] | null>
+   */
+  @Get('/daos')
+  public async getDaosByMemberAddr(
+    @Query('addr') addr: string
+  ): Promise<ResultMsg<Dao[] | null>> {
+    const ret: ResultMsg<Dao[] | null> = {}
+    const member = await this._service.getEntity({ wallet_address: addr })
+    if (member.message) throw new InternalServerErrorException(member.message)
+    if (member.data) {
+      const daoIds: string[] = member.data.daos
+      let daos: Dao[] = []
+      const retDaos = await new DaoService().getEntities(
+        { daoId: { $in: daoIds } },
+        { open_api: 0 }
+      )
+      if (retDaos.message)
+        throw new InternalServerErrorException(retDaos.message)
+      if (retDaos.data) daos = retDaos.data
+      ret.data = daos
     }
     return ret
   }

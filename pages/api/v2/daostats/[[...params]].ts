@@ -8,6 +8,7 @@ import {
 import { DaoStats } from 'models/DaoStats'
 import DaoStatsService from 'service/daostats'
 import { MsgCode } from 'types/const-enum'
+import { DaoStatsHistory, HistoryData } from 'types/models/daostats'
 import { PageData, ResultMsg } from 'types/resultmsg'
 
 class DaoStatsController {
@@ -110,6 +111,56 @@ class DaoStatsController {
       throw new InternalServerErrorException(error)
     }
     return stats
+  }
+
+  /**
+   * @swagger
+   * /api/v2/daostats/history:
+   *   get:
+   *     tags:
+   *       - daostats
+   *     summary: get daoStats daos,members,treasury history data
+   *     parameters:
+   *            - name: count
+   *              required: false
+   *              in: query
+   *              type: number
+   *
+   *     responses:
+   *       200:
+   *         description: daoStats daos,members,treasury history data
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: ResultMsg<DaoStatsHistory | null>
+   */
+  @Get('/history')
+  public async getDaoStatsHistory(
+    @Query('count', DefaultValuePipe(30)) count: number
+  ): Promise<ResultMsg<DaoStatsHistory | null>> {
+    const dsh: ResultMsg<DaoStatsHistory | null> = {
+      message: '',
+      data: { data: [] },
+    }
+
+    const ret = await this._service.getList(1, count, {}, { create_at: -1 })
+
+    if (ret.message) {
+      dsh.message = ret.message
+      dsh.data = null
+      //throw new InternalServerErrorException(ret.message)
+    } else {
+      ret.data?.items.forEach((i) => {
+        const hd: HistoryData = {
+          daos: i.daos,
+          members: i.members,
+          treasury: i.treasury,
+          create_at: i.create_at,
+        }
+        dsh.data?.data.push(hd)
+      })
+    }
+    return dsh
   }
 }
 
