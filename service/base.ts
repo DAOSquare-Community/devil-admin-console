@@ -113,11 +113,12 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @returns
    */
   public getEntities = async (
-    filter: object
+    filter: object,
+    column: object = {}
   ): Promise<ResultMsg<T[] | null>> => {
     const ret: ResultMsg<T[] | null> = {}
     try {
-      const entity = await this.model.find<T>(filter)
+      const entity = await this.model.find<T>(filter, column)
       if (!!entity) ret.data = entity
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
