@@ -11,7 +11,7 @@ import {
 } from '@storyofams/next-api-decorators'
 import NextAuthGuard from 'lib/middleawares/auth'
 import OpLogGuard from 'lib/middleawares/oplog'
-import { PageData, ResultMsg } from 'types/resultmsg'
+import { ResultMsg } from 'types/resultmsg'
 import MemberService from 'service/member'
 import { Member } from 'models/Member'
 
@@ -65,19 +65,21 @@ class MemberController {
   public async getMemberList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
-    @Query('queryParams') queryParams?: object,
-    @Query('sortParams') sortParams?: object
-  ): Promise<ResultMsg<PageData<Member>>> {
-    const ret = await this._service.getList(
-      page,
-      pageSize,
-      queryParams ?? {},
-      sortParams ?? {}
-    )
-    if (ret.message) {
-      throw new InternalServerErrorException(ret.message)
+    @Query('filters') filters?: string,
+    @Query('sortBy') sortBy?: string
+  ) {
+    try {
+      return await this._service.getList(
+        page,
+        pageSize,
+        filters ? JSON.parse(filters) : {},
+        sortBy ? JSON.parse(sortBy) : {}
+      )
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new InternalServerErrorException(error.message)
+      }
     }
-    return ret
   }
 
   /**
@@ -221,12 +223,9 @@ class MemberController {
    */
   @Put()
   public async updateMember(
-    @Body() body: { filter: string; update: string }
+    @Body() body: { filter: object; update: object }
   ): Promise<ResultMsg<boolean>> {
-    const ret = await this._service.updateEntity(
-      JSON.parse(body.filter),
-      JSON.parse(body.update)
-    )
+    const ret = await this._service.updateEntity(body.filter, body.update)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
     }

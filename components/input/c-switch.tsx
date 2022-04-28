@@ -5,7 +5,6 @@ import {
 } from 'react'
 import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import classNames from 'classnames'
-import dayjs from 'dayjs'
 type CInputType<T extends FieldValues> = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
@@ -18,11 +17,11 @@ type CInputType<T extends FieldValues> = DetailedHTMLProps<
   labelClassName?: string
 }
 
-const CInput = <T extends FieldValues = FieldValues>({
+const CSwitch = <T extends FieldValues = FieldValues>({
   label,
   name,
   control,
-  type = 'text',
+  type = 'checkbox',
   disableLabel = false,
   disbaleError = false,
   className,
@@ -47,18 +46,14 @@ const CInput = <T extends FieldValues = FieldValues>({
           return (
             <>
               <input
-                className={classNames('dmc-form-input', className, {
+                className={classNames('toggle', className, {
                   'border-red-500': error?.message,
                 })}
                 id={name}
                 type={type}
                 {...field}
                 {...props}
-                value={
-                  type === 'datetime-local'
-                    ? dayjs(field.value).format('YYYY-MM-DDTHH:mm')
-                    : field.value ?? ''
-                }
+                checked={field.value ?? false}
               />
               {!disbaleError && !!error?.message && (
                 <p className="mt-2 text-xs lowercase italic text-red-500 first-letter:uppercase">
@@ -73,4 +68,4 @@ const CInput = <T extends FieldValues = FieldValues>({
   )
 }
 
-export default CInput
+export default CSwitch

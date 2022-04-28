@@ -37,14 +37,19 @@ function Header() {
   const [isShowMenu, setIsShowMenu] = useState(false)
   const [curMenu, setCurMenu] = useState(-1)
   const [isOpen, setOpen] = useState(false)
+  const { data, refetch } = useAxiosQuery<{ data: MeInterface }>(
+    '/v2/user/me',
+    {}
+  )
   const { connectWallet } = useWalletSignIn((res) => {
     if (res) {
       setOpen(false)
+      refetch()
     }
   })
 
   const innerMenuData = [...menuData]
-  const { data } = useAxiosQuery<{ data: MeInterface }>('/v2/user/me', {})
+
   const roles = data?.data?.roles
   const isAdmin = roles?.includes('admin') || roles?.includes('super-admin')
   if (isAdmin) {

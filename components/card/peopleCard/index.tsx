@@ -13,11 +13,10 @@ const PeopleCard: FC<PeopleCardPorps> = ({
   title,
   name,
   className,
-  ...other
+  // ...other
 }) => {
   return (
     <div
-      {...other}
       className={` flex h-[168px] w-full  flex-col items-center rounded-xl bg-white/20 ${
         className ? className : ''
       }`}

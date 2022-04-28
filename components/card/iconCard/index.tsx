@@ -15,8 +15,14 @@ const IconCard: ChakraComponent<'div', IconCardProps> = ({
   return (
     <BaseCard {...props}>
       <Flex minW="200px" lineHeight="normal">
-        <div className="mr-4">
-          <Image src={icon} width={'60px'} height={'60px'} alt="image" />
+        <div className=" mr-4 ">
+          <Image
+            src={icon}
+            width={'60px'}
+            height={'60px'}
+            alt="image"
+            className="rounded-full"
+          />
         </div>
         <Box>
           <Box

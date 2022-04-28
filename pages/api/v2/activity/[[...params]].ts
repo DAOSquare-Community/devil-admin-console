@@ -12,30 +12,30 @@ import {
 import NextAuthGuard from 'lib/middleawares/auth'
 import OpLogGuard from 'lib/middleawares/oplog'
 import { ResultMsg } from 'types/resultmsg'
-import DaoService from 'service/dao'
-import { Dao } from 'models/Dao'
+import { Activity } from 'models/activity'
+import ActivityService from 'service/activity'
 
 @NextAuthGuard()
 @OpLogGuard()
-class DaoController {
-  private _service = new DaoService()
+class ActivityController {
+  private _service = new ActivityService()
 
   /**
-   * get dao list
+   * get activity list
    * @param page
    * @param pageSize
-   * @param queryParams
-   * @param sortParams
+   * @param filters
+   * @param sortBy
    * @returns
    */
 
   /**
    * @swagger
-   * /api/v2/dao/list:
+   * /api/v2/activity/list:
    *   get:
    *     tags:
-   *       - dao
-   *     summary: get dao list
+   *       - activity
+   *     summary: get activity list
    *     parameters:
    *            - name: page
    *              required: false
@@ -45,25 +45,25 @@ class DaoController {
    *              required: false
    *              in: query
    *              type: number
-   *            - name: queryParams
+   *            - name: filters
    *              required: false
    *              in: query
    *              type: object
-   *            - name: sortParams
+   *            - name: sortBy
    *              required: false
    *              in: query
    *              type: object
    *
    *     responses:
    *       200:
-   *         description: dao list
+   *         description: activity list
    *         content:
    *           application/json:
    *             schema:
-   *               type: ResultMsg<PageData<Dao>>
+   *               type: ResultMsg<PageData<Activity>>
    */
   @Get('/list')
-  public async getDaoList(
+  public async getActivityList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
     @Query('filters') filters?: string,
@@ -84,53 +84,54 @@ class DaoController {
   }
 
   /**
-   * get dao by daoid
-   * @Query daoid
+   * get activity by id
+   * @Query id
    * @returns
    */
   /**
    * @swagger
-   * /api/v2/dao:
+   * /api/v2/activity:
    *   get:
    *     tags:
-   *       - dao
-   *     summary: get dao by daoid
+   *       - activity
+   *     summary: get activity by daoid
    *     parameters:
-   *            - name: daoId
+   *            - name: id
    *              required: true
    *              in: query
    *              type: string
    *
    *     responses:
    *       200:
-   *         description: dao object
+   *         description: activity object
    *         content:
    *           application/json:
    *             schema:
-   *               type: ResultMsg<Dao | null>
+   *               type: ResultMsg<Activity | null>
    */
   @Get()
-  public async getDaoByDaoId(
-    @Query('daoId') daoId: string
-  ): Promise<ResultMsg<Dao | null>> {
-    const dao = await this._service.getEntity({ daoId })
-    if (dao.message) throw new InternalServerErrorException(dao.message)
-    return dao
+  public async getActivityById(
+    @Query('id') id: string
+  ): Promise<ResultMsg<Activity | null>> {
+    const activity = await this._service.getEntity({ _id: id })
+    if (activity.message)
+      throw new InternalServerErrorException(activity.message)
+    return activity
   }
 
   /**
-   * delete dao by filter
+   * delete activity by filter
    * @param filter
    * @returns
    */
 
   /**
    * @swagger
-   * /api/v2/dao:
+   * /api/v2/activity:
    *   delete:
    *     tags:
-   *       - dao
-   *     summary: delete dao by filter
+   *       - activity
+   *     summary: delete activity by filter
    *     parameters:
    *            - name: filter
    *              required: true
@@ -139,36 +140,36 @@ class DaoController {
    *
    *     responses:
    *       200:
-   *         description: delete dao
+   *         description: delete activity
    *         content:
    *           application/json:
    *             schema:
    *               type: ResultMsg<boolean>
    */
   @Delete()
-  public async deleteDaoByFilter(
-    @Body() body: { filter: string }
+  public async deleteUsersByIds(
+    @Body() body: { ids: string[] }
   ): Promise<ResultMsg<boolean>> {
-    const del = await this._service.deleteEntity(JSON.parse(body.filter))
-    if (del.message) {
-      throw new InternalServerErrorException(del.message)
+    const delUsers = await this._service.deleteEntityByIds(body.ids)
+    if (delUsers.message) {
+      throw new InternalServerErrorException(delUsers.message)
     }
-    return del
+    return delUsers
   }
 
   /**
-   * insert dao
-   * @param dao
+   * insert activity
+   * @param activity
    * @returns
    */
 
   /**
    * @swagger
-   * /api/v2/dao:
+   * /api/v2/activity:
    *   post:
    *     tags:
-   *       - dao
-   *     summary: insert a dao
+   *       - activity
+   *     summary: insert a activity
    *     parameters:
    *            - name: body
    *              required: true
@@ -177,16 +178,16 @@ class DaoController {
    *
    *     responses:
    *       200:
-   *         description: insert a dao
+   *         description: insert a activity
    *         content:
    *           application/json:
    *             schema:
    *               type: ResultMsg<boolean>
    */
   @Post()
-  public async insertDao(@Body() body: object): Promise<ResultMsg<boolean>> {
-    const dao = new Dao()
-    const d = Object.assign(dao, body)
+  public async insertActity(@Body() body: object): Promise<ResultMsg<boolean>> {
+    const activity = new Activity()
+    const d = Object.assign(activity, body)
     const ret = await this._service.insertEntity(d)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
@@ -195,7 +196,7 @@ class DaoController {
   }
 
   /**
-   * update dao
+   * update activity
    * @param filter
    * @param update
    * @returns
@@ -203,11 +204,11 @@ class DaoController {
 
   /**
    * @swagger
-   * /api/v2/dao:
+   * /api/v2/activity:
    *   put:
    *     tags:
-   *       - dao
-   *     summary: update dao
+   *       - activity
+   *     summary: update activity
    *     parameters:
    *            - name: body
    *              required: true
@@ -216,14 +217,14 @@ class DaoController {
    *
    *     responses:
    *       200:
-   *         description: update dao
+   *         description: update activity
    *         content:
    *           application/json:
    *             schema:
    *               type: ResultMsg<boolean>
    */
   @Put()
-  public async updateDao(
+  public async updateActivity(
     @Body() body: { filter: object; update: object }
   ): Promise<ResultMsg<boolean>> {
     const ret = await this._service.updateEntity(body.filter, body.update)
@@ -234,4 +235,4 @@ class DaoController {
   }
 }
 
-export default createHandler(DaoController)
+export default createHandler(ActivityController)

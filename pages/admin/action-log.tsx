@@ -1,6 +1,6 @@
 import Layout from 'components/admin-nav/layout'
 import React, { useState } from 'react'
-import { NextPageWithLayout, PagenationType } from 'types/page'
+import { NextPageWithLayout, PagenationObjectType } from 'types/page'
 import Table from 'components/table'
 import { Column } from 'react-table'
 import { DateColumnFilter, InputColumnFilter } from 'components/table/filter'
@@ -11,12 +11,13 @@ import safeJsonParse from 'lib/utils/safe-json-parse'
 import JsonView from 'components/the-third-party/json-view'
 import { useAxiosQuery } from 'lib/request/use-fetch'
 import { PageData } from 'types/resultmsg'
+import mapPageDataChange from 'lib/utils/page'
 // const DynamicReactJson = dynamic(import('react-json-view'), { ssr: false })
 
 // const Tabel
 
 const ActionLog: NextPageWithLayout = () => {
-  const [state, setState] = useState<PagenationType>({
+  const [state, setState] = useState<PagenationObjectType>({
     page: 0,
     pageSize: 0,
   })
@@ -30,15 +31,13 @@ const ActionLog: NextPageWithLayout = () => {
     '/v2/logop/list',
     {
       ...state,
-      page: `${state.page}`,
-      pageSize: `${state.pageSize}`,
     },
     {
       select: (sData) => {
         return sData.data
       },
-      keepPreviousData: true,
-      staleTime: Infinity,
+      // keepPreviousData: true,
+      // staleTime: Infinity,
       enabled: state.pageSize > 0,
     }
   )
@@ -49,12 +48,13 @@ const ActionLog: NextPageWithLayout = () => {
       {
         Header: 'Path',
         accessor: 'path',
+        disableSortBy: true,
         Filter: InputColumnFilter,
       },
       {
         Header: 'ID',
+        disableSortBy: true,
         accessor: '_id',
-        Filter: InputColumnFilter,
       },
       {
         Header: 'Params',
@@ -79,18 +79,13 @@ const ActionLog: NextPageWithLayout = () => {
           return txt
         },
       },
-      {
-        Header: 'optime',
-        accessor: 'optime',
-        Cell: ({ value }) => {
-          return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
-        },
-        Filter: DateColumnFilter,
-      },
+
       {
         Header: 'CreateAt',
         accessor: 'create_at',
+        sortDescFirst: true,
         Filter: DateColumnFilter,
+        disableSortBy: false,
         Cell: ({ value }) => {
           return dayjs(value).format('YYYY-MM-DD HH:mm:ss')
         },
@@ -121,33 +116,7 @@ const ActionLog: NextPageWithLayout = () => {
             },
           ],
         }}
-        onStateChange={({
-          pageIndex,
-          pageSize,
-          hiddenColumns,
-          sortBy,
-          filters,
-        }) => {
-          setState({ pageSize, page: pageIndex })
-          //   const nSortBy = sortBy.filter((s) => !hiddenColumns?.includes(s.id))
-          //   const nFilters = filters
-          //     .filter((s) => !hiddenColumns?.includes(s.id))
-          //     .map((e) => {
-          //       const n = { ...e }
-          //       if (n.value?.label) {
-          //         n.value = n.value?.value
-          //       }
-          //       n.value =
-          //         typeof n.value !== 'string' ? JSON.stringify(n.value) : n.value
-          //       return n
-          //     })
-          //   setState({
-          //     page: pageIndex + 1,
-          //     perPage: pageSize,
-          //     sortBy: nSortBy,
-          //     filters: nFilters,
-          //   })
-        }}
+        onStateChange={mapPageDataChange(setState)}
       />
     </div>
   )

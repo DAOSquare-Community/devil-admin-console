@@ -116,6 +116,9 @@ export class Dao extends BaseModel {
 
   @prop({ type: Schema.Types.Mixed, _id: false, default: null })
   public open_api!: unknown
+
+  @prop({ required: true, default: false })
+  public is_hot!: boolean
 }
 
 // use TgooseHelper class , not Typegoose

@@ -9,7 +9,7 @@ type TaskCardProps = ChakraComponent<
     title: string
     text: string
     color: string
-    data: { text: string; title: string }[]
+    data: { text: string; title?: string | number }[]
     link?: string
   }
 >
@@ -54,7 +54,7 @@ const TaskCard: TaskCardProps = ({ icon, title, text, color, data, link }) => {
               fontWeight={900}
               color="#414152"
             >
-              {d.title}
+              {d.title ?? 0}
             </Box>
             <Box
               fontSize={{ base: '12px', lg: '14px' }}

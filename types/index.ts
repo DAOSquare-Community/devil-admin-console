@@ -7,5 +7,3 @@ export interface JSONType {
     | JSONType
     | JSONType[]
 }
-
-const a: object = {}

@@ -111,7 +111,7 @@ function ComboTable<T extends Record<string, any>>(
     <>
       <div className=" flex flex-1  flex-col-reverse  sm:justify-end lg:flex-row lg:justify-between">
         <FilterBar {...instance} disableGlobalFilter={disableGlobalFilter} />
-        <div className="mb-2 flex gap-x-2">
+        <div className="mb-2 flex items-center gap-x-2">
           <ColumnHidePage {...instance} />
           <ToolBar instance={instance} {...{ onAdd, onDelete }} />
         </div>

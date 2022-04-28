@@ -6,11 +6,27 @@ export type NextPageWithLayout<P = unknown> = NextPage<P> & {
 }
 
 export type PermissionPageName = 'accounts'
-export type MenuName = 'dashboard' | 'accounts' | 'daos' | 'action-log'
+export type MenuName =
+  | 'dashboard'
+  | 'accounts'
+  | 'daos'
+  | 'action-log'
+  | 'members'
+  | 'activity'
 
 export type PagenationType = {
   page: number
   pageSize: number
-  filters?: { id: string; value?: string }[]
+  filters?: { id: string; value?: string | { from: string; to: string } }[]
   sortBy?: { id: string; desc?: boolean }[]
+}
+
+export type PagenationObjectType = {
+  page: number
+  pageSize: number
+  filters?: Record<
+    string,
+    { $regex: string; $options: string } | { $gte?: Date; $lte?: Date }
+  >
+  sortBy?: Record<string, 'desc' | 'asc'>
 }

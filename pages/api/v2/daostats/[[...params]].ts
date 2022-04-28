@@ -8,7 +8,8 @@ import {
 import { DaoStats } from 'models/DaoStats'
 import DaoStatsService from 'service/daostats'
 import { MsgCode } from 'types/const-enum'
-import { PageData, ResultMsg } from 'types/resultmsg'
+import { DaoStatsRecord } from 'types/daoStats'
+import { ResultMsg } from 'types/resultmsg'
 
 class DaoStatsController {
   private _service = new DaoStatsService()
@@ -59,19 +60,41 @@ class DaoStatsController {
   public async getDaoStatsList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
-    @Query('queryParams') queryParams?: object,
-    @Query('sortParams') sortParams?: object
-  ): Promise<ResultMsg<PageData<DaoStats>>> {
-    const ret = await this._service.getList(
-      page,
-      pageSize,
-      queryParams ?? {},
-      sortParams ?? {}
-    )
-    if (ret.message) {
-      throw new InternalServerErrorException(ret.message)
+    @Query('filters') filters?: string,
+    @Query('sortBy') sortBy?: string
+  ) {
+    try {
+      return await this._service.getList(
+        page,
+        pageSize,
+        filters ? JSON.parse(filters) : {},
+        sortBy ? JSON.parse(sortBy) : {}
+      )
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new InternalServerErrorException(error.message)
+      }
     }
-    return ret
+  }
+
+  @Get('/record')
+  public async getDaoStatsReCord() {
+    const ret = await this._service.getList(0, 100, {}, {})
+    const daosRecords: DaoStatsRecord[] = []
+    const membersRecords: DaoStatsRecord[] = []
+    const treasuryRecords: DaoStatsRecord[] = []
+    ret.data?.items?.forEach(({ daos, create_at, members, treasury }) => {
+      daosRecords.push({ date: create_at, value: daos })
+      membersRecords.push({ date: create_at, value: members })
+      treasuryRecords.push({ date: create_at, value: treasury })
+    })
+    return {
+      data: {
+        daosRecords,
+        membersRecords,
+        treasuryRecords,
+      },
+    }
   }
 
   /**
