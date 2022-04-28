@@ -2,40 +2,11 @@ import DaoLayout from 'components/dao-square-nav/layout'
 import DSIuput from 'components/input/ds-input'
 import { NextPageWithLayout } from 'types/page'
 // import Link from 'next/link'
-import incubator from 'public/assets/images/incubator.svg'
-import dkp from 'public/assets/images/dkp.svg'
-import daoscape from 'public/assets/images/daoscape.svg'
-import nft4ever from 'public/assets/images/nft4ever.svg'
 import { IconCardLink } from 'components/card/iconCard'
 import { useState } from 'react'
 import { useAxiosQuery } from 'lib/request/use-fetch'
 import { Dao } from 'models/Dao'
 import Link from 'next/link'
-
-const productsData = [
-  {
-    icon: incubator,
-    title: 'Incubator',
-    text: 'Infrastructure',
-  },
-  {
-    icon: dkp,
-    title: 'DKP',
-    text: 'Community Operation',
-    link: '/daos/123',
-  },
-  {
-    icon: daoscape,
-    title: 'DAOscape',
-    text: 'Treasury',
-  },
-  {
-    icon: nft4ever,
-    title: 'NFT4ever',
-    text: 'Equity Marketplace',
-    link: '',
-  },
-]
 
 const useDaoQuery = (category: string) => {
   return useAxiosQuery<{ data: { items: Dao[] } }, Dao[]>(
@@ -118,7 +89,7 @@ const People: NextPageWithLayout = () => {
                       title={item.name}
                       icon={item.logo ?? ''}
                       text={item.category}
-                      link={`/daos/${item._id}`}
+                      link={`/daos/${item.daoId}`}
                     />
                   )
                 })}

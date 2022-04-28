@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Box, Container, Flex, Text, useMediaQuery } from '@chakra-ui/react'
 import {
   AreaChart,
@@ -16,18 +16,7 @@ import BaseCard from 'components/card/baseCard'
 import IconCard from 'components/card/iconCard'
 import TaskCard from 'components/card/taskCard'
 import TitleCard from 'components/card/titleCard'
-
-import incubator from 'public/assets/images/incubator.svg'
-import dkp from 'public/assets/images/dkp.svg'
-import daoscape from 'public/assets/images/daoscape.svg'
-import nft4ever from 'public/assets/images/nft4ever.svg'
-
-import dao2 from 'public/assets/images/dao2.svg'
-import devil from 'public/assets/images/devil.svg'
-import cafeteria from 'public/assets/images/cafeteria.svg'
-import matrix from 'public/assets/images/matrix.svg'
-import whaledao from 'public/assets/images/whaledao.svg'
-
+import { IconCardLink } from 'components/card/iconCard'
 import daohaus from 'public/assets/images/daohaus.svg'
 import ceramic from 'public/assets/images/ceramic.svg'
 import brightid from 'public/assets/images/brightid.svg'
@@ -49,7 +38,22 @@ import DaoLayout from 'components/dao-square-nav/layout'
 import { NextPageWithLayout } from 'types/page'
 import { useAxiosQuery } from 'lib/request/use-fetch'
 import { Dao } from 'models/Dao'
+import { AggregateData } from 'types/models/aggregate'
+import { GovernanceData } from 'service/governance'
+import { DeworkStatsData } from 'types/models/dework'
 // import Link from 'next/link'
+function nFormatter(num: number): string {
+  if (num >= 1000000000) {
+    return `${(num / 1000000000).toFixed(1).replace(/\.0$/, '')}G`
+  }
+  if (num >= 1000000) {
+    return `${(num / 1000000).toFixed(1).replace(/\.0$/, '')}M`
+  }
+  // if (num >= 1000) {
+  //   return `${(num / 1000).toFixed(1).replace(/\.0$/, '')}K`
+  // }
+  return num.toLocaleString()
+}
 
 const chartData = [
   {
@@ -90,22 +94,22 @@ const chartData1 = [
 const data = [
   {
     icon: discord2,
-    title: '13,100+',
+    title: '0',
     text: 'Members',
   },
   {
     icon: twitter2,
-    title: '13,000+',
+    title: '0',
     text: 'Follower',
   },
   {
     icon: home,
-    title: '$84,624,068', // Math.floor(96167102 * 0.879968526705165),https://etherscan.io/token/0xbd9908b0cdd50386f92efcc8e1d71766c2782df0#balances https://gnosis-safe.io/app/eth:0xf383975B49d2130e3BA0Df9e10dE5FF2Dd7A215a/balances
+    title: '$0', // Math.floor(96167102 * 0.879968526705165),https://etherscan.io/token/0xbd9908b0cdd50386f92efcc8e1d71766c2782df0#balances https://gnosis-safe.io/app/eth:0xf383975B49d2130e3BA0Df9e10dE5FF2Dd7A215a/balances
     text: 'Treasury',
   },
   {
     icon: daosquare2,
-    title: '$0.88',
+    title: '$0',
     text: 'Token Price',
   },
 ]
@@ -116,26 +120,26 @@ const taskData = [
     title: 'Task',
     text: 'Tasks in Dework',
     color: 'rgba(255, 152, 211, 0.2)',
-    link: 'https://app.dework.xyz/o/daosquare-5T2WcpGDJ3m6cOiG5ItJeL',
+    link: 'https://app.dework.xyz/o',
     data: [
       {
-        title: '0',
-        text: 'Backlog',
+        key: 'suggestion',
+        text: 'Suggestion',
       },
       {
-        title: '0',
-        text: 'To Do',
+        key: 'todo',
+        text: 'Todo',
       },
       {
-        title: '0',
+        key: 'progress',
         text: 'In Progress',
       },
       {
-        title: '0',
+        key: 'inreview',
         text: 'In Review',
       },
       {
-        title: '0',
+        key: 'done',
         text: 'Done',
       },
     ],
@@ -147,83 +151,30 @@ const taskData = [
     color: 'rgba(255, 214, 107, 0.2)',
     data: [
       {
-        title: '0',
+        key: 'unsponsored',
         text: 'Unsponsored',
       },
       {
-        title: '0',
-        text: 'Execution',
-      },
-      {
-        title: '0',
-        text: 'Grace',
-      },
-      {
-        title: '0',
-        text: 'Process',
-      },
-      {
-        title: '0',
+        key: 'voting',
         text: 'Voting',
       },
       {
-        title: '0',
+        key: 'grace',
+        text: 'Grace',
+      },
+      {
+        key: 'process',
+        text: 'Process',
+      },
+      {
+        key: 'excution',
+        text: 'Excution',
+      },
+      {
+        key: 'passed',
         text: 'Passed',
       },
     ],
-  },
-]
-
-const productsData = [
-  {
-    icon: incubator,
-    title: 'Incubator',
-    text: 'Infrastructure',
-  },
-  {
-    icon: dkp,
-    title: 'DKP',
-    text: 'Community Operation',
-    link: 'https://www.dkp.land',
-  },
-  {
-    icon: daoscape,
-    title: 'DAOscape',
-    text: 'Treasury',
-  },
-  {
-    icon: nft4ever,
-    title: 'NFT4ever',
-    text: 'Equity Marketplace',
-    link: '',
-  },
-]
-
-const guildsData = [
-  {
-    icon: dao2,
-    title: 'dao2',
-    text: 'Media',
-  },
-  {
-    icon: devil,
-    title: 'DevilGuild',
-    text: 'Developer',
-  },
-  {
-    icon: cafeteria,
-    title: 'Cafeteria',
-    text: 'Governance',
-  },
-  {
-    icon: matrix,
-    title: 'Matrix',
-    text: 'Development',
-  },
-  {
-    icon: whaledao,
-    title: 'WhaleDAO',
-    text: 'Marketing',
   },
 ]
 
@@ -269,15 +220,7 @@ const portfolioData = [
 const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
   const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
 
-  const [price, setPrice] = useState(0)
-
-  const [chartData0, setChartData0] = useState([])
-  const [deworkData, setDeworkData] = useState({
-    'TO DO': 0,
-    'In Progress': 0,
-    'In Review': 0,
-  })
-  const [eventsData, setEventsData] = useState([])
+  // const [eventsData, setEventsData] = useState([])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -296,7 +239,7 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
     }, 500)
   }, [])
 
-  const { data: dao, isFetching } = useAxiosQuery<{ data: Dao }, Dao>(
+  const { data: dao } = useAxiosQuery<{ data: Dao }, Dao>(
     `/v2/dao`,
     {
       daoId: daoId,
@@ -304,83 +247,54 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
     { select: (s) => s.data }
   )
 
-  useEffect(() => {
-    fetch(
-      `${process.env.DEVIL_CONSOLE_BACKEND_URL}/coingecko/marketchart/daosquare`
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        const data = res.prices.reverse()
-        setPrice(data[0][1])
-        const graphData = data
-          .slice(0, 7)
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((d: any) => ({ date: d[0], value: d[1] }))
-        setChartData0(graphData)
-      })
+  const { data: gData } = useAxiosQuery<{ data: { items: Dao[] } }>(
+    '/v2/dao/list',
+    {
+      pageSize: 1000,
+      filters: { category: dao?.category, daoId: { $ne: daoId } },
+    },
+    {
+      enabled: !!dao?.category.length,
+    }
+  )
+  const guids = gData?.data.items ?? []
 
-    fetch('https://api.dework.xyz/graphql', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        query: `
-                  query DAOSquareDashboardQuery($organizationId:UUID!) {
-                    organization:getOrganization(id:$organizationId) {
-                      tasks {
-                        id
-                        status
-                      }
-                    }
-                  }
-              `,
-        variables: {
-          organizationId: 'c174e43f-1ac8-432a-954f-43647236f6ff',
-        },
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const tasks = data.data.organization.tasks
-        setDeworkData({
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
-          Suggestion: tasks.filter(
-            (d: { status: string }) => d.status === 'BACKLOG'
-          ).length,
-          'TO DO': tasks.filter((d: { status: string }) => d.status === 'TODO')
-            .length,
-          'In Progress': tasks.filter(
-            (d: { status: string }) => d.status === 'IN_PROGRESS'
-          ).length,
-          'In Review': tasks.filter(
-            (d: { status: string }) => d.status === 'IN_REVIEW'
-          ).length,
-          Done: tasks.filter((d: { status: string }) => d.status === 'DONE')
-            .length,
-        })
-      })
+  const { data: aggregate } = useAxiosQuery<
+    { data: AggregateData },
+    AggregateData
+  >(
+    `/v2/aggregate`,
+    {
+      daoId: daoId,
+    },
+    { select: (s) => s.data }
+  )
+  data.forEach((i) => {
+    if (i.text === 'Members') {
+      i.title = nFormatter(aggregate?.governance?.members ?? 0)
+    } else if (i.text === 'Follower') {
+      i.title = nFormatter(aggregate?.twitter_follower?.twitter_followers ?? 0)
+    } else if (i.text === 'Treasury') {
+      i.title = nFormatter(aggregate?.treasury?.total_amount ?? 0)
+    } else if (i.text === 'Token Price') {
+      i.title = nFormatter(aggregate?.coingecko?.coin_data?.tokenprice ?? 0)
+    }
+  })
 
-    getEventsData()
-  }, [])
+  const chartData0 = aggregate?.coingecko?.coin_market?.total_volumes
+    .slice(0, 7)
+    .map((d) => ({ date: d[0], value: d[1] }))
 
-  async function getEventsData() {
-    const response = await fetch(
-      `${process.env.DEVIL_CONSOLE_BACKEND_URL}/sesh/daoquare`
-    )
-    const data = await response.json()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = data.map((d: any, i: number) => {
-      const start = new Date(Date.parse(d.start_time))
-      const end = new Date(Date.parse(d.end_time))
-      return {
-        id: i,
-        name: d.event_name,
-        start,
-        end,
-      }
-    })
-    setEventsData(result)
-  }
+  const eventsData = aggregate?.sesh?.map((d, i) => {
+    const start = new Date(Date.parse(d.start_time))
+    const end = new Date(Date.parse(d.end_time))
+    return {
+      id: i,
+      name: d.event_name,
+      start,
+      end,
+    }
+  })
 
   return (
     <Box>
@@ -397,24 +311,28 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
           className="article"
         >
           <Box w="20%">
-            <Image src={daosquare} width="140px" height={'140px'} alt="image" />
+            <Image
+              src={dao?.logo ?? daosquare}
+              width="140px"
+              height={'140px'}
+              alt="image"
+              className=" rounded-full"
+            />
           </Box>
           <Box w="80%">
             <Box
               fontSize={{ base: '30px', md: '38px', lg: '48px' }}
               textAlign={{ base: 'center', md: 'left' }}
             >
-              DAOSquare
+              {dao?.name}
             </Box>
-            <Text>
-              Born in MetaCartel, DAOSquare is an incubator for web3. It’s based
-              on the concept of Web3 and runs on the Ethereum. It links resource
-              via the thought of DAO to support any valuable innovations of this
-              new era.
-            </Text>
+            <Text>{dao?.profile}</Text>
             <Flex justifyContent={{ base: 'center', md: 'left' }} mt={8}>
               <a
-                href="https://discord.com/invite/daosquare"
+                href={
+                  dao?.offical_links.find((i) => i.type === 'discord')
+                    ?.link_text
+                }
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -428,7 +346,10 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
                 </div>
               </a>
               <a
-                href="https://twitter.com/DAOSquare"
+                href={
+                  dao?.offical_links.find((i) => i.type === 'twitter')
+                    ?.link_text
+                }
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -442,21 +363,26 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
                 </div>
               </a>
               <a
-                href="https://app.dework.xyz/o/daosquare-5T2WcpGDJ3m6cOiG5ItJeL"
+                href={
+                  dao?.offical_links.find((i) => i.type === 'dework')?.link_text
+                }
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <div className="mx-4">
                   <Image
                     src={dework1}
-                    alt="dework1"
+                    alt="dework"
                     width={'16px'}
                     height={'16px'}
                   />
                 </div>
               </a>
               <a
-                href="https://forum.daosquare.io/"
+                href={
+                  dao?.offical_links.find((i) => i.type === 'website')
+                    ?.link_text
+                }
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -475,9 +401,7 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
       </Container>
 
       <Flex wrap="wrap" justifyContent="space-between" mb={8}>
-        {data.map((d, i) => {
-          const item = { ...d }
-          item.title = i === 3 ? `$${price.toFixed(2)}` : d.title
+        {data.map((item, i) => {
           return (
             <Box
               key={i}
@@ -504,8 +428,7 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
               lineHeight="36px"
               overflow="hidden"
             >
-              {/* {100000000 * price} */}
-              $87,996,853.64
+              ${nFormatter(aggregate?.coingecko?.coin_data?.market ?? 0)}
             </Box>
             <Box w="100%" h="220px">
               <ResponsiveContainer width="100%" height="100%">
@@ -665,16 +588,13 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
             <TaskCard
               {...d}
               className="click-card"
-              data={
-                i === 0
-                  ? Object.keys(deworkData).map((k) => ({
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      //@ts-ignore
-                      title: deworkData[k],
-                      text: k,
-                    }))
-                  : d.data
-              }
+              data={d.data.map((item) => ({
+                title:
+                  i === 1
+                    ? aggregate?.governance?.[item.key as keyof GovernanceData]
+                    : aggregate?.dework?.[item.key as keyof DeworkStatsData],
+                text: item.text,
+              }))}
             />
           </Box>
         ))}
@@ -686,7 +606,7 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
             <Timeline
               dataSource={{
                 sourceType: 'profile',
-                screenName: 'DAOSquare',
+                screenName: dao?.daoId,
               }}
               options={{
                 height: isLargerThan1280 ? '614' : '460',
@@ -708,58 +628,22 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
         </Box>
       </Flex>
 
-      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
-        Products
-      </Text>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {productsData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            {d.link ? (
-              <a href={d.link} target="_blank" rel="noopener noreferrer">
-                <IconCard {...d} className="click-card" />
-              </a>
-            ) : (
-              <IconCard {...d} />
-            )}
-          </Box>
-        ))}
-      </Flex>
-
-      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
-        Guilds
-      </Text>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {guildsData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            <a
-              href={`/guild#${d.title}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <IconCard {...d} className="click-card" />
-            </a>
-          </Box>
-        ))}
-      </Flex>
-
-      <Text as="h3" fontSize="14px" color="#4C4B63" mb={2} mt={10}>
-        Portfolio
-      </Text>
-      <Flex wrap="wrap" justifyContent="space-between">
-        {portfolioData.map((d, i) => (
-          <Box key={i} w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-            <a href={d.link} target="_blank" rel="noopener noreferrer">
-              <IconCard {...d} className="click-card" />
-            </a>
-          </Box>
-        ))}
-        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-          <BaseCard visibility="hidden" />
-        </Box>
-        <Box w={{ base: '100%', md: '49%', lg: '23.5%' }} mb={6}>
-          <BaseCard visibility="hidden" />
-        </Box>
-      </Flex>
+      {!!guids && !!guids.length && (
+        <>
+          <h3 className="mb-2 mt-10 text-sm text-ds-600">Grants</h3>
+          <div className="flex flex-wrap justify-between gap-y-6 ">
+            {guids.map((d) => (
+              <IconCardLink
+                key={d._id}
+                icon={d.logo ?? ''}
+                text={d.category}
+                title={d.name}
+                link={`/daos/${d.daoId}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       <Box h={{ base: 8, md: 16, lg: 32 }} />
     </Box>

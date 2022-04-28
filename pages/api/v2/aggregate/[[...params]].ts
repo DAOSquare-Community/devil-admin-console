@@ -36,7 +36,7 @@ class AggregateController {
    *               type: ResultMsg<AggregateData>
    */
   @Get()
-  public async getTwitter(
+  public async getAggregate(
     @Query('daoId') daoId: string
   ): Promise<ResultMsg<AggregateData>> {
     const ret: ResultMsg<AggregateData> = {}
