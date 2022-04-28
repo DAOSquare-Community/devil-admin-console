@@ -1,4 +1,3 @@
-import DaoService from 'service/dao'
 import {
   Get,
   Query,
@@ -13,30 +12,30 @@ import {
 import NextAuthGuard from 'lib/middleawares/auth'
 import OpLogGuard from 'lib/middleawares/oplog'
 import { ResultMsg } from 'types/resultmsg'
-import MemberService from 'service/member'
-import { Member } from 'models/Member'
-import { Dao } from 'models/Dao'
+import { Activity } from 'models/activity'
+import ActivityService from 'service/activity'
 
 @NextAuthGuard()
 @OpLogGuard()
-class MemberController {
-  private _service = new MemberService()
+class ActivityController {
+  private _service = new ActivityService()
 
   /**
-   * get member list
+   * get activity list
    * @param page
    * @param pageSize
-   * @param queryParams
-   * @param sortParams
+   * @param filters
+   * @param sortBy
    * @returns
    */
+
   /**
    * @swagger
-   * /api/v2/member/list:
+   * /api/v2/activity/list:
    *   get:
    *     tags:
-   *       - member
-   *     summary: get member list
+   *       - activity
+   *     summary: get activity list
    *     parameters:
    *            - name: page
    *              required: false
@@ -46,25 +45,25 @@ class MemberController {
    *              required: false
    *              in: query
    *              type: number
-   *            - name: queryParams
+   *            - name: filters
    *              required: false
    *              in: query
    *              type: object
-   *            - name: sortParams
+   *            - name: sortBy
    *              required: false
    *              in: query
    *              type: object
    *
    *     responses:
    *       200:
-   *         description: member list
+   *         description: activity list
    *         content:
    *           application/json:
    *             schema:
-   *               type: ResultMsg<PageData<Member>>
+   *               type: ResultMsg<PageData<Activity>>
    */
   @Get('/list')
-  public async getMemberList(
+  public async getActivityList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
     @Query('filters') filters?: string,
@@ -85,55 +84,54 @@ class MemberController {
   }
 
   /**
-   * get member by filter
-   * @Query filter
+   * get activity by id
+   * @Query id
    * @returns
-   * @example
-   * filter={'wallet_address':'34524654356'}
    */
-
   /**
    * @swagger
-   * /api/v2/member:
+   * /api/v2/activity:
    *   get:
    *     tags:
-   *       - member
-   *     summary: get member by filter
+   *       - activity
+   *     summary: get activity by daoid
    *     parameters:
-   *            - name: filter
+   *            - name: id
    *              required: true
    *              in: query
    *              type: string
    *
    *     responses:
    *       200:
-   *         description: member object
+   *         description: activity object
    *         content:
    *           application/json:
    *             schema:
-   *               type: ResultMsg<Member[] | null>
+   *               type: ResultMsg<Activity | null>
    */
   @Get()
-  public async getMemberByAddr(
-    @Query('filter') filter: string
-  ): Promise<ResultMsg<Member[] | null>> {
-    const members = await this._service.getEntities(JSON.parse(filter))
-    if (members.message) throw new InternalServerErrorException(members.message)
-    return members
+  public async getActivityById(
+    @Query('id') id: string
+  ): Promise<ResultMsg<Activity | null>> {
+    const activity = await this._service.getEntity({ _id: id })
+    if (activity.message)
+      throw new InternalServerErrorException(activity.message)
+    return activity
   }
 
   /**
-   * delete member by filter
+   * delete activity by filter
    * @param filter
    * @returns
    */
+
   /**
    * @swagger
-   * /api/v2/member:
+   * /api/v2/activity:
    *   delete:
    *     tags:
-   *       - member
-   *     summary: delete member by filter
+   *       - activity
+   *     summary: delete activity by filter
    *     parameters:
    *            - name: filter
    *              required: true
@@ -142,35 +140,36 @@ class MemberController {
    *
    *     responses:
    *       200:
-   *         description: delete member
+   *         description: delete activity
    *         content:
    *           application/json:
    *             schema:
    *               type: ResultMsg<boolean>
    */
   @Delete()
-  public async deleteMemberByFilter(
-    @Body() body: { filter: string }
+  public async deleteUsersByIds(
+    @Body() body: { ids: string[] }
   ): Promise<ResultMsg<boolean>> {
-    const del = await this._service.deleteEntity(JSON.parse(body.filter))
-    if (del.message) {
-      throw new InternalServerErrorException(del.message)
+    const delUsers = await this._service.deleteEntityByIds(body.ids)
+    if (delUsers.message) {
+      throw new InternalServerErrorException(delUsers.message)
     }
-    return del
+    return delUsers
   }
 
   /**
-   * insert member
-   * @param member
+   * insert activity
+   * @param activity
    * @returns
    */
+
   /**
    * @swagger
-   * /api/v2/member:
+   * /api/v2/activity:
    *   post:
    *     tags:
-   *       - member
-   *     summary: insert a member
+   *       - activity
+   *     summary: insert a activity
    *     parameters:
    *            - name: body
    *              required: true
@@ -179,17 +178,17 @@ class MemberController {
    *
    *     responses:
    *       200:
-   *         description: insert a member
+   *         description: insert a activity
    *         content:
    *           application/json:
    *             schema:
    *               type: ResultMsg<boolean>
    */
   @Post()
-  public async insertMember(@Body() body: object): Promise<ResultMsg<boolean>> {
-    const member = new Member()
-    const m = Object.assign(member, body)
-    const ret = await this._service.insertEntity(m)
+  public async insertActity(@Body() body: object): Promise<ResultMsg<boolean>> {
+    const activity = new Activity()
+    const d = Object.assign(activity, body)
+    const ret = await this._service.insertEntity(d)
     if (ret.message) {
       throw new InternalServerErrorException(ret.message)
     }
@@ -197,18 +196,19 @@ class MemberController {
   }
 
   /**
-   * update member
+   * update activity
    * @param filter
    * @param update
    * @returns
    */
+
   /**
    * @swagger
-   * /api/v2/member:
+   * /api/v2/activity:
    *   put:
    *     tags:
-   *       - member
-   *     summary: update member
+   *       - activity
+   *     summary: update activity
    *     parameters:
    *            - name: body
    *              required: true
@@ -217,14 +217,14 @@ class MemberController {
    *
    *     responses:
    *       200:
-   *         description: update member
+   *         description: update activity
    *         content:
    *           application/json:
    *             schema:
    *               type: ResultMsg<boolean>
    */
   @Put()
-  public async updateMember(
+  public async updateActivity(
     @Body() body: { filter: object; update: object }
   ): Promise<ResultMsg<boolean>> {
     const ret = await this._service.updateEntity(body.filter, body.update)
@@ -233,49 +233,6 @@ class MemberController {
     }
     return ret
   }
-
-  /**
-   * @swagger
-   * /api/v2/member/daos:
-   *   get:
-   *     tags:
-   *       - member
-   *     summary: get member belong to daos by member addr
-   *     parameters:
-   *            - name: addr
-   *              required: true
-   *              in: query
-   *              type: string
-   *
-   *     responses:
-   *       200:
-   *         description: belong to daos
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: ResultMsg<Dao[] | null>
-   */
-  @Get('/daos')
-  public async getDaosByMemberAddr(
-    @Query('addr') addr: string
-  ): Promise<ResultMsg<Dao[] | null>> {
-    const ret: ResultMsg<Dao[] | null> = {}
-    const member = await this._service.getEntity({ wallet_address: addr })
-    if (member.message) throw new InternalServerErrorException(member.message)
-    if (member.data) {
-      const daoIds: string[] = member.data.daos
-      let daos: Dao[] = []
-      const retDaos = await new DaoService().getEntities(
-        { daoId: { $in: daoIds } },
-        { open_api: 0 }
-      )
-      if (retDaos.message)
-        throw new InternalServerErrorException(retDaos.message)
-      if (retDaos.data) daos = retDaos.data
-      ret.data = daos
-    }
-    return ret
-  }
 }
 
-export default createHandler(MemberController)
+export default createHandler(ActivityController)

@@ -8,7 +8,7 @@ import {
 import NextAuthGuard from 'lib/middleawares/auth'
 import { LogOp } from 'models/LogOp'
 import LogOpService from 'service/logop'
-import { PageData, ResultMsg } from 'types/resultmsg'
+import { ResultMsg } from 'types/resultmsg'
 
 @NextAuthGuard()
 class LogOpController {
@@ -61,19 +61,21 @@ class LogOpController {
   public async getLogList(
     @Query('page', DefaultValuePipe(0)) page: number,
     @Query('pageSize', DefaultValuePipe(0)) pageSize: number,
-    @Query('queryParams') queryParams?: object,
-    @Query('sortParams') sortParams?: object
-  ): Promise<ResultMsg<PageData<LogOp>>> {
-    const ret = await this._service.getList(
-      page,
-      pageSize,
-      queryParams ?? {},
-      sortParams ?? {}
-    )
-    if (ret.message) {
-      throw new InternalServerErrorException(ret.message)
+    @Query('filters') filters?: string,
+    @Query('sortBy') sortBy?: string
+  ) {
+    try {
+      return await this._service.getList(
+        page,
+        pageSize,
+        filters ? JSON.parse(filters) : {},
+        sortBy ? JSON.parse(sortBy) : {}
+      )
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new InternalServerErrorException(error.message)
+      }
     }
-    return ret
   }
 
   /**

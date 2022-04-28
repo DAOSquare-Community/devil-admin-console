@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios'
-
 const client = axios.create()
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +11,17 @@ const request = <R = any>(
     method.toLocaleLowerCase() === 'get'
       ? { params: payload }
       : { data: payload }
-  const mOption = { ...mPayload, ...other, method }
+  const mOption: AxiosRequestConfig = {
+    ...mPayload,
+    ...other,
+    method,
+    // paramsSerializer: (params) => {
+    //   console.log('qs', qs.stringify(params, { arrayFormat: 'comma' }))
+
+    //   return qs.stringify(params, { arrayFormat: 'comma' })
+    // },
+  }
+
   return axios(mOption).then((response) => response.data)
 }
 export { client, request }

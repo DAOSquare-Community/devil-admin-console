@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
-import { InternalServerErrorException } from '@storyofams/next-api-decorators'
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@storyofams/next-api-decorators'
 import { ReturnModelType } from '@typegoose/typegoose'
 import { AnyParamConstructor, BeAnObject } from '@typegoose/typegoose/lib/types'
 import { MongoError } from 'mongodb'
@@ -52,9 +55,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       resMsg.data = pd
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
-      //console.log(`getList--------${typeof this.model}`)
-      //console.log(err)
-      resMsg.message = errmsg
+      throw new InternalServerErrorException(errmsg)
     }
 
     return resMsg
@@ -203,16 +204,16 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
    * @returns
    */
   public deleteEntityByIds = async (
-    Ids: string[]
+    ids: string[]
   ): Promise<ResultMsg<boolean>> => {
     const retDel: ResultMsg<boolean> = {
       data: false,
     }
     try {
-      const ids = Ids.map((value) => {
+      const mIds = ids.map((value) => {
         return new mongoose.Types.ObjectId(value)
       })
-      await this.model.deleteMany({ _id: { $in: ids } })
+      await this.model.deleteMany({ _id: { $in: mIds } })
       retDel.data = true
     } catch (err) {
       const errmsg = err instanceof Error ? err.message : MsgCode.FAILURE
@@ -235,7 +236,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       return { data: true }
     } catch (err) {
       if (ValidationError.isError(err)) {
-        throw new InternalServerErrorException(err.message)
+        throw new BadRequestException(err.message)
       } else {
         throw new InternalServerErrorException(MsgCode.FAILURE)
       }

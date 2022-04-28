@@ -1,4 +1,10 @@
-import { HiHome, HiMoon, HiUserGroup, HiUsers } from 'react-icons/hi'
+import {
+  HiHome,
+  HiMoon,
+  HiPaperClip,
+  HiUserGroup,
+  HiUsers,
+} from 'react-icons/hi'
 const logoAddress = 'https://iph.href.lu/80x15?text=logo&fg=000000&bg=ffffff'
 
 import memoryCache, { CacheClass } from 'memory-cache'
@@ -20,6 +26,8 @@ export const MenuConfigMap: Map<
   ['dashboard', { Icon: HiHome, router: '/admin' }],
   ['daos', { Icon: HiUserGroup, router: '/admin/daos' }],
   ['accounts', { Icon: HiUsers, router: '/admin/accounts' }],
+  ['members', { Icon: HiUsers, router: '/admin/members' }],
+  ['activity', { Icon: HiPaperClip, router: '/admin/activity' }],
   ['action-log', { Icon: HiMoon, router: '/admin/action-log' }],
 ])
 
@@ -94,6 +102,21 @@ export const RoleApis: RoleApiPermission[] = [
     method: AllHttpMethod,
   },
   {
+    apiRouter: '/admin/activity',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/admin/activity/add',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/admin/activity/[id]',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
     apiRouter: '/admin/daos/add',
     role: ['super-admin', 'admin'],
     method: AllHttpMethod,
@@ -117,6 +140,11 @@ export const RoleApis: RoleApiPermission[] = [
   {
     apiRouter: '/api/v2/user/list',
     role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/admin/members',
+    role: ['super-admin'],
     method: AllHttpMethod,
   },
   {
@@ -219,6 +247,16 @@ export const RoleApis: RoleApiPermission[] = [
     apiRouter: '/api/v2/daogovernance',
     role: ['super-admin', 'admin', 'member', 'guest'],
     method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/activity',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
+  },
+  {
+    apiRouter: '/api/v2/activity/list',
+    role: ['super-admin', 'admin'],
+    method: AllHttpMethod,
   },
   {
     apiRouter: '/api/v2/aggregate',

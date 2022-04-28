@@ -1,8 +1,18 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import CInput from 'components/input/c-input'
+import { EZSelect } from 'components/input/c-select'
+import CSwitch from 'components/input/c-switch'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+
+const CategoryOptions = [
+  { value: 'fresh', label: 'Fresh' },
+  { value: 'infrastructure', label: 'Infrastructure' },
+  { value: 'grant', label: 'Grant' },
+  { value: 'investment', label: 'Investment' },
+  { value: 'service', label: 'Service' },
+]
 
 const openApiScheme = yup.object().shape({
   dework: yup.object().shape({
@@ -24,12 +34,13 @@ const schema = yup.object().shape({
   name: yup.string().required(),
   daoId: yup.string().required(),
   profile: yup.string(),
-  category: yup.string(),
+  category: yup.string().required(),
   logo: yup.string().required(),
   twitter_url: yup.string().url(),
   website_url: yup.string().url(),
   discord_url: yup.string().url(),
   open_api: openApiScheme,
+  is_hot: yup.boolean().required(),
 })
 
 type FormData = yup.InferType<typeof schema>
@@ -45,6 +56,7 @@ const DaoForm: FC<{
   defaultValues?: Partial<FormData>
 }> = ({ onSubmit, id = displayName, defaultValues }) => {
   // const { state, dispatch } = useContext(MeContext)
+
   const { handleSubmit, control } = useForm<FormData>({
     mode: 'onBlur',
     defaultValues,
@@ -73,7 +85,11 @@ const DaoForm: FC<{
           <CInput name="logo" control={control} />
         </div>
         <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-          <CInput name="category" control={control} />
+          <EZSelect
+            name="category"
+            control={control}
+            options={CategoryOptions}
+          />
         </div>
       </div>
       <div className=" divider my-10 uppercase">Office URL</div>
@@ -121,6 +137,12 @@ const DaoForm: FC<{
             label="Discord ChannelId"
             control={control}
           />
+        </div>
+      </div>
+      <div className=" divider my-10 uppercase ">Hot</div>
+      <div className="-mx-3 mb-6 flex flex-wrap">
+        <div className="mb-6 w-full px-3 md:mb-0 md:w-1/2">
+          <CSwitch name="is_hot" label="Switch To Hot" control={control} />
         </div>
       </div>
     </form>

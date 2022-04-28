@@ -37,7 +37,7 @@ export function ToolBar<T extends Record<string, unknown>>({
                 Object.keys(state.selectedRowIds).length === 0
               }
             >
-              <MinusIcon className="h-5 w-5 text-gray-400" />
+              <MinusIcon className="h-5 w-5 " />
             </button>
           </div>
         )}
@@ -50,7 +50,7 @@ export function ToolBar<T extends Record<string, unknown>>({
             className="btn btn-ghost btn-sm btn-circle"
             onClick={() => onAdd(instance)}
           >
-            <PlusIcon className="h-5 w-5 text-gray-400" />
+            <PlusIcon className="h-5 w-5 " />
           </button>
         </div>
       )}
