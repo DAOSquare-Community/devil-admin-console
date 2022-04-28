@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import CInput from 'components/input/c-input'
 import { EZSelect } from 'components/input/c-select'
 import CSwitch from 'components/input/c-switch'
+import CTextarea from 'components/input/c-textarea'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -77,19 +78,19 @@ const DaoForm: FC<{
           <CInput name="name" control={control} />
         </div>
         <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-          <CInput name="profile" control={control} />
+          <CInput name="logo" control={control} />
         </div>
       </div>
       <div className="-mx-3 mb-6 flex flex-wrap">
-        <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
-          <CInput name="logo" control={control} />
-        </div>
         <div className="mb-6 w-full px-3 md:mb-0 md:w-1/3">
           <EZSelect
             name="category"
             control={control}
             options={CategoryOptions}
           />
+        </div>
+        <div className="mb-6 w-full px-3 md:mb-0 md:w-2/3">
+          <CTextarea name="profile" control={control} />
         </div>
       </div>
       <div className=" divider my-10 uppercase">Office URL</div>

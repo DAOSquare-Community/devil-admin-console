@@ -118,7 +118,7 @@ const People: NextPageWithLayout = () => {
                       key={item.name}
                       name={item.name ?? ''}
                       title={item.daos[0] ?? ''}
-                      link={`/daos/people/${item._id}`}
+                      link={`/daos/people/${item.wallet_address}`}
                     />
                   )
                 })}

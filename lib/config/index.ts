@@ -250,12 +250,12 @@ export const RoleApis: RoleApiPermission[] = [
   },
   {
     apiRouter: '/api/v2/activity',
-    role: ['super-admin', 'admin'],
+    role: ['super-admin', 'admin', 'member', 'guest'],
     method: AllHttpMethod,
   },
   {
     apiRouter: '/api/v2/activity/list',
-    role: ['super-admin', 'admin'],
+    role: ['super-admin', 'admin', 'member', 'guest'],
     method: AllHttpMethod,
   },
   {

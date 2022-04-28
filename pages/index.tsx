@@ -458,7 +458,7 @@ const Home: NextPageWithLayout = () => {
             icon={d.logo ?? ''}
             text={d.category}
             title={d.name}
-            link={d.offical_links.find((i) => i.type === 'website')?.link_text}
+            link={`/daos/${d.daoId}`}
           />
         ))}
       </div>
@@ -473,9 +473,7 @@ const Home: NextPageWithLayout = () => {
                 icon={d.logo ?? ''}
                 text={d.category}
                 title={d.name}
-                link={
-                  d.offical_links.find((i) => i.type === 'website')?.link_text
-                }
+                link={`/daos/${d.daoId}`}
               />
             ))}
           </div>
@@ -492,9 +490,7 @@ const Home: NextPageWithLayout = () => {
                 icon={d.logo ?? ''}
                 text={d.category}
                 title={d.name}
-                link={
-                  d.offical_links.find((i) => i.type === 'website')?.link_text
-                }
+                link={`/daos/${d.daoId}`}
               />
             ))}
           </div>

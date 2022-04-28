@@ -18,7 +18,7 @@ export type CoinInfoData = {
 export type CoinMarketInfoData = {
   daoId: string
   prices: number[]
-  total_volumes: number[]
+  total_volumes: [number, number][]
 }
 
 export default class CoinInfo {
