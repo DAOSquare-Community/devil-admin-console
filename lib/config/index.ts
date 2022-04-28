@@ -174,6 +174,11 @@ export const RoleApis: RoleApiPermission[] = [
     role: ['super-admin', 'admin', 'member', 'guest'],
     method: [HttpMethod.GET],
   },
+  {
+    apiRouter: '/api/v2/member/daos',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
   // data api
   {
     apiRouter: '/api/v2/sesh',
@@ -196,6 +201,11 @@ export const RoleApis: RoleApiPermission[] = [
     method: [HttpMethod.GET],
   },
   {
+    apiRouter: '/api/v2/daostats/history',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
     apiRouter: '/api/v2/daostats/list',
     role: ['super-admin', 'admin', 'member', 'guest'],
     method: [HttpMethod.GET],
@@ -207,6 +217,11 @@ export const RoleApis: RoleApiPermission[] = [
   },
   {
     apiRouter: '/api/v2/daogovernance',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
+    apiRouter: '/api/v2/aggregate',
     role: ['super-admin', 'admin', 'member', 'guest'],
     method: [HttpMethod.GET],
   },
