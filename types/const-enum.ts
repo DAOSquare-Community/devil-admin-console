@@ -7,6 +7,9 @@ export const enum ChainEnum {
   Rinkeby = 'Rinkeby',
   xDai = 'xDai',
   Matic = 'Matic',
+  Optimism = 'Optimism',
+  Celo = 'Celo',
+  Arbitrum = 'Arbitrum',
 }
 
 /**
@@ -52,4 +55,33 @@ export const enum HttpMethod {
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE',
+}
+
+/**
+ * the Offical or Social links
+ */
+export const enum LinksEnum {
+  Twitter = 'twitter',
+  WebSite = 'website',
+  Discord = 'discord',
+  Telegram = 'telegram',
+  Medium = 'medium',
+}
+
+/**
+ * the Offical or Social links
+ */
+export const enum DaoPurpose {
+  // Grants(Accelerators)
+  Grants = 'Grants',
+  // Ventures(Investments)
+  Ventures = 'Ventures',
+  // Guilds(Services)
+  Guilds = 'Guilds',
+  // Clubs(Social)
+  Clubs = 'Clubs',
+  // Non-profit(Impact)
+  Non_profit = 'Non-profit',
+  // Product(Project)
+  Product = 'Product',
 }

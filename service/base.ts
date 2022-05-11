@@ -238,6 +238,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       if (ValidationError.isError(err)) {
         throw new BadRequestException(err.message)
       } else {
+        //console.log((err as Error).message)
         throw new InternalServerErrorException(MsgCode.FAILURE)
       }
     }
