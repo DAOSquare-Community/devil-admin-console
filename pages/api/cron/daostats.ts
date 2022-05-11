@@ -90,64 +90,68 @@ class CronDaoStatsController {
           )
         } else {
           for (const dao of daosResult.data?.items ?? []) {
-            // get the  chain count
-            if (!!dao.dao_contract.chain_type) {
-              const chainTypeCount = chainMap.get(dao.dao_contract.chain_type)
-              chainMap.set(
-                dao.dao_contract.chain_type,
-                chainTypeCount ? chainTypeCount + 1 : 1
-              )
+            try {
+              // get the  chain count
+              if (!!dao.dao_contract.chain_type) {
+                const chainTypeCount = chainMap.get(dao.dao_contract.chain_type)
+                chainMap.set(
+                  dao.dao_contract.chain_type,
+                  chainTypeCount ? chainTypeCount + 1 : 1
+                )
+              }
+
+              // get the  dao category
+              if (!!dao.category) {
+                const daoCategoryCount = daoCategoryMap.get(dao.category)
+                daoCategoryMap.set(
+                  dao.category,
+                  daoCategoryCount ? daoCategoryCount + 1 : 1
+                )
+              }
+
+              // get the treasury
+              const t = await this._treasuryService.addTreasuryTokenFromDao(dao)
+              treasury = treasury + (t ? t.total_amount : 0)
+
+              // get the Governanace
+              const g = await new GovernanaceService.default(
+                dao
+              ).getGovernanceData()
+
+              gov.grace += g.grace
+              gov.passed += g.passed
+              gov.process += g.process
+              gov.unsponsored += g.unsponsored
+              gov.voting += g.voting
+              gov.excution += g.excution
+
+              // get the dework
+              const d = await this._deworkService.getDeworkData(dao.daoId)
+              if (d) {
+                dework.inreview += d.organization.tasks.filter(
+                  (item) => item.status === 'IN_REVIEW'
+                ).length
+
+                dework.progress += d.organization.tasks.filter(
+                  (item) => item.status === 'IN_REVIEW'
+                ).length
+
+                dework.todo += d.organization.tasks.filter(
+                  (item) => item.status === 'TODO'
+                ).length
+
+                dework.suggestion += d.organization.tasks.filter(
+                  (item) => item.status === 'COMMUNITY_SUGGESTIONS'
+                ).length
+
+                dework.done += d.organization.tasks.filter(
+                  (item) => item.status === 'DONE'
+                ).length
+              }
+            } catch (err) {
+              continue
             }
-
-            // get the  dao category
-            if (!!dao.category) {
-              const daoCategoryCount = daoCategoryMap.get(dao.category)
-              daoCategoryMap.set(
-                dao.category,
-                daoCategoryCount ? daoCategoryCount + 1 : 1
-              )
-            }
-
-            // get the treasury
-            const t = await this._treasuryService.addTreasuryTokenFromDao(dao)
-            treasury = treasury + (t ? t.total_amount : 0)
-
-            // get the Governanace
-            const g = await new GovernanaceService.default(
-              dao
-            ).getGovernanceData()
-
-            gov.grace += g.grace
-            gov.passed += g.passed
-            gov.process += g.process
-            gov.unsponsored += g.unsponsored
-            gov.voting += g.voting
-            gov.excution += g.excution
-
-            // get the dework
-            const d = await this._deworkService.getDeworkData(dao.daoId)
-            if (d) {
-              dework.inreview += d.organization.tasks.filter(
-                (item) => item.status === 'IN_REVIEW'
-              ).length
-
-              dework.progress += d.organization.tasks.filter(
-                (item) => item.status === 'IN_REVIEW'
-              ).length
-
-              dework.todo += d.organization.tasks.filter(
-                (item) => item.status === 'TODO'
-              ).length
-
-              dework.suggestion += d.organization.tasks.filter(
-                (item) => item.status === 'COMMUNITY_SUGGESTIONS'
-              ).length
-
-              dework.done += d.organization.tasks.filter(
-                (item) => item.status === 'DONE'
-              ).length
-            }
-          }
+          } // end for for dao
         }
       } // end for  page  for loop
 
