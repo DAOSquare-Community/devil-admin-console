@@ -9,6 +9,7 @@ import theme from '../components/theme'
 // import web3
 import Web3 from 'web3'
 import { Web3ReactProvider } from '@web3-react/core'
+import { Provider } from '@self.id/framework'
 
 import { SessionProvider } from 'next-auth/react'
 import { provider } from 'web3-core'
@@ -36,9 +37,11 @@ function MyApp({
       <Web3ReactProvider getLibrary={getLibrary}>
         <SessionProvider session={session}>
           <QueryClientProvider client={queryClient}>
-            <SignCheckLayout pathname={pathname}>
-              {getLayout(<Component {...pageProps} />)}
-            </SignCheckLayout>
+            <Provider client={{ ceramic: 'testnet-clay' }}>
+              <SignCheckLayout pathname={pathname}>
+                {getLayout(<Component {...pageProps} />)}
+              </SignCheckLayout>
+            </Provider>
             <ReactQueryDevtools initialIsOpen={false} />
             <AlertComponent />
             <CToaster />

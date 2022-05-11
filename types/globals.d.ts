@@ -4,6 +4,10 @@ import type { MongoClient } from 'mongodb'
 
 declare global {
   var _mongoClientPromise: Promise<MongoClient>
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ethereum: any
+  }
 }
 
 declare module 'next' {
