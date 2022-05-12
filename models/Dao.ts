@@ -7,6 +7,7 @@ import TgooseHelper from 'lib/tgoosehelper'
 const COLLECTION_NAME = 'dao'
 
 /** the contract of dao */
+//@index({ contract_address: 'text' }) // compound index
 export class DAOContract {
   @prop({ required: true })
   public chain_type!: string
@@ -21,7 +22,7 @@ export class OfficalLinks {
   public type!: string
 
   /** Social Type  link address */
-  @prop({ required: true })
+  @prop({ default: '' })
   public link_text!: string
 }
 
@@ -35,7 +36,7 @@ export class Treasury {
   public contract_address!: string
 
   /** get the json data of treasury url */
-  @prop({ required: true })
+  @prop({ default: '' })
   public json_url!: string
 }
 
@@ -93,7 +94,7 @@ export class Dao extends BaseModel {
   @prop({ default: '' })
   public profile!: string | null
 
-  @prop({ required: true })
+  @prop({ default: '' })
   public category!: string
 
   @prop({ type: () => [String], default: [] })

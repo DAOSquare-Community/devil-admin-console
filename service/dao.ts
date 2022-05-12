@@ -48,8 +48,8 @@ export default class DaoService extends BaseService<Dao, typeof Dao> {
       await DaoModel.updateMany({ daoId: daoId }, { $set: updateData })
       retUpdate.data = true
     } catch (err) {
-      console.log('updateDaoInfo--------')
-      console.log(err)
+      // console.log('updateDaoInfo--------')
+      // console.log(err)
       retUpdate.message = MsgCode.FAILURE
     }
     return retUpdate
@@ -69,8 +69,8 @@ export default class DaoService extends BaseService<Dao, typeof Dao> {
       await DaoModel.deleteMany({ daoId: daoId })
       retDel.data = true
     } catch (err) {
-      console.log('deleteDaoInfo--------')
-      console.log(err)
+      // console.log('deleteDaoInfo--------')
+      // console.log(err)
       retDel.message = MsgCode.FAILURE
     }
     return retDel
@@ -96,8 +96,8 @@ export default class DaoService extends BaseService<Dao, typeof Dao> {
       } else {
         errmsg = MsgCode.FAILURE
       }
-      console.log('insertDaoInfo--------')
-      console.log(err)
+      // console.log('insertDaoInfo--------')
+      // console.log(err)
       retInsert.message = errmsg
     }
     return retInsert
@@ -123,8 +123,8 @@ export default class DaoService extends BaseService<Dao, typeof Dao> {
       } else {
         errmsg = MsgCode.FAILURE
       }
-      console.log('insertMutilDaoInfo--------')
-      console.log(err)
+      // console.log('insertMutilDaoInfo--------')
+      // console.log(err)
       retInsertMutl.message = errmsg
     }
     return retInsertMutl
