@@ -10,6 +10,7 @@
     "postinstall": "husky install"
   },
   "dependencies": {
+    "@blazity/next-image-proxy": "^1.0.2",
     "@chakra-ui/react": "^1.8.1",
     "@emotion/styled": "^11.8.1",
     "@hookform/resolvers": "^2.8.8",

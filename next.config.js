@@ -9,7 +9,7 @@ const nextConfig = {
       'iph.href.lu',
       'etherscan.io',
       's3-alpha-sig.figma.com',
-      'daohaus.mypinata.cloud',
+      // 'daohaus.mypinata.cloud',
     ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
