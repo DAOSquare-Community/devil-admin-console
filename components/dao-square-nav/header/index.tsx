@@ -12,6 +12,7 @@ import WalletModal from 'components/modal/wallet'
 import useWalletSignIn from 'lib/utils/wallet'
 import { useAxiosQuery } from 'lib/request/use-fetch'
 import { MeInterface } from 'types/user'
+import { EthereumAuthProvider, useViewerConnection } from '@self.id/framework'
 
 const AdminRoute = {
   name: 'Admin',
@@ -33,8 +34,40 @@ const menuData = [
   },
 ]
 
+function ConnectButton() {
+  const [connection, connect, disconnect] = useViewerConnection()
+
+  return connection.status === 'connected' ? (
+    <button
+      onClick={() => {
+        disconnect()
+      }}
+    >
+      Disconnect ({connection.selfID.id})
+    </button>
+  ) : 'ethereum' in window ? (
+    <button
+      disabled={connection.status === 'connecting'}
+      onClick={async () => {
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        })
+        await connect(new EthereumAuthProvider(window.ethereum, accounts[0]))
+      }}
+    >
+      Connect
+    </button>
+  ) : (
+    <p>
+      An injected Ethereum provider such as{' '}
+      <a href="https://metamask.io/">MetaMask</a> is needed to authenticate.
+    </p>
+  )
+}
+
 function Header() {
   const [isShowMenu, setIsShowMenu] = useState(false)
+
   const [curMenu, setCurMenu] = useState(-1)
   const [isOpen, setOpen] = useState(false)
   const { data, refetch } = useAxiosQuery<{ data: MeInterface }>(
@@ -94,6 +127,7 @@ function Header() {
                 </Link>
               ))}
             </div>
+            {typeof window !== 'undefined' && <ConnectButton />}
             <Button className="" onClick={() => setOpen(true)}>
               Connect
             </Button>

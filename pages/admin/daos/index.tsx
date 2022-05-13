@@ -26,7 +26,8 @@ const AvatarCell: FC<
             width={40}
             height={40}
             className="h-10 w-10 rounded-full"
-            src={row.original[column.imgAccessor]}
+            src={`/api/imageProxy?imageUrl=${row.original[column.imgAccessor]}`}
+            // src={row.original[column.imgAccessor]}
             alt=""
           />
         )}
