@@ -30,6 +30,7 @@ const DaoAdd: NextPageWithLayout = () => {
   if (isFetching) {
     return <div className=" abs-center before:spinner flex-center" />
   }
+
   return (
     <>
       <DaoForm
@@ -44,7 +45,7 @@ const DaoAdd: NextPageWithLayout = () => {
               logo: fData.logo,
               open_api: fData.open_api,
               last_update_at: new Date(),
-              is_hot: fData.is_hot,
+              is_hot: fData.is_hot ?? false,
               offical_links: [
                 { type: 'twitter', link_text: fData.twitter_url ?? '' },
                 { type: 'website', link_text: fData.website_url ?? '' },

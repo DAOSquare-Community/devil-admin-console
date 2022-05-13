@@ -30,7 +30,7 @@ const AvatarDropdown: FC = () => {
               className="  rounded-full object-cover"
               width={30}
               height={30}
-              src={data?.avatar}
+              src={`/api/imageProxy?imageUrl=${data?.avatar}`}
               alt="avatar"
             />
           ) : (

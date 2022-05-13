@@ -20,7 +20,12 @@ const TaskCard: TaskCardProps = ({ icon, title, text, color, data, link }) => {
       <Link href={link} target="_blank">
         <Flex>
           <div className="mr-2">
-            <Image src={icon} width="60px" height={'60px'} alt="image" />
+            <Image
+              src={`/api/imageProxy?imageUrl=${icon}`}
+              width="60px"
+              height={'60px'}
+              alt="image"
+            />
           </div>
           <Box>
             <Text fontSize="24px" fontWeight={900} color="#414152">

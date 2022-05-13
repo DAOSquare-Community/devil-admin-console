@@ -312,7 +312,7 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
         >
           <Box w="20%">
             <Image
-              src={dao?.logo ?? daosquare}
+              src={`/api/imageProxy?imageUrl=${dao?.logo ?? daosquare}`}
               width="140px"
               height={'140px'}
               alt="image"

@@ -235,7 +235,7 @@ export default class BaseService<T, U extends AnyParamConstructor<unknown>> {
       await this.model.create(entity)
       return { data: true }
     } catch (err) {
-      if (ValidationError.isError(err)) {
+      if (ValidationError.isError(err) || err instanceof Error) {
         throw new BadRequestException(err.message)
       } else {
         //console.log((err as Error).message)
