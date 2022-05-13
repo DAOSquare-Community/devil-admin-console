@@ -17,7 +17,7 @@ const IconCard: ChakraComponent<'div', IconCardProps> = ({
       <Flex minW="200px" lineHeight="normal">
         <div className=" mr-4 ">
           <Image
-            src={icon}
+            src={`/api/imageProxy?imageUrl=${icon}`}
             width={'60px'}
             height={'60px'}
             alt="image"

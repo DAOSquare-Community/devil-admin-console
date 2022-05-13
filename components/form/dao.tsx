@@ -20,14 +20,14 @@ const openApiScheme = yup.object().shape({
     orgId: yup.string(),
   }),
   discord: yup.object().shape({
-    channelId: yup.string(),
+    channelId: yup.string().nullable(),
   }),
   sesh: yup.object().shape({
-    access_token: yup.string(),
-    guild_id: yup.string(),
+    access_token: yup.string().nullable(),
+    guild_id: yup.string().nullable(),
   }),
   twitter: yup.object().shape({
-    twitterId: yup.string(),
+    twitterId: yup.string().nullable(),
   }),
 })
 
@@ -36,12 +36,12 @@ const schema = yup.object().shape({
   daoId: yup.string().required(),
   profile: yup.string(),
   category: yup.string().required(),
-  logo: yup.string().required(),
+  logo: yup.string(),
   twitter_url: yup.string().url(),
   website_url: yup.string().url(),
   discord_url: yup.string().url(),
   open_api: openApiScheme,
-  is_hot: yup.boolean().required(),
+  is_hot: yup.boolean().required().nullable(),
 })
 
 type FormData = yup.InferType<typeof schema>
