@@ -11,17 +11,26 @@ type TaskCardProps = ChakraComponent<
     color: string
     data: { text: string; title?: string | number }[]
     link?: string
+    imageProxy?: boolean
   }
 >
 
-const TaskCard: TaskCardProps = ({ icon, title, text, color, data, link }) => {
+const TaskCard: TaskCardProps = ({
+  icon,
+  title,
+  text,
+  color,
+  data,
+  link,
+  imageProxy,
+}) => {
   return (
     <BaseCard p={{ base: 4, md: 8, lg: 12 }}>
       <Link href={link} target="_blank">
         <Flex>
           <div className="mr-2">
             <Image
-              src={`/api/imageProxy?imageUrl=${icon}`}
+              src={imageProxy ? `/api/imageProxy?imageUrl=${icon}` : icon}
               width="60px"
               height={'60px'}
               alt="image"

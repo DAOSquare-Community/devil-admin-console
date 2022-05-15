@@ -40,6 +40,7 @@ const DaoMore: NextPageWithLayout<{ category: string }> = ({ category }) => {
               key={item._id}
               title={item.name}
               icon={item.logo ?? ''}
+              imageProxy
               text={item.category}
               link={`/daos/${item._id}`}
             />

@@ -4,12 +4,18 @@ import Image from 'next/image'
 import { FC } from 'react'
 import Link from 'next/link'
 
-type IconCardProps = { icon: string; text: string; title: string }
+type IconCardProps = {
+  icon: string
+  text: string
+  title: string
+  imageProxy?: boolean
+}
 
 const IconCard: ChakraComponent<'div', IconCardProps> = ({
   icon,
   title,
   text,
+  imageProxy,
   ...props
 }) => {
   return (
@@ -17,7 +23,7 @@ const IconCard: ChakraComponent<'div', IconCardProps> = ({
       <Flex minW="200px" lineHeight="normal">
         <div className=" mr-4 ">
           <Image
-            src={`/api/imageProxy?imageUrl=${icon}`}
+            src={imageProxy ? `/api/imageProxy?imageUrl=${icon}` : icon}
             width={'60px'}
             height={'60px'}
             alt="image"

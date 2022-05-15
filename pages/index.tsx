@@ -456,6 +456,7 @@ const Home: NextPageWithLayout = () => {
           <IconCardLink
             key={d._id}
             icon={d.logo ?? ''}
+            imageProxy
             text={d.category}
             title={d.name}
             link={`/daos/${d.daoId}`}
@@ -471,6 +472,7 @@ const Home: NextPageWithLayout = () => {
               <IconCardLink
                 key={d._id}
                 icon={d.logo ?? ''}
+                imageProxy
                 text={d.category}
                 title={d.name}
                 link={`/daos/${d.daoId}`}
@@ -488,6 +490,7 @@ const Home: NextPageWithLayout = () => {
               <IconCardLink
                 key={d._id}
                 icon={d.logo ?? ''}
+                imageProxy
                 text={d.category}
                 title={d.name}
                 link={`/daos/${d.daoId}`}
