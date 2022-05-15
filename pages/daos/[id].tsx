@@ -635,6 +635,7 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
             {guids.map((d) => (
               <IconCardLink
                 key={d._id}
+                imageProxy={true}
                 icon={d.logo ?? ''}
                 text={d.category}
                 title={d.name}

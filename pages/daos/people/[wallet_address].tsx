@@ -162,6 +162,7 @@ const Landscape: NextPageWithLayout<{ wallet_address: string }> = ({
                   key={item._id}
                   title={item.name}
                   icon={item.logo ?? ''}
+                  imageProxy
                   text={item.category}
                   link={`/daos/${item.daoId}`}
                 />
