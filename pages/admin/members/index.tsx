@@ -56,6 +56,12 @@ const Members: NextPageWithLayout = () => {
   const columns = React.useMemo<Column<Member>[]>(
     () => [
       {
+        Header: 'Address',
+        accessor: 'wallet_address',
+        disableSortBy: true,
+        Filter: InputColumnFilter,
+      },
+      {
         Header: 'Name',
         accessor: 'name',
         disableSortBy: true,
