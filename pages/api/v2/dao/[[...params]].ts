@@ -14,6 +14,7 @@ import OpLogGuard from 'lib/middleawares/oplog'
 import { ResultMsg } from 'types/resultmsg'
 import DaoService from 'service/dao'
 import { Dao } from 'models/Dao'
+import axios from 'axios'
 
 @NextAuthGuard()
 @OpLogGuard()
@@ -116,6 +117,27 @@ class DaoController {
     const dao = await this._service.getEntity({ daoId })
     if (dao.message) throw new InternalServerErrorException(dao.message)
     return dao
+  }
+
+  @Get('/dkp')
+  public async getDkpByDaoId(@Query('daoId') daoId: string) {
+    const data = { dkp1: 0, dkp2: 0, dkp3: 0 }
+    if (daoId.toLowerCase() === 'daosquare') {
+      const urlParmas = ['0', '1', '2']
+      const list = await Promise.all(
+        urlParmas.map((r) =>
+          axios
+            .get(`http://47.241.24.129:3000/user/sumdkp/${r}`)
+            .then((r) => r.data)
+        )
+      )
+      data.dkp1 = list[0].sum
+      data.dkp2 = list[1].sum
+      data.dkp3 = list[2].sum
+
+      return data
+    }
+    return data
   }
 
   /**
