@@ -12,7 +12,11 @@ import WalletModal from 'components/modal/wallet'
 import useWalletSignIn from 'lib/utils/wallet'
 import { useAxiosQuery } from 'lib/request/use-fetch'
 import { MeInterface } from 'types/user'
-import { EthereumAuthProvider, useViewerConnection } from '@self.id/framework'
+import {
+  EthereumAuthProvider,
+  useViewerConnection,
+  useViewerRecord,
+} from '@self.id/framework'
 
 const AdminRoute = {
   name: 'Admin',
@@ -69,10 +73,18 @@ function Header() {
     '/v2/user/me',
     {}
   )
-  const { connectWallet } = useWalletSignIn((res) => {
+  const [connection, connect, disconnect] = useViewerConnection()
+  const record = useViewerRecord('basicProfile')
+  const { connectWallet } = useWalletSignIn(async (res) => {
     if (res) {
       setOpen(false)
       refetch()
+      if (connection.status !== 'connected') {
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        })
+        await connect(new EthereumAuthProvider(window.ethereum, accounts[0]))
+      }
     }
   })
 
@@ -122,10 +134,24 @@ function Header() {
                 </Link>
               ))}
             </div>
-            {typeof window !== 'undefined' && <ConnectButton />}
-            <Button className="" onClick={() => setOpen(true)}>
-              Connect
-            </Button>
+            {/* {typeof window !== 'undefined' && <ConnectButton />} */}
+            {connection.status !== 'connected' ? (
+              <Button
+                disabled={connection.status === 'connecting'}
+                className=""
+                onClick={() => setOpen(true)}
+              >
+                Connect
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  disconnect()
+                }}
+              >
+                {record?.content?.name} Disconnect
+              </Button>
+            )}
             <WalletModal
               isOpen={isOpen}
               setIsOpen={setOpen}
