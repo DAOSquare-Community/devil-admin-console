@@ -36,13 +36,14 @@ const menuData = [
 
 function ConnectButton() {
   const [connection, connect, disconnect] = useViewerConnection()
+  // ({connection.selfID.id})
   return connection.status === 'connected' ? (
     <button
       onClick={() => {
         disconnect()
       }}
     >
-      Disconnect ({connection.selfID.id})
+      Disconnect
     </button>
   ) : (
     <button

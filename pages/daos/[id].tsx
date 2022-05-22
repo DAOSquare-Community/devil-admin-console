@@ -246,6 +246,17 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
     },
     { select: (s) => s.data }
   )
+  const { data: dkp } = useAxiosQuery<{
+    dkp1: number
+    dkp2: number
+    dkp3: number
+  }>(
+    `/v2/dao/dkp`,
+    {
+      daoId: daoId,
+    }
+    // { select: (s) => s.data }
+  )
 
   const { data: gData } = useAxiosQuery<{ data: { items: Dao[] } }>(
     '/v2/dao/list',
@@ -563,19 +574,19 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
                 DKP1
               </Box>
               <Box fontSize="24px" fontWeight={900} color="#4C4B63" mb={5}>
-                5,400.17
+                {dkp?.dkp1.toLocaleString()}
               </Box>
               <Box fontSize="12px" color="#9d9caf">
                 DKP2
               </Box>
               <Box fontSize="24px" fontWeight={900} color="#4C4B63" mb={5}>
-                17,121.92
+                {dkp?.dkp2.toLocaleString()}
               </Box>
               <Box fontSize="12px" color="#9d9caf">
                 DKP3
               </Box>
               <Box fontSize="24px" fontWeight={900} color="#4C4B63">
-                1,752
+                {dkp?.dkp3.toLocaleString()}
               </Box>
             </Box>
           </TitleCard>

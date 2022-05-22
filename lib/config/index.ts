@@ -183,6 +183,11 @@ export const RoleApis: RoleApiPermission[] = [
     method: [HttpMethod.GET],
   },
   {
+    apiRouter: '/api/v2/dao/dkp',
+    role: ['super-admin', 'admin', 'member', 'guest'],
+    method: [HttpMethod.GET],
+  },
+  {
     apiRouter: '/api/v2/dao/list',
     role: ['super-admin', 'admin', 'member', 'guest'],
     method: [HttpMethod.GET],
