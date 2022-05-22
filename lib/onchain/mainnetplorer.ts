@@ -40,9 +40,9 @@ type ErrRes = {
 class Mainnetplorer implements IToken {
   //  the Ethplorer API  url
   private _url = 'https://api.ethplorer.io'
-  private _apiKey = process.env.ETHPLORER_API_KEY
+  private _apiKey = process.env.ETHPLORER_API_KEY ?? 'freekey'
   // delay 100 ms,  Personal key limits:Requests per second: 10
-  private _delayMs = 100
+  private _delayMs = 500
 
   static instance: Mainnetplorer | null
   /** get DB single instance */
@@ -102,6 +102,25 @@ class Mainnetplorer implements IToken {
       currency: cur,
     }
     return holderTokens
+  }
+
+  /**
+   * get the holders by address
+   * @param addr
+   * @returns
+   */
+  public getHoldersCount = async (addr: string): Promise<number> => {
+    // wait 100ms
+    await waitAsync(this._delayMs)
+    let holders = 0
+    const tokenInfoApiUrl = `${this._url}/getTokenInfo/${addr}?apiKey=${this._apiKey}`
+
+    const ret = await request<{ holdersCount: number }>({
+      url: tokenInfoApiUrl,
+      method: 'GET',
+    })
+    holders = ret.holdersCount
+    return holders
   }
 }
 

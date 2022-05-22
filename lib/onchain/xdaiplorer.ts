@@ -3,6 +3,7 @@ import waitAsync from 'lib/wait'
 import { ChainEnum } from 'types/const-enum'
 import { HolderTokens, HToken } from './holdertokens'
 import IToken from './IToken'
+import * as web3Utils from 'web3-utils'
 
 /**
  * Get list of tokens owned by address.
@@ -91,6 +92,28 @@ class XDaiplorer implements IToken {
       currency: cur,
     }
     return holderTokens
+  }
+
+  /**
+   * get the holders by address
+   * @param addr
+   * @returns
+   */
+  public getHoldersCount = async (addr: string): Promise<number> => {
+    // wait 100ms
+    await waitAsync(this._delayMs)
+    let holders = 0
+    //blockscout.com/xdai/mainnet/api
+    // 获取混合大小写的地址，否则无法获取数据
+    const eip55_addr = web3Utils.toChecksumAddress(addr)
+    const tokenInfoApiUrl = `https://blockscout.com/xdai/mainnet/token-counters?id=${eip55_addr}`
+
+    const ret = await request<{ token_holder_count: number }>({
+      url: tokenInfoApiUrl,
+      method: 'GET',
+    })
+    holders = ret.token_holder_count
+    return holders
   }
 }
 

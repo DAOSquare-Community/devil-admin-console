@@ -109,6 +109,9 @@ export class Dao extends BaseModel {
   @prop({ type: DAOContract, _id: false, default: null })
   public dao_contract!: DAOContract
 
+  @prop({ type: DAOContract, _id: false, default: null })
+  public stake_contract!: DAOContract
+
   @prop({ type: Treasury, _id: false, default: null })
   public treasury!: Treasury
 

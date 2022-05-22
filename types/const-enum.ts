@@ -1,22 +1,22 @@
 /**
  * the message code
  */
-export const enum ChainEnum {
-  Mainnet = 'Mainnet',
-  Kovan = 'Kovan',
-  Rinkeby = 'Rinkeby',
-  xDai = 'xDai',
-  Matic = 'Matic',
-  Optimism = 'Optimism',
-  Celo = 'Celo',
-  Arbitrum = 'Arbitrum',
+export enum ChainEnum {
+  Mainnet = 'mainnet',
+  Kovan = 'kovan',
+  Rinkeby = 'rinkeby',
+  xDai = 'xdai',
+  Matic = 'matic',
+  Optimism = 'optimism',
+  Celo = 'celo',
+  Arbitrum = 'arbitrum',
 }
 
 /**
  * the chain id
  * @link https://chainlist.org/
  */
-export const enum ChainIdEnum {
+export enum ChainIdEnum {
   ETH = 1,
   RINKEBY = 4,
   BSC = 56,
@@ -28,7 +28,7 @@ export const enum ChainIdEnum {
 /**
  * the wallet
  */
-export const enum WalletEnum {
+export enum WalletEnum {
   METAMASK = 'METAMASK',
   TRUSTWALLET = 'TRUSTWALLET',
   WALLETCONNECT = 'WALLETCONNET',
@@ -37,7 +37,7 @@ export const enum WalletEnum {
 /**
  * the message code
  */
-export const enum MsgCode {
+export enum MsgCode {
   SUCCESS = 'successful',
   SESSION_EXPIRE = 'session expired',
   NOPERMISSION = 'no permission',
@@ -50,7 +50,7 @@ export const enum MsgCode {
 /**
  * the http method enum
  */
-export const enum HttpMethod {
+export enum HttpMethod {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -60,7 +60,7 @@ export const enum HttpMethod {
 /**
  * the Offical or Social links
  */
-export const enum LinksEnum {
+export enum LinksEnum {
   Twitter = 'twitter',
   WebSite = 'website',
   Discord = 'discord',
@@ -71,7 +71,7 @@ export const enum LinksEnum {
 /**
  * the Offical or Social links
  */
-export const enum DaoPurpose {
+export enum DaoPurpose {
   // Grants(Accelerators)
   Grants = 'Grants',
   // Ventures(Investments)

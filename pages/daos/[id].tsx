@@ -86,10 +86,10 @@ const chartData = [
   },
 ]
 
-const chartData1 = [
-  { name: 'ETH', value: 1096 },
-  { name: 'GC', value: 815 },
-]
+// const chartData1 = [
+//   { name: 'ETH', value: 1096 },
+//   { name: 'GC', value: 815 },
+// ]
 
 const data = [
   {
@@ -257,6 +257,17 @@ const Landscape: NextPageWithLayout<{ daoId: string }> = ({ daoId }) => {
     }
     // { select: (s) => s.data }
   )
+
+  const { data: ch } = useAxiosQuery<
+    { data: { name: string; value: number } }[]
+  >(
+    `/v2/dao/holders`,
+    {
+      daoId: daoId,
+    }
+    // { select: (s) => s.data }
+  )
+  const chartData1 = ch ?? []
 
   const { data: gData } = useAxiosQuery<{ data: { items: Dao[] } }>(
     '/v2/dao/list',

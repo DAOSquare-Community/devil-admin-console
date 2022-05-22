@@ -48,7 +48,7 @@ export default class TreasuryService extends BaseService<
     const dao = ret.data
 
     return await this.getTokensWithChain(
-      <ChainEnum>dao?.treasury.chain_type,
+      <ChainEnum>dao?.treasury.chain_type.toLowerCase(),
       dao?.treasury.contract_address ?? ''
     )
   }

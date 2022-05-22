@@ -13,10 +13,14 @@ import NextAuthGuard from 'lib/middleawares/auth'
 import OpLogGuard from 'lib/middleawares/oplog'
 import { ResultMsg } from 'types/resultmsg'
 import DaoService from 'service/dao'
-import { Dao } from 'models/Dao'
+import { Dao, TokenContract } from 'models/Dao'
 import axios from 'axios'
+import { ChainEnum } from 'types/const-enum'
+import Mainnetplorer from 'lib/onchain/mainnetplorer'
+import XDaiplorer from 'lib/onchain/xdaiplorer'
 
-@NextAuthGuard()
+type ChartHolderType = { name: string; value: number }
+
 @OpLogGuard()
 class DaoController {
   private _service = new DaoService()
@@ -63,6 +67,7 @@ class DaoController {
    *             schema:
    *               type: ResultMsg<PageData<Dao>>
    */
+  @NextAuthGuard()
   @Get('/list')
   public async getDaoList(
     @Query('page', DefaultValuePipe(0)) page: number,
@@ -110,6 +115,7 @@ class DaoController {
    *             schema:
    *               type: ResultMsg<Dao | null>
    */
+  @NextAuthGuard()
   @Get()
   public async getDaoByDaoId(
     @Query('daoId') daoId: string
@@ -136,6 +142,58 @@ class DaoController {
       data.dkp3 = list[2].sum
 
       return data
+    }
+    return data
+  }
+
+  @Get('/holders')
+  public async getHoldersByTokenContracts(@Query('daoId') daoId: string) {
+    const data: ChartHolderType[] = []
+    const ps: Promise<number>[] = []
+    const chains: string[] = []
+
+    const dao = await this._service.getDaoInfo(daoId)
+
+    // get holders
+    if (dao.data && dao.data?.dao_token.token_contract) {
+      const contracts = dao.data?.dao_token.token_contract
+      const tc_count = contracts.length
+      if (tc_count === 0) return data
+
+      // for (let i = 0; i < tc_count; i++) {
+      //   const p = this.getHoldersFunc(contracts[i])
+      //   chains[i] = contracts[i].chain_type.toLowerCase()
+      //   if (p) {
+      //     ps.push(p)
+      //   }
+      // }
+
+      // const vals = await Promise.all(ps)
+      // for (let i = 0; i < tc_count; i++) {
+      //   ch.push({ name: chains[i], value: vals[i] })
+      // }
+      // await Promise.all(ps).then((vals) => {
+      //   // eslint-disable-next-line no-console
+      //   console.log(`vals====>${vals}`)
+      //   for (let i = 0; i < tc_count; i++) {
+      //     ch.push({ name: chains[i], value: vals[i] })
+      //   }
+      // })
+
+      for (let i = 0; i < tc_count; i++) {
+        try {
+          const p = this.getHoldersFunc(contracts[i])
+          if (p) {
+            const n = await p
+            chains[i] = contracts[i].chain_type.toLowerCase()
+            data.push({ name: chains[i], value: n })
+          }
+        } catch (err) {
+          // TODO 获取链上holoders异常，暂不处理
+          // eslint-disable-next-line no-console
+          // console.log(`log====>${err}`)
+        }
+      }
     }
     return data
   }
@@ -167,6 +225,7 @@ class DaoController {
    *             schema:
    *               type: ResultMsg<boolean>
    */
+  @NextAuthGuard()
   @Delete()
   public async deleteDaoByFilter(
     @Body() body: { filter: string }
@@ -205,6 +264,7 @@ class DaoController {
    *             schema:
    *               type: ResultMsg<boolean>
    */
+  @NextAuthGuard()
   @Post()
   public async insertDao(@Body() body: object): Promise<ResultMsg<boolean>> {
     const dao = new Dao()
@@ -244,6 +304,7 @@ class DaoController {
    *             schema:
    *               type: ResultMsg<boolean>
    */
+  @NextAuthGuard()
   @Put()
   public async updateDao(
     @Body() body: { filter: object; update: object }
@@ -253,6 +314,24 @@ class DaoController {
       throw new InternalServerErrorException(ret.message)
     }
     return ret
+  }
+
+  private getHoldersFunc(contract: TokenContract) {
+    const chain = contract.chain_type.toLowerCase()
+    let p: Promise<number> | undefined
+    switch (chain) {
+      case ChainEnum.Mainnet:
+        p = Mainnetplorer.getInstance()?.getHoldersCount(
+          contract.contract_address
+        )
+        break
+      case ChainEnum.xDai:
+        p = XDaiplorer.getInstance()?.getHoldersCount(contract.contract_address)
+        break
+      default:
+        break
+    }
+    return p
   }
 }
 
