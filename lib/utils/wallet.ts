@@ -49,7 +49,7 @@ const connectors = {
 }
 
 const useWalletSignIn = (after?: (res?: SignInResponse) => void) => {
-  const { activate, account, library } = useWeb3React<Web3>()
+  const { activate, account, library, deactivate } = useWeb3React<Web3>()
   const connectWallet = async (type: WalletEnum) => {
     await activate(connectors[type])
   }
@@ -87,7 +87,7 @@ const useWalletSignIn = (after?: (res?: SignInResponse) => void) => {
     firstRef.current = false
   }, [account, auth])
 
-  return { auth, connectWallet, account }
+  return { auth, connectWallet, account, deactivate }
 }
 
 export default useWalletSignIn
