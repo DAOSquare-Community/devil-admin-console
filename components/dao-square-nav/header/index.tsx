@@ -17,7 +17,7 @@ import {
   useViewerConnection,
   useViewerRecord,
 } from '@self.id/framework'
-
+import { signOut } from 'next-auth/react'
 const AdminRoute = {
   name: 'Admin',
   path: '/admin',
@@ -38,31 +38,34 @@ const menuData = [
   },
 ]
 
-function ConnectButton() {
-  const [connection, connect, disconnect] = useViewerConnection()
-  // ({connection.selfID.id})
-  return connection.status === 'connected' ? (
-    <button
-      onClick={() => {
-        disconnect()
-      }}
-    >
-      Disconnect
-    </button>
-  ) : (
-    <button
-      disabled={connection.status === 'connecting'}
-      onClick={async () => {
-        const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts',
-        })
-        await connect(new EthereumAuthProvider(window.ethereum, accounts[0]))
-      }}
-    >
-      Connect
-    </button>
-  )
-}
+// function ConnectButton() {
+//   const [connection, connect, disconnect] = useViewerConnection()
+//   // ({connection.selfID.id})
+//   console.log('connection', connection)
+
+//   return connection.status === 'connected' ? (
+//     <button
+//       onClick={() => {
+//         disconnect()
+//       }}
+//     >
+//       Disconnect
+//     </button>
+//   ) : (
+//     <button
+//       disabled={connection.status === 'connecting'}
+//       onClick={async () => {
+//         const accounts = await window.ethereum.request({
+//           method: 'eth_requestAccounts',
+//         })
+//         await connect(new EthereumAuthProvider(window.ethereum, accounts[0]))
+//         console.log('connection', connection)
+//       }}
+//     >
+//       Connect
+//     </button>
+//   )
+// }
 
 function Header() {
   const [isShowMenu, setIsShowMenu] = useState(false)
@@ -75,7 +78,8 @@ function Header() {
   )
   const [connection, connect, disconnect] = useViewerConnection()
   const record = useViewerRecord('basicProfile')
-  const { connectWallet } = useWalletSignIn(async (res) => {
+
+  const { connectWallet, deactivate } = useWalletSignIn(async (res) => {
     if (res) {
       setOpen(false)
       refetch()
@@ -139,14 +143,19 @@ function Header() {
               <Button
                 disabled={connection.status === 'connecting'}
                 className=""
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                  setOpen(true)
+                }}
               >
                 Connect
               </Button>
             ) : (
               <Button
                 onClick={() => {
-                  disconnect()
+                  signOut().then(() => {
+                    deactivate()
+                    disconnect()
+                  })
                 }}
               >
                 {record?.content?.name} Disconnect
